@@ -76,7 +76,7 @@ alias als='vim ~/.bash_aliases'
 
 # Dotfiles
 
-alias git-config='git --git-dir=$HOME/repos/dotfiles/ --work-tree=$HOME'
+alias gconfig='git --git-dir=$HOME/repos/dotfiles/ --work-tree=$HOME'
 
 # ssh 
 
