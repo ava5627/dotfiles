@@ -123,6 +123,8 @@ def switch_to_same_class(qtile):
         else:
             pass
         next_win.group.focus(next_win, False)
+        if group_floating_windows(next_win):
+            next_win.window.configure(stackmode=StackMode.Above)
     return
 
 def windows_matching_shuffle(qtile, **kwargs):
@@ -188,7 +190,8 @@ def switch_window(direction=1):
             qtile.current_group.cmd_next_window(),
         if direction == -1:
             qtile.current_group.cmd_prev_window(),
-        qtile.current_window.window.configure(stackmode=StackMode.Above)
+        if group_floating_windows(qtile.current_window):
+            qtile.current_window.window.configure(stackmode=StackMode.Above)
 
     return _switch_window
 
