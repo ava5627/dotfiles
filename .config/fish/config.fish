@@ -3,9 +3,12 @@
 set fish_greeting                                 # Supresses fish's intro message
 set TERM "xterm-256color"                         # Sets the terminal type
 
-if not contains "/home/ava/.local/bin" $PATH
-  set PATH $PATH "/home/ava/.local/bin"
+if not status --is-interactive
+  exit
 end
+
+
+fish_add_path "/home/ava/.local/bin"
 
 # set $PATH "~/local/bin:$PATH"
 
@@ -13,6 +16,10 @@ set fish_color_host $fish_color_user
 set fish_color_cwd magenta #$fish_color_param
 set -g fish_prompt_pwd_dir_length 0
 
+set GEM_HOME (ruby -e 'puts Gem.user_dir')
+fish_add_path $GEM_HOME/bin
+
+set EDITOR nvim
 
 function fish_prompt --description 'Write out the prompt'
 
@@ -44,9 +51,11 @@ end
 alias cls='clear'
 alias cla='clear; exec fish'
 
-alias sai='sudo apt install'
-alias sau='sudo apt update && sudo apt upgrade -y'
-alias sar='sudo apt auto-remove'
+alias pacs='sudo pacman -S'
+alias pacu='sudo pacman -Syyu'
+alias pacr='sudo pacman -R'
+alias pacss='pacman -Ss'
+alias pacar='sudo pacman -Qtdq | sudo pacman -Rns -'
 
 alias ls='lsd'
 alias ll='lsd -l'
@@ -56,7 +65,9 @@ alias lt='lsd --tree'
 
 alias q=exit
 
-alias fuck='sudo (fc -ln -1)'
+alias f='commandline -i "sudo $history[1]";history delete --exact --case-sensitive f'
+
+alias vim='nvim'
 
 # Directory cd
 
@@ -68,25 +79,13 @@ alias doc='cd ~/Documents'
 alias dow='cd ~/Downloads'
 alias root='cd /'
 
-# Programs
-
-alias frc='vim ~/.config/fish/config.fish'
-alias brc='vim ~/.bashrc'
-alias als='vim ~/.bash_aliases'
-
 # Dotfiles
 
-alias gconfig='git --git-dir=$HOME/repos/dotfiles/ --work-tree=$HOME'
-
-# ssh 
-
-alias avaMSI='ssh ava@avaMSI.local'
-alias avaPC='ssh ava@avaPC.local'
+alias gconfig='git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 
 # Startup
-
 
 bind \cH backward-kill-path-component
 
 
-# neofetch
+neofetch

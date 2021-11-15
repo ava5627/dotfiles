@@ -28,14 +28,20 @@ import os
 import re
 import subprocess
 
+from scripts.rofi_scripts import edit_configs
+
 import xcffib.xproto
 
 from typing import List  # noqa: F401
 
 from libqtile import bar, layout, widget, hook, qtile, extension
+from libqtile.backend.base import FloatStates
 from libqtile.config import Click, Drag, Group, Key, Match, Screen, KeyChord
 from libqtile.log_utils import logger
 from libqtile.lazy import lazy
+
+from xcffib.xproto import StackMode
+
 
 def window_to_next_screen(qtile):
     i = qtile.screens.index(qtile.current_screen) + 1
@@ -174,41 +180,110 @@ def window_match_re(window, wmname=None, wmclass=None, role=None):
         return False
     return ret
 
+def switch_window(direction=1):
+
+    @lazy.function
+    def _switch_window(qtile):
+        if direction == 1:
+            qtile.current_group.cmd_next_window(),
+        if direction == -1:
+            qtile.current_group.cmd_prev_window(),
+        qtile.current_window.window.configure(stackmode=StackMode.Above)
+
+    return _switch_window
+
+def group_floating_windows(window):
+    return window.group.floating_layout.find_clients(window.group)
+
+def fullscreen_neighbors(window):
+    for win in window.group.windows:
+        if win._float_state == FloatStates.FULLSCREEN:
+            return True
+    return False
+    
+def print_debug(obj):
+    odict = obj.__dict__
+    ostr = "\n"
+    for k in odict:
+        if k == 'icons':
+            continue
+        ostr += f"{k}: {odict[k]}\n"
+    logger.warning(ostr)
+
 
 mod = "mod4"
+# terminal = "urxvt"
 terminal = "alacritty"
 browser = "firefox"
 num_screens = 2
 
-# Color Theme from https://gitlab.com/dwt1/dotfiles/-/blob/master/.config/qtile/config.py
 
-colors = [["#282c34", "#282c34"], # panel background
-          ["#3d3f4b", "#434758"], # background for current screen tab
-          ["#f8f8f2", "#f8f8f2"], # font color for group names
-          ["#ff5555", "#ff5555"], # border line color for current tab
-          ["#74438f", "#74438f"], # border line color for 'other tabs' and color for 'odd widgets'
-          ["#3d3f4b", "#3d3f4b"], # color for the 'even widgets'
-          ["#bd93f9", "#bd93f9"], # window name
-          ["#ecbbfb", "#ecbbfb"]] # background for inactive screens
 
-powerline_colors = [colors[5], colors[4]]
+def init_colors(theme):
+    theme_dict = dict(
+        dracula = [["#282c34", "#282c34"], # 0 panel background
+                   ["#3d3f4b", "#3d3f4b"], # 1 Inactive Window Margin Background
+                   ["#f8f8f2", "#f8f8f2"], # 2 font color for group names
+                   ["#74438f", "#74438f"], # 3 Current Window Background
+                   ["#74438f", "#74438f"], # 4 border line color for 'other tabs'
+                   ["#74438f", "#74438f"], # 5 color for 'odd widgets'
+                   ["#3d3f4b", "#3d3f4b"], # 6 color for the 'even widgets'
+                   ["#bd93f9", "#bd93f9"], # 7 Current Workspace
+                   ["#ecbbfb", "#ecbbfb"]  # 8 background for inactive screens
+        ],
+        arcolinux = [["#282c34", "#282c34"], # 0 panel background
+                     ["#2F343F", "#2F343F"], # 1 Inactive Window Margin Background
+                     ["#f8f8f2", "#f8f8f2"], # 2 font color for everything
+                     ["#3384d0", "#3384d0"], # 3 Current Window Background # 3384d0
+                     ["#4c566a", "#4c566a"], # 4 Workspace open on other screen
+                     ["#3384d0", "#3384d0"], # 5 color for 'odd widgets'
+                     ["#2F343F", "#2F343F"], # 6 color for the 'even widgets'
+                     ["#3384d0", "#3384d0"], # 7 Current Workspace # 3384d0
+                     ["#a9a9a9", "#a9a9a9"], # 8 Inactive group with windows
+        ],
+        cyan = [["#282c34", "#282c34"], # 0 panel background
+                     ["#2F343F", "#2F343F"], # 1 Inactive Window Margin Background
+                     ["#f8f8f2", "#f8f8f2"], # 2 font color for everything
+                     ["#06989a", "#06989a"], # 3 Current Window Background
+                     ["#014142", "#014142"], # 4 Workspace open on other screen
+                     ["#1e666b", "#1e666b"], # 5 color for 'odd widgets'
+                     ["#3d3f4b", "#3d3f4b"], # 6 color for the 'even widgets'
+                     ["#0f6f75", "#0f6f75"], # 7 Current Workspace
+                     ["#33e8e2", "#33e8e2"], # 8 Inactive group with windows
+        ],
+        debug = [["#000000", "#000000"], # 0 panel background
+                ["#00ff00", "#00ff00"], # 1 Inactive Window Margin Background
+                ["#f8f8f2", "#f8f8f2"], # 2 font color for group names
+                ["#fba922", "#fba922"], # 3 Current Window Background
+                ["#ff00ff", "#ff00ff"], # 4 border line color for 'other tabs'
+                ["#ff0000", "#ff0000"], # 5 color for 'odd widgets'
+                ["#0000ff", "#0000ff"], # 6 color for the 'even widgets'
+                ["#ffff00", "#ffff00"], # 7 Current Workspace
+                ["#00ffff", "#00ffff"], # 8 background for inactive screens
+        ],
+    )
+    return theme_dict[theme]
+
+
+# colors = init_colors("dracula")
+# colors = init_colors("cyan")
+colors = init_colors("arcolinux")
+# colors = init_colors("debug")
+
+
+powerline_colors = [colors[6], colors[5]]
 
 keys = [
-    # Switch/Resize Windows
+    #region Switch/Resize Windows
     Key(
         [mod], "j", 
-        lazy.layout.down(), 
-        desc="Move focus down"
+        switch_window(direction=1),
+        desc="Move focus previous"
     ),
     Key(
         [mod], "k", 
-        lazy.layout.up(), 
-        desc="Move focus up"
-    ),
-    Key(
-        [mod], "space", 
-        lazy.layout.next(),
-        desc="Move window focus to other window"
+        switch_window(direction=-1),
+        desc="Move focus next"
     ),
     Key(
         [mod], "h", 
@@ -219,6 +294,10 @@ keys = [
         [mod], "l", 
         lazy.layout.grow_main(),
         desc="Shrink window"
+    ),
+    Key(
+        [mod], "space",
+        lazy.group.next_window()
     ),
     Key(
         [mod, "shift"], "j", 
@@ -233,17 +312,15 @@ keys = [
     Key(
         [mod, "shift"], "h", 
         lazy.layout.shrink(),
-        # lazy.window.bring_to_front(),
         desc="Move window down"
     ),
     Key(
         [mod, "shift"], "l", 
         lazy.layout.grow(),
-        # lazy.window.bring_to_front(),
         desc="Move window up"
     ),
-
-    # Launchers
+    #endregion
+    #region Launchers
     Key(
         [mod], "e", 
         lazy.spawn(terminal), 
@@ -253,6 +330,11 @@ keys = [
         [mod], "Return", 
         lazy.spawn(terminal), 
         desc="Launch terminal alt"
+    ),   
+    Key(
+        [mod], "m", 
+        lazy.spawn("pcmanfm"), 
+        desc="Launch pcmanfm"
     ),
     Key(
         [mod], "w", 
@@ -268,26 +350,41 @@ keys = [
         [mod], "r",
         lazy.run_extension(extension.DmenuRun(
             dmenu_prompt = "Run:",
+            dmenu_command = "rofi -show run -i",
             background=colors[0][0],
             foreground=colors[2][0],
-            selected_background=colors[6][0],
+            selected_background=colors[7][0],
+            selected_foreground=colors[2][0],
+        )),
+        desc='Run Launcher'
+    ),  
+    Key(
+        ["mod1", "shift"], "r",
+        lazy.run_extension(extension.J4DmenuDesktop(
+            dmenu_prompt = "Run:",
+            dmenu_command = "rofi -dmenu -i",
+            background=colors[0][0],
+            foreground=colors[2][0],
+            selected_background=colors[7][0],
             selected_foreground=colors[2][0],
         )),
         desc='Run Launcher'
     ),
     Key(
         [mod, "shift"], "r",
-        lazy.run_extension(extension.J4DmenuDesktop(
-            dmenu_prompt = "Run:",
-            background=colors[0][0],
-            foreground=colors[2][0],
-            selected_background=colors[6][0],
-            selected_foreground=colors[2][0],
-        )),
+        lazy.function(edit_configs),
+        # lazy.run_extension(extension.J4DmenuDesktop(
+        #     dmenu_prompt = "Run:",
+        #     dmenu_command = "rofi -dmenu -i",
+        #     background=colors[0][0],
+        #     foreground=colors[2][0],
+        #     selected_background=colors[7][0],
+        #     selected_foreground=colors[2][0],
+        # )),
         desc='Run Launcher'
     ),
-
-    # Window Management
+    #endregion
+    #region Window Management
     # Key(
     #     [mod], "grave",
     #     lazy.function(window_to_next_screen),
@@ -304,18 +401,29 @@ keys = [
     ),
     Key(
         [mod, "shift"], "Right",
+        lazy.next_screen(),
+        desc='Move focus to next monitor'
+    ),
+    Key(
+        ["mod1"], "Tab",
         lazy.function(next_group)
     ),
     Key(
         [mod, "shift"], "Left",
+        lazy.prev_screen(),
+        desc='Move focus to prev monitor'
+    ),
+    Key(
+        ["mod1", "shift"], "Tab",
         lazy.function(prev_group)
     ),
+    
 
-    Key(
-        [mod], "m",
-        lazy.layout.maximize(),
-        desc='toggle window between minimum and maximum sizes'
-    ),
+    # Key(
+    #     [mod], "m",
+    #     lazy.layout.maximize(),
+    #     desc='toggle window between minimum and maximum sizes'
+    # ),
     Key(
         [mod, "shift"], "f",
         lazy.window.toggle_floating(),
@@ -331,33 +439,31 @@ keys = [
         lazy.window.kill(), 
         desc="Kill focused window"
     ),
-
-    # Screenshot
+    #endregion
+    #region Screenshot
     Key(
         [], "Print", lazy.spawn("maim -s | xclip -selection clipboard -t image/png", shell=True)
     ),
-
-    # Switch focus of monitors
+    #endregion
+    #region Switch focus of monitors
     Key([mod], "period",
-        lazy.next_screen(),
-        desc='Move focus to next monitor'
+        lazy.function(next_group)
     ),
     Key([mod], "comma",
-        lazy.prev_screen(),
-        desc='Move focus to prev monitor'
+        lazy.function(prev_group)
     ),
-
-    # Toggle between different layouts as defined below
+    #endregion
+    #region Toggle between different layouts as defined below
     Key(
         [mod], "Tab", 
         lazy.next_layout(), 
         desc="Toggle between layouts"
     ),
-
-    # System / WM
+    #endregion
+    #region System / WM
     Key(
         [mod, "control"], "r", 
-        lazy.reload_config(), 
+        lazy.restart(), 
         desc="Reload the config"
     ),
     Key(
@@ -367,7 +473,7 @@ keys = [
     ),
     Key(
         [mod], "F12",
-        lazy.spawn("systemctl suspend"),
+        lazy.spawn("arcolinux-logout"),
         desc="Suspend"
     ),
     KeyChord(
@@ -379,8 +485,8 @@ keys = [
         ],
         mode="Windows"
     ),
-
-    # Volume/Media
+    #endregion
+    #region Volume/Media
     Key(
         [], "XF86AudioRaiseVolume",
         lazy.spawn("amixer -q -D pulse set Master 5%+"),
@@ -401,12 +507,13 @@ keys = [
         lazy.spawn("playerctl play-pause"),
         desc="Toggle Mute"
     ),
+    #endregion
 ]
 
 groups = [
     Group("1", layout='monadtall', position=0),
     Group("2", layout='monadtall', position=1),
-    Group("3", layout='monadtall', position=2, matches=[Match(title=re.compile(".*Private.*"))]),
+    Group("3", layout='monadtall', position=2),
     # Group("0", layout='monadtall', position=2, matches=[Match(title="")]),
     Group("a", layout='monadtall', position=4, matches=[Match(wm_class="discord")]),
     Group("s", layout='monadtall', position=5, matches=[]),
@@ -428,8 +535,8 @@ for i in groups:
 
 layout_theme = {"border_width": 2,
                 "margin": 4,
-                "border_focus": colors[6],
-                "border_normal": colors[4],
+                "border_focus": colors[3],
+                "border_normal": colors[1],
                 "single_border_width": 0,
                 "single_margin": 0,
             }
@@ -476,7 +583,7 @@ def make_powerline(widgets):
                 background = fg,
                 text="", # Icon: nf-oct-triangle_left
                 fontsize=37,
-                padding=-2,
+                padding=-3,
             )
         )
         if type(w) == list:
@@ -493,7 +600,7 @@ def make_widgets(screen):
         widget.Sep(
             linewidth = 0,
             padding = 6,
-            background = colors[5]
+            background = colors[0]
         ),
         widget.GroupBox(
             font = "Ubuntu Bold",
@@ -503,13 +610,13 @@ def make_widgets(screen):
             padding_y = 5,
             padding_x = 3,
             borderwidth = 3,
-            active = colors[7],
+            active = colors[8],
             inactive = colors[2],
             rounded = False,
             highlight_method = "block",
-            this_current_screen_border = colors[6],
+            this_current_screen_border = colors[7],
             this_screen_border = colors [4],
-            other_current_screen_border = colors[6],
+            other_current_screen_border = colors[7],
             other_screen_border = colors[4],
         ),
         widget.TaskList(
@@ -524,7 +631,7 @@ def make_widgets(screen):
             padding_x=3,
             borderwidth = 3,
             icon_size = 0,
-            border=colors[4],
+            border=colors[3],
         ),
         widget.Sep(
             linewidth = 0,
@@ -539,19 +646,7 @@ def make_widgets(screen):
             name_transform=lambda name: name.upper(),
         ),
     ]
-    pl_list = []
-    if screen == 0:
-        pl_list.append(
-            [widget.Systray(
-                icon_size = 20,
-                padding = 5,
-            ),
-            widget.Sep(
-                linewidth = 0,
-                padding = 6,
-            ),]
-        )
-    pl_list.extend([
+    pl_list = [
         widget.CPU(
             padding = 6,
         ),
@@ -561,7 +656,8 @@ def make_widgets(screen):
             padding = 5
         ),
         widget.Net(
-            format = '{down} ↓↑ {up}'
+            format = '{down} ↓↑ {up}',
+            padding = 5
         ),
         [widget.TextBox(
             text = " Vol:",
@@ -577,13 +673,36 @@ def make_widgets(screen):
         widget.CurrentLayout(
             padding = 5
         ),
+        widget.CheckUpdates(
+            update_interval = 3600,
+            distro = "Arch_checkupdates",
+            display_format = "{updates} Updates",
+            foreground = colors[2],
+            mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(terminal + ' -e sudo pacman -Syu')},
+            background = colors[5],
+            no_update_string = '0 Updates',
+            padding = 5,
+        ),
         widget.Clock(
             padding = 5,
             format = "%A, %B %d - %H:%M "
         ),
-    ])
+    ]
 
-   
+    systray = [
+        widget.Systray(
+            icon_size = 20,
+            padding = 5,
+        ),
+        widget.Sep(
+            linewidth = 0,
+            padding = 6,
+        ),
+    ]
+    
+    if screen == 0:
+        pl_list.insert(-1, systray)
+
 
     widget_list += make_powerline(pl_list)
     return widget_list
@@ -611,7 +730,6 @@ cursor_warp = False
 floating_layout = layout.Floating(float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
-        Match(title=re.compile("News")),
         Match(wm_class='copyq'),
         Match(wm_class='confirmreset'),  # gitk
         Match(wm_class='makebranch'),  # gitk
@@ -619,8 +737,16 @@ floating_layout = layout.Floating(float_rules=[
         Match(wm_class='ssh-askpass'),  # ssh-askpass
         Match(title='branchdialog'),  # gitk
         Match(title='pinentry'),  # GPG key password entry
+        Match(wm_class='Arcolinux-welcome-app.py'),
+        Match(wm_class='Arcolinux-tweak-tool.py'),
+        Match(wm_class='Arcolinux-calamares-tool.py'),
+        Match(wm_class='Arandr'),
+        Match(wm_class='feh'),
+        Match(wm_class='Galculator'),
+        Match(wm_class='arcolinux-logout'),
+        Match(wm_class='xfce4-terminal'),
     ],
-    border_focus=colors[6],
+    border_focus=colors[7],
     border_normal=colors[4],
     border_width=2,
 )
@@ -634,9 +760,19 @@ auto_minimize = False
 
 @hook.subscribe.startup_once
 def start_once():
+    if len(qtile.screens) > 1:
+        qtile.groups_map['1'].cmd_toscreen(1, toggle=False)
+        qtile.groups_map['a'].cmd_toscreen(1, toggle=False)
     home = os.path.expanduser('~')
-    subprocess.call([home + '/.config/qtile/autostart.sh'])
+    subprocess.call([home + '/.config/qtile/scripts/autostart.sh'])
 
+@hook.subscribe.client_new
+def set_floating(window):
+    if (window.window.get_wm_transient_for()
+            or window.window.get_wm_type() in floating_types):
+        window.floating = True
+
+floating_types = ["notification", "toolbar", "splash", "dialog"]
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the
