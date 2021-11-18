@@ -49,6 +49,7 @@ run steam -silent &
 openrgb -p Off
 copyq &
 kdeconnect-indicator &
+morgen --hidden &
 #run caffeine -a &
 #run vivaldi-stable &
 #run firefox &

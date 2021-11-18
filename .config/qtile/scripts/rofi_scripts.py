@@ -8,6 +8,8 @@ def edit_configs(qtile):
         "~/.config/fish",
         "~/.config/nvim",
         "~/.bashrc",
+        "/etc/logid.cfg",
+        "~/.config/rofi"
     ]
     config_str = "\\n".join(configs)
     choice = subprocess.getoutput(f"echo -e \"{config_str}\" | rofi -dmenu -i -p \"Edit Configs\"")

@@ -36,7 +36,7 @@ from typing import List  # noqa: F401
 
 from libqtile import bar, layout, widget, hook, qtile, extension
 from libqtile.backend.base import FloatStates
-from libqtile.config import Click, Drag, Group, Key, Match, Screen, KeyChord
+from libqtile.config import Click, Drag, Group, Key, Match, Screen, KeyChord, EzKey
 from libqtile.log_utils import logger
 from libqtile.lazy import lazy
 
@@ -124,7 +124,7 @@ def switch_to_same_class(qtile):
             pass
         next_win.group.focus(next_win, False)
         if group_floating_windows(next_win):
-            next_win.window.configure(stackmode=StackMode.Above)
+            top_window(next_win)
     return
 
 def windows_matching_shuffle(qtile, **kwargs):
@@ -191,7 +191,7 @@ def switch_window(direction=1):
         if direction == -1:
             qtile.current_group.cmd_prev_window(),
         if group_floating_windows(qtile.current_window):
-            qtile.current_window.window.configure(stackmode=StackMode.Above)
+            top_window(qtile.current_window)
 
     return _switch_window
 
@@ -212,6 +212,12 @@ def print_debug(obj):
             continue
         ostr += f"{k}: {odict[k]}\n"
     logger.warning(ostr)
+
+def top_window(window):
+    # x, y = window.cmd_get_position()
+    # w, h = window.cmd_get_size()
+    # window.cmd_place(x, y, w, h, 0, None, above=True)
+    window.window.configure(stackmode=StackMode.Above)
 
 
 mod = "mod4"
@@ -234,7 +240,7 @@ def init_colors(theme):
                    ["#bd93f9", "#bd93f9"], # 7 Current Workspace
                    ["#ecbbfb", "#ecbbfb"]  # 8 background for inactive screens
         ],
-        arcolinux = [["#282c34", "#282c34"], # 0 panel background
+        blue = [["#282c34", "#282c34"], # 0 panel background
                      ["#2F343F", "#2F343F"], # 1 Inactive Window Margin Background
                      ["#f8f8f2", "#f8f8f2"], # 2 font color for everything
                      ["#3384d0", "#3384d0"], # 3 Current Window Background # 3384d0
@@ -270,248 +276,53 @@ def init_colors(theme):
 
 # colors = init_colors("dracula")
 # colors = init_colors("cyan")
-colors = init_colors("arcolinux")
+colors = init_colors("blue")
 # colors = init_colors("debug")
-
 
 powerline_colors = [colors[6], colors[5]]
 
-keys = [
-    #region Switch/Resize Windows
-    Key(
-        [mod], "j", 
-        switch_window(direction=1),
-        desc="Move focus previous"
-    ),
-    Key(
-        [mod], "k", 
-        switch_window(direction=-1),
-        desc="Move focus next"
-    ),
-    Key(
-        [mod], "h", 
-        lazy.layout.shrink_main(),
-        desc="Grow window"
-    ),
-    Key(
-        [mod], "l", 
-        lazy.layout.grow_main(),
-        desc="Shrink window"
-    ),
-    Key(
-        [mod], "space",
-        lazy.group.next_window()
-    ),
-    Key(
-        [mod, "shift"], "j", 
-        lazy.layout.shuffle_down(),
-        desc="Move window down"
-    ),
-    Key(
-        [mod, "shift"], "k", 
-        lazy.layout.shuffle_up(), 
-        desc="Move window up"
-    ),
-    Key(
-        [mod, "shift"], "h", 
-        lazy.layout.shrink(),
-        desc="Move window down"
-    ),
-    Key(
-        [mod, "shift"], "l", 
-        lazy.layout.grow(),
-        desc="Move window up"
-    ),
-    #endregion
-    #region Launchers
-    Key(
-        [mod], "e", 
-        lazy.spawn(terminal), 
-        desc="Launch terminal"
-    ),
-    Key(
-        [mod], "Return", 
-        lazy.spawn(terminal), 
-        desc="Launch terminal alt"
-    ),   
-    Key(
-        [mod], "m", 
-        lazy.spawn("pcmanfm"), 
-        desc="Launch pcmanfm"
-    ),
-    Key(
-        [mod], "w", 
-        lazy.spawn(browser), 
-        desc="Launch Browswer"
-    ),
-    Key(
-        ["control", "shift"], "e", 
-        lazy.spawn("copyq show"),
-        desc="Show Copyq"
-    ),
-    Key(
-        [mod], "r",
-        lazy.run_extension(extension.DmenuRun(
-            dmenu_prompt = "Run:",
-            dmenu_command = "rofi -show run -i",
-            background=colors[0][0],
-            foreground=colors[2][0],
-            selected_background=colors[7][0],
-            selected_foreground=colors[2][0],
-        )),
-        desc='Run Launcher'
-    ),  
-    Key(
-        ["mod1", "shift"], "r",
-        lazy.run_extension(extension.J4DmenuDesktop(
-            dmenu_prompt = "Run:",
-            dmenu_command = "rofi -dmenu -i",
-            background=colors[0][0],
-            foreground=colors[2][0],
-            selected_background=colors[7][0],
-            selected_foreground=colors[2][0],
-        )),
-        desc='Run Launcher'
-    ),
-    Key(
-        [mod, "shift"], "r",
-        lazy.function(edit_configs),
-        # lazy.run_extension(extension.J4DmenuDesktop(
-        #     dmenu_prompt = "Run:",
-        #     dmenu_command = "rofi -dmenu -i",
-        #     background=colors[0][0],
-        #     foreground=colors[2][0],
-        #     selected_background=colors[7][0],
-        #     selected_foreground=colors[2][0],
-        # )),
-        desc='Run Launcher'
-    ),
-    #endregion
-    #region Window Management
-    # Key(
-    #     [mod], "grave",
-    #     lazy.function(window_to_next_screen),
-    #     desc="Move winow to next screen"
-    # ),
-    # Key(
-    #     [mod, "shift"], "grave",
-    #     lazy.function(window_to_prev_screen),
-    #     desc="Move winow to prev screen"
-    # ),
-    Key(
-        [mod], "grave",
-        lazy.function(switch_to_same_class)
-    ),
-    Key(
-        [mod, "shift"], "Right",
-        lazy.next_screen(),
-        desc='Move focus to next monitor'
-    ),
-    Key(
-        ["mod1"], "Tab",
-        lazy.function(next_group)
-    ),
-    Key(
-        [mod, "shift"], "Left",
-        lazy.prev_screen(),
-        desc='Move focus to prev monitor'
-    ),
-    Key(
-        ["mod1", "shift"], "Tab",
-        lazy.function(prev_group)
-    ),
-    
-
-    # Key(
-    #     [mod], "m",
-    #     lazy.layout.maximize(),
-    #     desc='toggle window between minimum and maximum sizes'
-    # ),
-    Key(
-        [mod, "shift"], "f",
-        lazy.window.toggle_floating(),
-        desc='toggle floating'
-    ),
-    Key(
-        [mod], "f",
-        lazy.window.toggle_fullscreen(),
-        desc='toggle fullscreen'
-    ),
-    Key(
-        [mod], "q", 
-        lazy.window.kill(), 
-        desc="Kill focused window"
-    ),
-    #endregion
-    #region Screenshot
-    Key(
-        [], "Print", lazy.spawn("maim -s | xclip -selection clipboard -t image/png", shell=True)
-    ),
-    #endregion
-    #region Switch focus of monitors
-    Key([mod], "period",
-        lazy.function(next_group)
-    ),
-    Key([mod], "comma",
-        lazy.function(prev_group)
-    ),
-    #endregion
-    #region Toggle between different layouts as defined below
-    Key(
-        [mod], "Tab", 
-        lazy.next_layout(), 
-        desc="Toggle between layouts"
-    ),
-    #endregion
-    #region System / WM
-    Key(
-        [mod, "control"], "r", 
-        lazy.restart(), 
-        desc="Reload the config"
-    ),
-    Key(
-        [mod, "control"], "q", 
-        lazy.shutdown(), 
-        desc="Shutdown Qtile"
-    ),
-    Key(
-        [mod], "F12",
-        lazy.spawn("arcolinux-logout"),
-        desc="Suspend"
-    ),
-    KeyChord(
-        [mod], "z",[
-            Key([], "h", lazy.layout.grow_left(), lazy.window.resize_floating(dw=-50, dh=0)),
-            Key([], "l", lazy.layout.grow_right(), lazy.window.resize_floating(dw=50, dh=0)),
-            Key([], "j", lazy.layout.grow_down(), lazy.window.resize_floating(dw=0,dh=50)),
-            Key([], "k", lazy.layout.grow_up(), lazy.window.resize_floating(dw=0,dh=-50)),
-        ],
-        mode="Windows"
-    ),
-    #endregion
-    #region Volume/Media
-    Key(
-        [], "XF86AudioRaiseVolume",
-        lazy.spawn("amixer -q -D pulse set Master 5%+"),
-        desc="Raise volume by 5%"
-    ),
-    Key(
-        [], "XF86AudioLowerVolume",
-        lazy.spawn("amixer -q -D pulse set Master 5%-"),
-        desc="Lower volume by 5%"
-    ),
-    Key(
-        [], "XF86AudioMute",
-        lazy.spawn("amixer -q -D pulse set Master toggle"),
-        desc="Toggle Mute"
-    ),
-    Key(
-        [], "XF86AudioPlay",
-        lazy.spawn("playerctl play-pause"),
-        desc="Toggle Mute"
-    ),
-    #endregion
+my_keys = [
+    ["M-j", 	                    switch_window(direction=1), 	                        "Move focus previous",],
+    ["M-k", 	                    switch_window(direction=-1), 	                        "Move focus next",],
+    ["M-<grave>", 	                lazy.function(switch_to_same_class),                    "",],
+    ["M-S-<Right>", 	            lazy.next_screen(), 	                                'Move focus to next monitor',],
+    ["A-<Tab>", 	                lazy.function(next_group),                              "",],
+    ["M-S-<Left>", 	                lazy.prev_screen(), 	                                'Move focus to prev monitor',],
+    ["A-S-<Tab>", 	                lazy.function(prev_group),                              "",],
+    ["M-h", 	                    lazy.layout.shrink_main(), 	                            "Grow window",],
+    ["M-l", 	                    lazy.layout.grow_main(), 	                            "Shrink window",],
+    ["M-S-h", 	                    lazy.layout.shrink(), 	                                "Move window down",],
+    ["M-S-l", 	                    lazy.layout.grow(), 	                                "Move window up",],
+    ["M-<space>", 	                lazy.group.next_window(),                               "",],
+    ["M-S-j", 	                    lazy.layout.shuffle_down(), 	                        "Move window down",],
+    ["M-S-k", 	                    lazy.layout.shuffle_up(),  	                            "Move window up",],
+    ["M-<grave>", 	                lazy.function(window_to_next_screen),                   "Move winow to next screen",],
+    ["M-S-<grave>", 	            lazy.function(window_to_prev_screen), 	                "Move winow to prev screen",],
+    ["M-e", 	                    lazy.spawn(terminal),  	                                "Launch terminal",],
+    ["M-<Return>", 	                lazy.spawn(terminal),  	                                "Launch terminal alt",],
+    ["M-m", 	                    lazy.spawn("pcmanfm"),  	                            "Launch pcmanfm",],
+    ["M-w", 	                    lazy.spawn(browser),  	                                "Launch Browswer",],
+    ["C-S-e", 	                    lazy.spawn("copyq show"), 	                            "Show Copyq",],
+    ["M-r", 	                    lazy.spawn("rofi -i -show run"), 	                    'Run Launcher',],
+    ["A-S-r", 	                    lazy.spawn("rofi -show drun -i -show-icons"), 	        'Run Launcher',],
+    ["M-S-r", 	                    lazy.function(edit_configs), 	                        'Config Launcher',],
+    ["M-f", 	                    lazy.window.toggle_floating(), 	                        'toggle floating',],
+    ["M-S-f",         	            lazy.window.toggle_fullscreen(), 	                    'toggle fullscreen',],
+    ["M-q", 	                    lazy.window.kill(),  	                                "Kill focused window",],
+    ["<Print>",                     lazy.spawn("maim -s | xclip -selection clipboard -t image/png", shell=True), "",],
+    ["M-<period>", 	                lazy.function(next_group),                              "Switch to next group",],
+    ["M-<comma>", 	                lazy.function(prev_group),                              "Switch to previous group",],
+    ["M-<Tab>", 	                lazy.next_layout(),  	                                "Toggle between layouts",],
+    ["M-C-r", 	                    lazy.restart(),  	                                    "Reload the config",],
+    ["M-C-q", 	                    lazy.shutdown(),    	                                "Shutdown Qtile",],
+    ["M-<F12>", 	                lazy.spawn("arcolinux-logout"), 	                    "Suspend",],
+    ["<XF86AudioRaiseVolume>",  	lazy.spawn("amixer -q -D pulse set Master 5%+"), 	    "Raise volume by 5%",],
+    ["<XF86AudioLowerVolume>", 	    lazy.spawn("amixer -q -D pulse set Master 5%-"), 	    "Lower volume by 5%",],
+    ["<XF86AudioMute>",             lazy.spawn("amixer -q -D pulse set Master toggle"),     "Toggle Mute",],
+    ["<XF86AudioPlay>", 	        lazy.spawn("playerctl play-pause"), 	                "Toggle Mute",],
+    ["A-k", 	                    lazy.spawn("playerctl play-pause"), 	                "Toggle Mute",],
 ]
+keys = [EzKey(bind, cmd, desc) for bind, cmd, desc in my_keys]
 
 groups = [
     Group("1", layout='monadtall', position=0),
@@ -548,7 +359,7 @@ layouts = [
     layout.MonadTall(**layout_theme),
     layout.Max(**layout_theme),
     # Try more layouts by unleashing below layouts.
-    # layout.Columns(**layout_theme),
+    layout.Columns(**layout_theme),
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
     # layout.Matrix(),
@@ -664,10 +475,12 @@ def make_widgets(screen):
         ),
         [widget.TextBox(
             text = " Vol:",
-            padding = 0
+            padding = 0,
+            mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('pavucontrol')},
         ),
         widget.Volume(
             padding = 5,
+            mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('pavucontrol')},
             mute_command = 'amixer -q -D pulse set Master toggle',
             volume_up_command = 'amixer -q -D pulse set Master 5%+',
             volume_down_command = 'amixer -q -D pulse set Master 5%-',
@@ -687,8 +500,10 @@ def make_widgets(screen):
             padding = 5,
         ),
         widget.Clock(
+            font = "Ubuntu Bold",
             padding = 5,
-            format = "%A, %B %d - %H:%M "
+            format = "%A, %B %d - %H:%M ",
+            mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('morgen')},
         ),
     ]
 
@@ -734,6 +549,8 @@ floating_layout = layout.Floating(float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
         Match(wm_class='copyq'),
+        Match(title='Friends List'),
+        Match(title='Volume Control'),
         Match(wm_class='confirmreset'),  # gitk
         Match(wm_class='makebranch'),  # gitk
         Match(wm_class='maketag'),  # gitk
@@ -764,8 +581,8 @@ auto_minimize = False
 @hook.subscribe.startup_once
 def start_once():
     if len(qtile.screens) > 1:
-        qtile.groups_map['1'].cmd_toscreen(1, toggle=False)
         qtile.groups_map['a'].cmd_toscreen(1, toggle=False)
+        qtile.groups_map['1'].cmd_toscreen(0, toggle=False)
     home = os.path.expanduser('~')
     subprocess.call([home + '/.config/qtile/scripts/autostart.sh'])
 
@@ -774,6 +591,11 @@ def set_floating(window):
     if (window.window.get_wm_transient_for()
             or window.window.get_wm_type() in floating_types):
         window.floating = True
+
+# @hook.subscribe.client_focus
+# def focus_change(window):
+#     if group_floating_windows(window):
+#         window.window.configure(stackmode=StackMode.Above)
 
 floating_types = ["notification", "toolbar", "splash", "dialog"]
 
