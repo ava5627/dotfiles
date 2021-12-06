@@ -309,20 +309,21 @@ my_keys = [
     ["M-f", 	                    lazy.window.toggle_floating(), 	                        'toggle floating',],
     ["M-S-f",         	            lazy.window.toggle_fullscreen(), 	                    'toggle fullscreen',],
     ["M-q", 	                    lazy.window.kill(),  	                                "Kill focused window",],
-    ["<Print>",                     lazy.spawn("maim -s | xclip -selection clipboard -t image/png", shell=True), "",],
+    ["<Print>",                     lazy.spawn("maim -s | xclip -selection clipboard -t image/png", shell=True), "Take Screenshot and save to clipboard",],
+    ["S-<Print>",                   lazy.spawn("maim -s ~/Pictures/screenshot.png", shell=True), "Take Screenshot and save to Pictures",],
     ["M-<period>", 	                lazy.function(next_group),                              "Switch to next group",],
     ["M-<comma>", 	                lazy.function(prev_group),                              "Switch to previous group",],
     ["M-<Tab>", 	                lazy.next_layout(),  	                                "Toggle between layouts",],
     ["M-C-r", 	                    lazy.restart(),  	                                    "Reload the config",],
     ["M-C-q", 	                    lazy.shutdown(),    	                                "Shutdown Qtile",],
-    ["M-<F12>", 	                lazy.spawn("arcolinux-logout"), 	                    "Suspend",],
+    ["M-<F1>", 	                lazy.spawn("arcolinux-logout"), 	                    "Suspend",],
     ["<XF86AudioRaiseVolume>",  	lazy.spawn("amixer -q -D pulse set Master 5%+"), 	    "Raise volume by 5%",],
     ["<XF86AudioLowerVolume>", 	    lazy.spawn("amixer -q -D pulse set Master 5%-"), 	    "Lower volume by 5%",],
     ["<XF86AudioMute>",             lazy.spawn("amixer -q -D pulse set Master toggle"),     "Toggle Mute",],
     ["<XF86AudioPlay>", 	        lazy.spawn("playerctl play-pause"), 	                "Toggle Mute",],
     ["A-k", 	                    lazy.spawn("playerctl play-pause"), 	                "Toggle Mute",],
 ]
-keys = [EzKey(bind, cmd, desc) for bind, cmd, desc in my_keys]
+keys = [EzKey(bind, cmd, desc=desc) for bind, cmd, desc in my_keys]
 
 groups = [
     Group("1", layout='monadtall', position=0),
