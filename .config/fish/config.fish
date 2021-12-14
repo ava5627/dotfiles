@@ -69,6 +69,8 @@ alias f='commandline -i "sudo $history[1]";history delete --exact --case-sensiti
 
 alias vim='nvim'
 
+alias qlog='watch -n 0.5 tail ~/.local/share/qtile/qtile.log -n 50'
+
 # Directory cd
 
 alias ..='cd ..'
