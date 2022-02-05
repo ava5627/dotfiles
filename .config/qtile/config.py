@@ -65,20 +65,20 @@ def switch_screens(qtile):
 def go_to_group(name):
 
     def helper(qtile):
-        if (qtile.screens) == 1:
-            qtile.groups_map[name].cmd_toscreen()
-            return
-        
-        old = qtile.current_screen.group.name
+        old = qtile.current_screen
         gs = group_screen(qtile.groups_map[name])
         qtile.focus_screen(gs)
-        if qtile.current_screen.group.name != name:
-            qtile.groups_map[name].cmd_toscreen()
+        if qtile.current_screen != old:
+            qtile.warp_to_screen()
+        qtile.groups_map[name].cmd_toscreen(gs)
     
     return helper
 
 def group_screen(group):
-    if group.name in '1230':
+    if len(qtile.screens) == 1:
+        return 0
+    
+    if group.name in '123':
         return 0
     elif group.name in 'asd':
         return 1
@@ -220,13 +220,6 @@ def top_window(window):
     window.window.configure(stackmode=StackMode.Above)
 
 
-mod = "mod4"
-# terminal = "urxvt"
-terminal = "alacritty"
-browser = "firefox"
-num_screens = 2
-
-
 
 def init_colors(theme):
     theme_dict = dict(
@@ -241,34 +234,34 @@ def init_colors(theme):
                    ["#ecbbfb", "#ecbbfb"]  # 8 background for inactive screens
         ],
         blue = [["#282c34", "#282c34"], # 0 panel background
-                     ["#2F343F", "#2F343F"], # 1 Inactive Window Margin Background
-                     ["#f8f8f2", "#f8f8f2"], # 2 font color for everything
-                     ["#3384d0", "#3384d0"], # 3 Current Window Background # 3384d0
-                     ["#4c566a", "#4c566a"], # 4 Workspace open on other screen
-                     ["#3384d0", "#3384d0"], # 5 color for 'odd widgets'
-                     ["#2F343F", "#2F343F"], # 6 color for the 'even widgets'
-                     ["#3384d0", "#3384d0"], # 7 Current Workspace # 3384d0
-                     ["#a9a9a9", "#a9a9a9"], # 8 Inactive group with windows
+                ["#2F343F", "#2F343F"], # 1 Inactive Window Margin Background
+                ["#f8f8f2", "#f8f8f2"], # 2 font color for everything
+                ["#3384d0", "#3384d0"], # 3 Current Window Background # 3384d0
+                ["#4c566a", "#4c566a"], # 4 Workspace open on other screen
+                ["#3384d0", "#3384d0"], # 5 color for 'odd widgets'
+                ["#2F343F", "#2F343F"], # 6 color for the 'even widgets'
+                ["#3384d0", "#3384d0"], # 7 Current Workspace # 3384d0
+                ["#a9a9a9", "#a9a9a9"], # 8 Inactive group with windows
         ],
         cyan = [["#282c34", "#282c34"], # 0 panel background
-                     ["#2F343F", "#2F343F"], # 1 Inactive Window Margin Background
-                     ["#f8f8f2", "#f8f8f2"], # 2 font color for everything
-                     ["#06989a", "#06989a"], # 3 Current Window Background
-                     ["#014142", "#014142"], # 4 Workspace open on other screen
-                     ["#1e666b", "#1e666b"], # 5 color for 'odd widgets'
-                     ["#3d3f4b", "#3d3f4b"], # 6 color for the 'even widgets'
-                     ["#0f6f75", "#0f6f75"], # 7 Current Workspace
-                     ["#33e8e2", "#33e8e2"], # 8 Inactive group with windows
+                ["#2F343F", "#2F343F"], # 1 Inactive Window Margin Background
+                ["#f8f8f2", "#f8f8f2"], # 2 font color for everything
+                ["#06989a", "#06989a"], # 3 Current Window Background
+                ["#014142", "#014142"], # 4 Workspace open on other screen
+                ["#1e666b", "#1e666b"], # 5 color for 'odd widgets'
+                ["#3d3f4b", "#3d3f4b"], # 6 color for the 'even widgets'
+                ["#0f6f75", "#0f6f75"], # 7 Current Workspace
+                ["#33e8e2", "#33e8e2"], # 8 Inactive group with windows
         ],
         debug = [["#000000", "#000000"], # 0 panel background
-                ["#00ff00", "#00ff00"], # 1 Inactive Window Margin Background
-                ["#f8f8f2", "#f8f8f2"], # 2 font color for group names
-                ["#fba922", "#fba922"], # 3 Current Window Background
-                ["#ff00ff", "#ff00ff"], # 4 border line color for 'other tabs'
-                ["#ff0000", "#ff0000"], # 5 color for 'odd widgets'
-                ["#0000ff", "#0000ff"], # 6 color for the 'even widgets'
-                ["#ffff00", "#ffff00"], # 7 Current Workspace
-                ["#00ffff", "#00ffff"], # 8 background for inactive screens
+                 ["#00ff00", "#00ff00"], # 1 Inactive Window Margin Background
+                 ["#f8f8f2", "#f8f8f2"], # 2 font color for group names
+                 ["#fba922", "#fba922"], # 3 Current Window Background
+                 ["#ff00ff", "#ff00ff"], # 4 border line color for 'other tabs'
+                 ["#ff0000", "#ff0000"], # 5 color for 'odd widgets'
+                 ["#0000ff", "#0000ff"], # 6 color for the 'even widgets'
+                 ["#ffff00", "#ffff00"], # 7 Current Workspace
+                 ["#00ffff", "#00ffff"], # 8 background for inactive screens
         ],
     )
     return theme_dict[theme]
@@ -281,54 +274,69 @@ colors = init_colors("blue")
 
 powerline_colors = [colors[6], colors[5]]
 
+
+
+mod = "mod4"
+terminal = "alacritty"
+file_manager = "pcmanfm"
+browser = "firefox"
+calendar = "morgen"
+
+
 my_keys = [
-    ["M-j", 	                    switch_window(direction=1), 	                        "Move focus prev",],
-    ["M-k", 	                    switch_window(direction=-1), 	                        "Move focus next",],
-    ["M-<grave>", 	                lazy.function(switch_to_same_class),                    "Move focus to Window of same class",],
-    ["M-S-<Right>", 	            lazy.next_screen(), 	                                'Move focus to next monitor',],
-    ["M-S-<Left>", 	                lazy.prev_screen(), 	                                'Move focus to prev monitor',],
-    ["A-<Tab>", 	                lazy.function(next_group),                              "Switch to next group",],
-    ["A-S-<Tab>", 	                lazy.function(prev_group),                              "Switch to prev group",],
-    ["M-h", 	                    lazy.layout.shrink_main(), 	                            "Grow main window",],
-    ["M-l", 	                    lazy.layout.grow_main(), 	                            "Shrink main window",],
-    ["M-S-h", 	                    lazy.layout.shrink(), 	                                "Grow window",],
-    ["M-S-l", 	                    lazy.layout.grow(), 	                                "Shrink window",],
-    # ["M-<space>",                   lazy.group.next_window(),                               "",],
-    ["M-S-j", 	                    lazy.layout.shuffle_down(), 	                        "Move window down",],
-    ["M-S-k", 	                    lazy.layout.shuffle_up(),  	                            "Move window up",],
-    # ["M-<grave>",   	            lazy.function(window_to_next_screen),                   "Move winow to next screen",],
-    # ["M-S-<grave>", 	            lazy.function(window_to_prev_screen), 	                "Move winow to prev screen",],
-    ["M-e", 	                    lazy.spawn(terminal),  	                                "Launch terminal",],
-    ["M-<Return>", 	                lazy.spawn(terminal),  	                                "Launch terminal alt",],
-    ["M-m", 	                    lazy.spawn("pcmanfm"),  	                            "Launch pcmanfm",],
-    ["M-w", 	                    lazy.spawn("firefox"),                                  "Launch Firefox",],
-    ["M-S-w", 	                    lazy.spawn("firefox -private-window"),                  "Launch Private Firefox",],
-    ["C-S-e", 	                    lazy.spawn("copyq show"), 	                            "Show Copyq",],
-    ["M-r", 	                    lazy.spawn("rofi -i -show run"), 	                    'Run Launcher',],
-    ["M-S-r", 	                    lazy.spawn("rofi -show drun -i -show-icons"), 	        'Run Launcher',],
-    ["M-c", 	                    lazy.function(edit_configs), 	                        'Config Launcher',],
-    ["M-f", 	                    lazy.window.toggle_floating(), 	                        'toggle floating',],
-    ["M-S-f",         	            lazy.window.toggle_fullscreen(), 	                    'toggle fullscreen',],
-    ["M-q", 	                    lazy.window.kill(),  	                                "Kill focused window",],
-    ["<Print>",                     lazy.spawn("maim -s | xclip -selection clipboard -t image/png", shell=True), "Take Screenshot and save to clipboard",],
-    ["S-<Print>",                   lazy.spawn("maim -s ~/Pictures/screenshot.png", shell=True), "Take Screenshot and save to Pictures",],
-    ["M-<period>", 	                lazy.function(next_group),                              "Switch to next group",],
-    ["M-<comma>", 	                lazy.function(prev_group),                              "Switch to previous group",],
-    ["M-<Tab>", 	                lazy.next_layout(),  	                                "Toggle between layouts",],
-    ["M-C-r", 	                    lazy.restart(),  	                                    "Reload the config",],
-    ["M-C-q", 	                    lazy.shutdown(),    	                                "Shutdown Qtile",],
-    ["M-<F1>", 	                    lazy.spawn("arcolinux-logout"), 	                    "Logout Menu",],
-    ["M-<F2>", 	                    lazy.spawn("systemctl suspend"),           	            "Suspend",],
-    ["<XF86AudioRaiseVolume>",  	lazy.spawn("amixer -q -D pulse set Master 5%+"), 	    "Raise volume by 5%",],
-    ["<XF86AudioLowerVolume>", 	    lazy.spawn("amixer -q -D pulse set Master 5%-"), 	    "Lower volume by 5%",],
-    ["<XF86AudioMute>",             lazy.spawn("amixer -q -D pulse set Master toggle"),     "Toggle Mute",],
-    ["<XF86AudioPlay>", 	        lazy.spawn("playerctl play-pause"), 	                "Toggle Mute",],
-    ["A-k", 	                    lazy.spawn("playerctl play-pause"), 	                "Toggle Mute",],
+    ["M-j", 	                    switch_window(direction=1), 	                                "Move focus prev",],
+    ["M-k", 	                    switch_window(direction=-1), 	                                "Move focus next",],
+    ["M-<grave>", 	                lazy.function(switch_to_same_class),                            "Move focus to Window of same class",],
+    ["M-S-<Right>", 	            lazy.next_screen(), 	                                        'Move focus to next monitor',],
+    ["M-S-<Left>", 	                lazy.prev_screen(), 	                                        'Move focus to prev monitor',],
+    ["A-<Tab>", 	                lazy.function(next_group),                                      "Switch to next group",],
+    ["A-S-<Tab>", 	                lazy.function(prev_group),                                      "Switch to prev group",],
+    ["M-h", 	                    lazy.layout.shrink_main(), 	                                    "Grow main window",],
+    ["M-l", 	                    lazy.layout.grow_main(), 	                                    "Shrink main window",],
+    ["M-S-h", 	                    lazy.layout.shrink(), 	                                        "Grow window",],
+    ["M-S-l", 	                    lazy.layout.grow(), 	                                        "Shrink window",],
+    # ["M-<space>",                   lazy.group.next_window(),                                       "",],
+    ["M-S-j", 	                    lazy.layout.shuffle_down(), 	                                "Move window down",],
+    ["M-S-k", 	                    lazy.layout.shuffle_up(),  	                                    "Move window up",],
+    # ["M-<grave>",   	            lazy.function(window_to_next_screen),                           "Move winow to next screen",],
+    # ["M-S-<grave>", 	            lazy.function(window_to_prev_screen), 	                        "Move winow to prev screen",],
+    ["M-e", 	                    lazy.spawn(terminal),  	                                        "Launch terminal",],
+    ["M-<Return>", 	                lazy.spawn(terminal),  	                                        "Launch terminal alt",],
+    ["M-b", 	                    lazy.spawn(terminal + " -e btop"),                              "Launch BTOP++",],
+    ["M-m", 	                    lazy.spawn(file_manager),  	                                    "Launch file manager",],
+    ["M-w", 	                    lazy.spawn("firefox"),                                          "Launch Firefox",],
+    ["M-S-w", 	                    lazy.spawn("firefox -private-window"),                          "Launch Private Firefox",],
+    ["M-z", 	                    lazy.spawn("qalculate-gtk"),                                    "Launch calculator",],
+    ["C-S-e", 	                    lazy.spawn("copyq show"), 	                                    "Show Copyq",],
+    ["M-r", 	                    lazy.spawn("rofi -i -show run"), 	                            'Run Launcher',],
+    ["M-S-r", 	                    lazy.spawn("rofi -show drun -i -show-icons"), 	                'Run Launcher',],
+    ["M-c", 	                    lazy.function(edit_configs), 	                                'Config Launcher',],
+    ["M-f", 	                    lazy.window.toggle_floating(), 	                                'toggle floating',],
+    ["M-S-f",         	            lazy.window.toggle_fullscreen(), 	                            'toggle fullscreen',],
+    ["M-q", 	                    lazy.window.kill(),  	                                        "Kill focused window",],
+    ["<Print>",                     lazy.spawn("maim -s | xclip -selection clipboard -t image/png", shell=True), 
+                                                                                                    "Take Screenshot and save to clipboard",],
+    ["S-<Print>",                   lazy.spawn("maim -s ~/Pictures/Screenshots/screenshot_$(ls Pictures/Screenshots | grep screenshot_ | wc -l).png", shell=True),
+                                                                                                    "Take Screenshot and save to Pictures",],
+    ["M-<period>", 	                lazy.function(next_group),                                      "Switch to next group",],
+    ["M-<comma>", 	                lazy.function(prev_group),                                      "Switch to previous group",],
+    ["M-<Tab>", 	                lazy.next_layout(),  	                                        "Toggle between layouts",],
+    ["M-C-r", 	                    lazy.reload_config(),  	                                            "Reload the config",],
+    ["M-A-r", 	                    lazy.restart(),  	                                            "Reload the config",],
+    ["M-C-q", 	                    lazy.shutdown(),    	                                        "Shutdown Qtile",],
+    ["M-<F1>", 	                    lazy.spawn("arcolinux-logout"), 	                            "Logout Menu",],
+    ["M-<F2>", 	                    lazy.spawn("systemctl suspend"),           	                    "Suspend",],
+    ["<XF86AudioRaiseVolume>",  	lazy.spawn("amixer -q -D pulse set Master 5%+"), 	            "Raise volume by 5%",],
+    ["<XF86AudioLowerVolume>", 	    lazy.spawn("amixer -q -D pulse set Master 5%-"), 	            "Lower volume by 5%",],
+    ["<XF86AudioMute>",             lazy.spawn("amixer -q -D pulse set Master toggle"),             "Toggle Mute",],
+    ["<XF86AudioPlay>", 	        lazy.spawn("playerctl play-pause"), 	                        "Play/Pause",],
+    ["A-k", 	                    lazy.spawn("playerctl play-pause"), 	                        "Play/Pause",],
+    # ["M-S-n", 	                    lazy.spawn("xdotool search --name youtube key \"shift+n\""),    "Next",],
 ]
 keys = [EzKey(bind, cmd, desc=desc) for bind, cmd, desc in my_keys]
 
 groups = [
-    Group("1", layout='monadtall', position=0),
+    Group("1", layout='max', position=0),
     Group("2", layout='monadtall', position=1),
     Group("3", layout='monadtall', position=2),
     # Group("0", layout='monadtall', position=2, matches=[Match(title="")]),
@@ -474,6 +482,7 @@ def make_widgets(screen):
         ),
         widget.Net(
             format = '{down} ↓↑ {up}',
+            # prefix = 'M',
             padding = 5
         ),
         [widget.TextBox(
@@ -506,7 +515,7 @@ def make_widgets(screen):
             font = "Ubuntu Bold",
             padding = 5,
             format = "%A, %B %d - %H:%M ",
-            mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('morgen')},
+            mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(calendar)},
         ),
     ]
 
@@ -528,10 +537,35 @@ def make_widgets(screen):
     widget_list += make_powerline(pl_list)
     return widget_list
 
-screens = [
-    Screen(top=bar.Bar(widgets=make_widgets(0), size = 24)),
-    Screen(top=bar.Bar(widgets=make_widgets(1), size = 24))
-]
+from Xlib import display as xdisplay
+
+
+def get_num_monitors():
+    num_monitors = 0
+    try:
+        display = xdisplay.Display()
+        screen = display.screen()
+        resources = screen.root.xrandr_get_screen_resources()
+
+        for output in resources.outputs:
+            monitor = display.xrandr_get_output_info(output, resources.config_timestamp)
+            preferred = False
+            if hasattr(monitor, "preferred"):
+                preferred = monitor.preferred
+            elif hasattr(monitor, "num_preferred"):
+                preferred = monitor.num_preferred
+            if preferred:
+                num_monitors += 1
+    except Exception as e:
+        # always setup at least one monitor
+        return 1
+    else:
+        return num_monitors
+
+num_monitors = get_num_monitors()
+
+
+screens = [Screen(top=bar.Bar(widgets=make_widgets(i), size = 24)) for i in range(num_monitors)]
 
 
 # Drag floating layouts.
@@ -552,6 +586,7 @@ floating_layout = layout.Floating(float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
         Match(wm_class='copyq'),
+        Match(wm_class='qalculate-gtk'),
         Match(title='Friends List'),
         Match(title='Volume Control'),
         Match(wm_class='confirmreset'),  # gitk
@@ -565,9 +600,7 @@ floating_layout = layout.Floating(float_rules=[
         Match(wm_class='Arcolinux-calamares-tool.py'),
         Match(wm_class='Arandr'),
         Match(wm_class='feh'),
-        Match(wm_class='Galculator'),
         Match(wm_class='arcolinux-logout'),
-        Match(wm_class='xfce4-terminal'),
     ],
     border_focus=colors[7],
     border_normal=colors[4],

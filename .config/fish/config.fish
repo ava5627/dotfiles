@@ -10,14 +10,9 @@ end
 
 fish_add_path "/home/ava/.local/bin"
 
-# set $PATH "~/local/bin:$PATH"
-
 set fish_color_host $fish_color_user
 set fish_color_cwd magenta #$fish_color_param
 set -g fish_prompt_pwd_dir_length 0
-
-set GEM_HOME (ruby -e 'puts Gem.user_dir')
-fish_add_path $GEM_HOME/bin
 
 set EDITOR nvim
 
@@ -49,6 +44,7 @@ end
 # Quick aliases
 
 alias cls='clear'
+alias c='clear'
 alias cla='clear; exec fish'
 
 alias pacs='sudo pacman -S'
