@@ -10,9 +10,11 @@ def edit_configs(qtile):
         "~/.bashrc",
         "/etc/logid.cfg",
         "~/.config/rofi",
-        "~/.mozilla/firefox/dwj268q6.default-release/chrome/userChrome.css"
+        "~/.mozilla/firefox/dwj268q6.default-release/chrome/userChrome.css",
     ]
     config_str = "\\n".join(configs)
-    choice = subprocess.getoutput(f"echo -e \"{config_str}\" | rofi -dmenu -i -p \"Edit Configs\"")
+    choice = subprocess.getoutput(
+        f'echo -e "{config_str}" | rofi -dmenu -i -p "Edit Configs"'
+    )
     if choice:
-        qtile.cmd_spawn(f"code {choice}", shell=True)
+        qtile.cmd_spawn(f"alacritty -e nvim {choice}", shell=True)

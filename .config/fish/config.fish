@@ -15,6 +15,7 @@ set fish_color_cwd magenta #$fish_color_param
 set -g fish_prompt_pwd_dir_length 0
 
 set EDITOR nvim
+set SYSTEMD_EDITOR nvim
 
 function fish_prompt --description 'Write out the prompt'
 

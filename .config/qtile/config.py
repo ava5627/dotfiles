@@ -23,7 +23,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from logging import warning
+# from logging import warning
 import os
 import re
 import subprocess
@@ -34,9 +34,9 @@ import xcffib.xproto
 
 from typing import List  # noqa: F401
 
-from libqtile import bar, layout, widget, hook, qtile, extension
+from libqtile import bar, layout, widget, hook, qtile
 from libqtile.backend.base import FloatStates
-from libqtile.config import Click, Drag, Group, Key, Match, Screen, KeyChord, EzKey
+from libqtile.config import Click, Drag, Group, Key, Match, Screen, EzKey
 from libqtile.log_utils import logger
 from libqtile.lazy import lazy
 
@@ -263,6 +263,16 @@ def init_colors(theme):
                  ["#ffff00", "#ffff00"], # 7 Current Workspace
                  ["#00ffff", "#00ffff"], # 8 background for inactive screens
         ],
+        gruvbox = [["#1d2021", "#1d2021"], # 0 panel background
+                   ["#282828", "#282828"], # 1 Inactive Window Margin Background
+                   ["#ebdbb2", "#ebdbb2"], # 2 font color for group names
+                   ["#d65d0e", "#d65d0e"], # 3 Current Window Background
+                   ["#504945", "#3c3836"], # 4 border line color for 'other tabs'
+                   ["#d65d0e", "#d65d0e"], # 5 color for 'odd widgets'
+                   ["#282828", "#282828"], # 6 color for the 'even widgets'
+                   ["#d65d0e", "#d65d0e"], # 7 Current Workspace
+                   ["#a89984", "#a89984"]  # 8 background for inactive screens
+        ],
     )
     return theme_dict[theme]
 
@@ -271,6 +281,7 @@ def init_colors(theme):
 # colors = init_colors("cyan")
 colors = init_colors("blue")
 # colors = init_colors("debug")
+# colors = init_colors("gruvbox")
 
 powerline_colors = [colors[6], colors[5]]
 
@@ -330,8 +341,9 @@ my_keys = [
     ["<XF86AudioLowerVolume>", 	    lazy.spawn("amixer -q -D pulse set Master 5%-"), 	            "Lower volume by 5%",],
     ["<XF86AudioMute>",             lazy.spawn("amixer -q -D pulse set Master toggle"),             "Toggle Mute",],
     ["<XF86AudioPlay>", 	        lazy.spawn("playerctl play-pause"), 	                        "Play/Pause",],
-    ["A-k", 	                    lazy.spawn("playerctl play-pause"), 	                        "Play/Pause",],
+    ["M-p", 	                    lazy.spawn("playerctl play-pause"), 	                        "Play/Pause",],
     # ["M-S-n", 	                    lazy.spawn("xdotool search --name youtube key \"shift+n\""),    "Next",],
+
 ]
 keys = [EzKey(bind, cmd, desc=desc) for bind, cmd, desc in my_keys]
 
@@ -556,7 +568,7 @@ def get_num_monitors():
                 preferred = monitor.num_preferred
             if preferred:
                 num_monitors += 1
-    except Exception as e:
+    except Exception as _:
         # always setup at least one monitor
         return 1
     else:

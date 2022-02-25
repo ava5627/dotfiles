@@ -31,8 +31,8 @@ fi
 
 
 #starting utility applications at boot time
-run variety &
-run nm-applet &
+variety &
+nm-applet &
 # run pamac-tray &
 run xfce4-power-manager &
 numlockx on &
@@ -43,10 +43,10 @@ picom --config $HOME/.config/qtile/scripts/picom.conf &
 
 #starting user applications at boot time
 # run volumeicon &
-run discord &
-run steam -silent &
+discord &
+steam -silent &
 # nitrogen --restore &
-openrgb -p Off
+openrgb -p Off &
 copyq &
 kdeconnect-indicator &
 morgen --hidden &
@@ -55,7 +55,7 @@ morgen --hidden &
 #run firefox &
 #run thunar &
 #run dropbox &
-#run insync start &
+insync start &
 #run spotify &
 #run atom &
 #run telegram-desktop &
