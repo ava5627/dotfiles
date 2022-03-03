@@ -23,7 +23,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-# from logging import warning
 import os
 import re
 import subprocess
@@ -223,66 +222,69 @@ def top_window(window):
 
 def init_colors(theme):
     theme_dict = dict(
-        dracula = [["#282c34", "#282c34"], # 0 panel background
-                   ["#3d3f4b", "#3d3f4b"], # 1 Inactive Window Margin Background
-                   ["#f8f8f2", "#f8f8f2"], # 2 font color for group names
-                   ["#74438f", "#74438f"], # 3 Current Window Background
-                   ["#74438f", "#74438f"], # 4 border line color for 'other tabs'
-                   ["#74438f", "#74438f"], # 5 color for 'odd widgets'
-                   ["#3d3f4b", "#3d3f4b"], # 6 color for the 'even widgets'
-                   ["#bd93f9", "#bd93f9"], # 7 Current Workspace
-                   ["#ecbbfb", "#ecbbfb"]  # 8 background for inactive screens
+        dracula = [
+            "#282c34", # 0 panel background
+            "#3d3f4b", # 1 Inactive Window Margin Background
+            "#f8f8f2", # 2 font color for group names
+            "#74438f", # 3 Current Window Background
+            "#74438f", # 4 border line color for 'other tabs'
+            "#74438f", # 5 color for 'odd widgets'
+            "#3d3f4b", # 6 color for the 'even widgets'
+            "#bd93f9", # 7 Current Workspace
+            "#ecbbfb"  # 8 background for inactive screens
         ],
-        blue = [["#282c34", "#282c34"], # 0 panel background
-                ["#2F343F", "#2F343F"], # 1 Inactive Window Margin Background
-                ["#f8f8f2", "#f8f8f2"], # 2 font color for everything
-                ["#3384d0", "#3384d0"], # 3 Current Window Background # 3384d0
-                ["#4c566a", "#4c566a"], # 4 Workspace open on other screen
-                ["#3384d0", "#3384d0"], # 5 color for 'odd widgets'
-                ["#2F343F", "#2F343F"], # 6 color for the 'even widgets'
-                ["#3384d0", "#3384d0"], # 7 Current Workspace # 3384d0
-                ["#a9a9a9", "#a9a9a9"], # 8 Inactive group with windows
+        blue = [
+            "#282c34", # 0 panel background
+            "#2F343F", # 1 Inactive Window Margin Background
+            "#f8f8f2", # 2 font color for everything
+            "#3384d0", # 3 Current Window Background # 3384d0
+            "#4c566a", # 4 Workspace open on other screen
+            "#3384d0", # 5 color for 'odd widgets'
+            "#2F343F", # 6 color for the 'even widgets'
+            "#3384d0", # 7 Current Workspace # 3384d0
+            "#a9a9a9", # 8 Inactive group with windows
         ],
-        cyan = [["#282c34", "#282c34"], # 0 panel background
-                ["#2F343F", "#2F343F"], # 1 Inactive Window Margin Background
-                ["#f8f8f2", "#f8f8f2"], # 2 font color for everything
-                ["#06989a", "#06989a"], # 3 Current Window Background
-                ["#014142", "#014142"], # 4 Workspace open on other screen
-                ["#1e666b", "#1e666b"], # 5 color for 'odd widgets'
-                ["#3d3f4b", "#3d3f4b"], # 6 color for the 'even widgets'
-                ["#0f6f75", "#0f6f75"], # 7 Current Workspace
-                ["#33e8e2", "#33e8e2"], # 8 Inactive group with windows
+        cyan = [
+            "#282c34", # 0 panel background
+            "#2F343F", # 1 Inactive Window Margin Background
+            "#f8f8f2", # 2 font color for everything
+            "#06989a", # 3 Current Window Background
+            "#3d3f4b", # 4 Workspace open on other screen
+            "#1e666b", # 5 color for 'odd widgets'
+            "#3d3f4b", # 6 color for the 'even widgets'
+            "#0f6f75", # 7 Current Workspace
+            "#33e8e2", # 8 Inactive group with windows
         ],
-        debug = [["#000000", "#000000"], # 0 panel background
-                 ["#00ff00", "#00ff00"], # 1 Inactive Window Margin Background
-                 ["#f8f8f2", "#f8f8f2"], # 2 font color for group names
-                 ["#fba922", "#fba922"], # 3 Current Window Background
-                 ["#ff00ff", "#ff00ff"], # 4 border line color for 'other tabs'
-                 ["#ff0000", "#ff0000"], # 5 color for 'odd widgets'
-                 ["#0000ff", "#0000ff"], # 6 color for the 'even widgets'
-                 ["#ffff00", "#ffff00"], # 7 Current Workspace
-                 ["#00ffff", "#00ffff"], # 8 background for inactive screens
+        debug = [
+            "#000000", # 0 panel background
+            "#00ff00", # 1 Inactive Window Margin Background
+            "#f8f8f2", # 2 font color for group names
+            "#fba922", # 3 Current Window Background
+            "#ff00ff", # 4 border line color for 'other tabs'
+            "#ff0000", # 5 color for 'odd widgets'
+            "#0000ff", # 6 color for the 'even widgets'
+            "#ffff00", # 7 Current Workspace
+            "#00ffff", # 8 background for inactive screens
         ],
-        gruvbox = [["#1d2021", "#1d2021"], # 0 panel background
-                   ["#282828", "#282828"], # 1 Inactive Window Margin Background
-                   ["#ebdbb2", "#ebdbb2"], # 2 font color for group names
-                   ["#d65d0e", "#d65d0e"], # 3 Current Window Background
-                   ["#504945", "#3c3836"], # 4 border line color for 'other tabs'
-                   ["#d65d0e", "#d65d0e"], # 5 color for 'odd widgets'
-                   ["#282828", "#282828"], # 6 color for the 'even widgets'
-                   ["#d65d0e", "#d65d0e"], # 7 Current Workspace
-                   ["#a89984", "#a89984"]  # 8 background for inactive screens
+        gruvbox = [
+            "#1d2021", # 0 panel background
+            "#282828", # 1 Inactive Window Margin Background
+            "#ebdbb2", # 2 font color for group names
+            "#d65d0e", # 3 Current Window Background
+            "#504945", # 4 border line color for 'other tabs'
+            "#d65d0e", # 5 color for 'odd widgets'
+            "#282828", # 6 color for the 'even widgets'
+            "#d65d0e", # 7 Current Workspace
+            "#a89984"  # 8 background for inactive screens
         ],
     )
     return theme_dict[theme]
-
 
 # colors = init_colors("dracula")
 # colors = init_colors("cyan")
 colors = init_colors("blue")
 # colors = init_colors("debug")
 # colors = init_colors("gruvbox")
-
 powerline_colors = [colors[6], colors[5]]
 
 
@@ -292,6 +294,7 @@ terminal = "alacritty"
 file_manager = "pcmanfm"
 browser = "firefox"
 calendar = "morgen"
+rofi_cmd = ".config/rofi/launchers/colorful/launcher.sh"
 
 
 my_keys = [
@@ -319,8 +322,8 @@ my_keys = [
     ["M-S-w", 	                    lazy.spawn("firefox -private-window"),                          "Launch Private Firefox",],
     ["M-z", 	                    lazy.spawn("qalculate-gtk"),                                    "Launch calculator",],
     ["C-S-e", 	                    lazy.spawn("copyq show"), 	                                    "Show Copyq",],
-    ["M-r", 	                    lazy.spawn("rofi -i -show run"), 	                            'Run Launcher',],
-    ["M-S-r", 	                    lazy.spawn("rofi -show drun -i -show-icons"), 	                'Run Launcher',],
+    ["M-r", 	                    lazy.spawn(rofi_cmd + " -show run -i", shell=True), 	                            'Run Launcher',],
+    ["M-S-r", 	                    lazy.spawn(rofi_cmd + " -show drun -i -show-icons", shell=True), 	                'Run Launcher',],
     ["M-c", 	                    lazy.function(edit_configs), 	                                'Config Launcher',],
     ["M-f", 	                    lazy.window.toggle_floating(), 	                                'toggle floating',],
     ["M-S-f",         	            lazy.window.toggle_fullscreen(), 	                            'toggle fullscreen',],

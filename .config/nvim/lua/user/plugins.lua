@@ -57,6 +57,7 @@ return packer.startup(function(use)
         requires = 'hrsh7th/nvim-cmp'
     }
     use "f3fora/cmp-spell"
+    use "jeetsukumaran/vim-indentwise"
 
     -- snippets
     use "L3MON4D3/LuaSnip" --snippet engine
@@ -71,20 +72,39 @@ return packer.startup(function(use)
     -- colorschemes
     use "ellisonleao/gruvbox.nvim"
     use "lunarvim/darkplus.nvim"
+    use "sainnhe/sonokai"
 
     -- utility
-    use "norcalli/nvim-colorizer.lua"
+    use {
+        "norcalli/nvim-colorizer.lua",
+        config = function() require'colorizer'.setup() end,
+    }
     use "windwp/nvim-autopairs"
     use "tpope/vim-surround"
     use "nvim-lualine/lualine.nvim"
     use "numToStr/Comment.nvim" -- Easily comment stuff
     use {
-      'yamatsum/nvim-nonicons',
-      requires = {'kyazdani42/nvim-web-devicons'}
+      "yamatsum/nvim-nonicons",
+      requires = {"kyazdani42/nvim-web-devicons"}
+    }
+    use "antoinemadec/FixCursorHold.nvim"
+    use {
+        "psliwka/vim-smoothie",
+        config = function() vim.g.smoothie_speed_linear_factor=15 end
+    }
+    use {
+      'Fymyte/rasi.vim',
+      ft = 'rasi',
     }
     -- nvim-tree
     use "kyazdani42/nvim-tree.lua"
 
+    -- Code Running/Debugging
+    use "is0n/jaq-nvim"
+    use "puremourning/vimspector"
+
+    -- Toggle Term
+    use "akinsho/toggleterm.nvim"
 
     --Telescope
     use "nvim-telescope/telescope.nvim"
@@ -94,10 +114,12 @@ return packer.startup(function(use)
         "nvim-treesitter/nvim-treesitter",
         run = ":TSUpdate",
     }
-    use 'JoosepAlviste/nvim-ts-context-commentstring'
+    use "JoosepAlviste/nvim-ts-context-commentstring"
+    use "nvim-treesitter/nvim-treesitter-refactor"
 
     -- git
     use "lewis6991/gitsigns.nvim"
+    use "tpope/vim-fugitive"
 
 
     -- Automatically set up your configuration after cloning packer.nvim

@@ -7,7 +7,7 @@ local options = {
     completeopt = { "menuone", "noselect" }, -- mostly just for cmp
     conceallevel = 0,                        -- so that `` is visible in markdown files
     fileencoding = "utf-8",                  -- the encoding written to a file
-    hlsearch = true,                         -- highlight all matches on previous search pattern
+    --hlsearch = true,                         -- highlight all matches on previous search pattern
     ignorecase = true,                       -- ignore case in search patterns
     mouse = "a",                             -- allow the mouse to be used in neovim
     pumheight = 10,                          -- pop up menu height
@@ -20,7 +20,7 @@ local options = {
     termguicolors = true,                    -- set term gui colors (most terminals support this)
     timeoutlen = 1000,                       -- time to wait for a mapped sequence to complete (in milliseconds)
     undofile = true,                         -- enable persistent undo
-    updatetime = 300,                        -- faster completion (4000ms default)
+    updatetime = 100,                        -- faster completion (4000ms default)
     writebackup = false,                     -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
     expandtab = true,                        -- convert tabs to spaces
     shiftwidth = 4,                          -- the number of spaces inserted for each indentation
@@ -32,10 +32,9 @@ local options = {
     signcolumn = "yes",                      -- always show the sign column, otherwise it would shift the text each time
     wrap = false,                            -- display lines as one long line
     scrolloff = 8,                           -- scroll 8 lines from end of screen
-    sidescrolloff = 8,                       -- scroll 8 colums from edge of screen
-    guifont = "monospace:h17",               -- the font used in graphical neovim applications
-    spell = true,
-    spelllang = { 'en_us' }
+    sidescrolloff = 8,                       -- scroll 8 columns from edge of screen
+    -- spell = true,
+    -- spelllang = { 'en_us' }
 }
 
 vim.opt.shortmess:append "c"

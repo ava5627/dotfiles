@@ -49,7 +49,7 @@ steam -silent &
 openrgb -p Off &
 copyq &
 kdeconnect-indicator &
-morgen --hidden &
+morgen --hidden --no-sandbox >> ~/log.log&
 #run caffeine -a &
 #run vivaldi-stable &
 #run firefox &

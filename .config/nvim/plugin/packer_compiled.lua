@@ -74,6 +74,11 @@ _G.packer_plugins = {
     path = "/home/ava/.local/share/nvim/site/pack/packer/start/Comment.nvim",
     url = "https://github.com/numToStr/Comment.nvim"
   },
+  ["FixCursorHold.nvim"] = {
+    loaded = true,
+    path = "/home/ava/.local/share/nvim/site/pack/packer/start/FixCursorHold.nvim",
+    url = "https://github.com/antoinemadec/FixCursorHold.nvim"
+  },
   LuaSnip = {
     loaded = true,
     path = "/home/ava/.local/share/nvim/site/pack/packer/start/LuaSnip",
@@ -139,6 +144,11 @@ _G.packer_plugins = {
     path = "/home/ava/.local/share/nvim/site/pack/packer/start/gruvbox.nvim",
     url = "https://github.com/ellisonleao/gruvbox.nvim"
   },
+  ["jaq-nvim"] = {
+    loaded = true,
+    path = "/home/ava/.local/share/nvim/site/pack/packer/start/jaq-nvim",
+    url = "https://github.com/is0n/jaq-nvim"
+  },
   ["lualine.nvim"] = {
     loaded = true,
     path = "/home/ava/.local/share/nvim/site/pack/packer/start/lualine.nvim",
@@ -160,6 +170,7 @@ _G.packer_plugins = {
     url = "https://github.com/hrsh7th/nvim-cmp"
   },
   ["nvim-colorizer.lua"] = {
+    config = { "\27LJ\2\n7\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\14colorizer\frequire\0" },
     loaded = true,
     path = "/home/ava/.local/share/nvim/site/pack/packer/start/nvim-colorizer.lua",
     url = "https://github.com/norcalli/nvim-colorizer.lua"
@@ -189,6 +200,11 @@ _G.packer_plugins = {
     path = "/home/ava/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
     url = "https://github.com/nvim-treesitter/nvim-treesitter"
   },
+  ["nvim-treesitter-refactor"] = {
+    loaded = true,
+    path = "/home/ava/.local/share/nvim/site/pack/packer/start/nvim-treesitter-refactor",
+    url = "https://github.com/nvim-treesitter/nvim-treesitter-refactor"
+  },
   ["nvim-ts-context-commentstring"] = {
     loaded = true,
     path = "/home/ava/.local/share/nvim/site/pack/packer/start/nvim-ts-context-commentstring",
@@ -214,19 +230,77 @@ _G.packer_plugins = {
     path = "/home/ava/.local/share/nvim/site/pack/packer/start/popup.nvim",
     url = "https://github.com/nvim-lua/popup.nvim"
   },
+  ["rasi.vim"] = {
+    loaded = false,
+    needs_bufread = true,
+    only_cond = false,
+    path = "/home/ava/.local/share/nvim/site/pack/packer/opt/rasi.vim",
+    url = "https://github.com/Fymyte/rasi.vim"
+  },
+  sonokai = {
+    loaded = true,
+    path = "/home/ava/.local/share/nvim/site/pack/packer/start/sonokai",
+    url = "https://github.com/sainnhe/sonokai"
+  },
   ["telescope.nvim"] = {
     loaded = true,
     path = "/home/ava/.local/share/nvim/site/pack/packer/start/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
   },
+  ["toggleterm.nvim"] = {
+    loaded = true,
+    path = "/home/ava/.local/share/nvim/site/pack/packer/start/toggleterm.nvim",
+    url = "https://github.com/akinsho/toggleterm.nvim"
+  },
+  ["vim-fugitive"] = {
+    loaded = true,
+    path = "/home/ava/.local/share/nvim/site/pack/packer/start/vim-fugitive",
+    url = "https://github.com/tpope/vim-fugitive"
+  },
+  ["vim-indentwise"] = {
+    loaded = true,
+    path = "/home/ava/.local/share/nvim/site/pack/packer/start/vim-indentwise",
+    url = "https://github.com/jeetsukumaran/vim-indentwise"
+  },
+  ["vim-smoothie"] = {
+    config = { "\27LJ\2\n>\0\0\2\0\3\0\0056\0\0\0009\0\1\0)\1\15\0=\1\2\0K\0\1\0!smoothie_speed_linear_factor\6g\bvim\0" },
+    loaded = true,
+    path = "/home/ava/.local/share/nvim/site/pack/packer/start/vim-smoothie",
+    url = "https://github.com/psliwka/vim-smoothie"
+  },
   ["vim-surround"] = {
     loaded = true,
     path = "/home/ava/.local/share/nvim/site/pack/packer/start/vim-surround",
     url = "https://github.com/tpope/vim-surround"
+  },
+  vimspector = {
+    loaded = true,
+    path = "/home/ava/.local/share/nvim/site/pack/packer/start/vimspector",
+    url = "https://github.com/puremourning/vimspector"
   }
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: vim-smoothie
+time([[Config for vim-smoothie]], true)
+try_loadstring("\27LJ\2\n>\0\0\2\0\3\0\0056\0\0\0009\0\1\0)\1\15\0=\1\2\0K\0\1\0!smoothie_speed_linear_factor\6g\bvim\0", "config", "vim-smoothie")
+time([[Config for vim-smoothie]], false)
+-- Config for: nvim-colorizer.lua
+time([[Config for nvim-colorizer.lua]], true)
+try_loadstring("\27LJ\2\n7\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\14colorizer\frequire\0", "config", "nvim-colorizer.lua")
+time([[Config for nvim-colorizer.lua]], false)
+vim.cmd [[augroup packer_load_aucmds]]
+vim.cmd [[au!]]
+  -- Filetype lazy-loads
+time([[Defining lazy-load filetype autocommands]], true)
+vim.cmd [[au FileType rasi ++once lua require("packer.load")({'rasi.vim'}, { ft = "rasi" }, _G.packer_plugins)]]
+time([[Defining lazy-load filetype autocommands]], false)
+vim.cmd("augroup END")
+vim.cmd [[augroup filetypedetect]]
+time([[Sourcing ftdetect script at: /home/ava/.local/share/nvim/site/pack/packer/opt/rasi.vim/ftdetect/rasi.vim]], true)
+vim.cmd [[source /home/ava/.local/share/nvim/site/pack/packer/opt/rasi.vim/ftdetect/rasi.vim]]
+time([[Sourcing ftdetect script at: /home/ava/.local/share/nvim/site/pack/packer/opt/rasi.vim/ftdetect/rasi.vim]], false)
+vim.cmd("augroup END")
 if should_profile then save_profiles() end
 
 end)
