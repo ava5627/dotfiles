@@ -1,0 +1,9 @@
+/** Basic config file **/
+// From https://github.com/adi1090x/rofi
+
+configuration {
+    show-icons:         true;
+    matching:           "fuzzy";
+    modi:               [window, run, drun, ssh];
+}
+@theme "./launchers/colorful/style_7.rasi"
