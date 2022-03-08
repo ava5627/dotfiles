@@ -19,6 +19,9 @@ kmap("n", "<a-o>", "moO<esc>`o", opts)
 kmap("n", "<leader>l", ":bnext<cr>", opts)
 kmap("n", "<leader>h", ":bprevious<cr>", opts)
 
+-- kmap("n", "<C-[", ":cprevious<cr>", opts)
+-- kmap("n", "<C-]", ":cnext<cr>", opts)
+
 kmap("n", "<C-h>", "<C-w>h", opts)
 kmap("n", "<C-j>", "<C-w>j", opts)
 kmap("n", "<C-k>", "<C-w>k", opts)

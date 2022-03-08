@@ -114,11 +114,11 @@ cmp.setup {
     },
     sources = {
         { name = "nvim_lsp" },
-        { name = "nvim_lua" },
         { name = 'cmp_tabnine' },
+        { name = "luasnip" },
+        { name = "nvim_lua" },
         { name = "buffer" },
         { name = "spell" },
-        { name = "luasnip" },
         { name = "path" },
     },
     confirm_opts = {

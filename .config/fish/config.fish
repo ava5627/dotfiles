@@ -15,7 +15,10 @@ set fish_color_cwd magenta #$fish_color_param
 set -g fish_prompt_pwd_dir_length 0
 
 set EDITOR nvim
-set SYSTEMD_EDITOR nvim
+
+function fish_user_keybindings
+    fish_vi_keybindings
+end
 
 function fish_prompt --description 'Write out the prompt'
 
@@ -48,11 +51,10 @@ alias cls='clear'
 alias c='clear'
 alias cla='clear; exec fish'
 
-alias pacs='sudo pacman -S'
-alias pacu='sudo pacman -Syyu'
+alias pacs='sudo pacman -Syu'
 alias pacr='sudo pacman -R'
 alias pacss='pacman -Ss'
-alias pacar='sudo pacman -Qtdq | sudo pacman -Rns -'
+alias pacar='sudo pacman -Rns (pacman -Qtdq)'
 
 alias ls='lsd'
 alias ll='lsd -l'

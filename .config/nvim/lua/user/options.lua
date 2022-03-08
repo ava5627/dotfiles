@@ -34,7 +34,8 @@ local options = {
     scrolloff = 8,                           -- scroll 8 lines from end of screen
     sidescrolloff = 8,                       -- scroll 8 columns from edge of screen
     -- spell = true,
-    -- spelllang = { 'en_us' }
+    -- spelllang = { 'en_us'
+    guifont = "monospace:h17",               -- the font used in graphical neovim applications }
 }
 
 vim.opt.shortmess:append "c"

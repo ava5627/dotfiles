@@ -114,7 +114,7 @@ font:
     #   - (macOS) Menlo
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
-    family: Monospace
+    family: Source Code Pro
 
     # The `style` can be specified to pick a specific face.
     style: regular
@@ -158,14 +158,14 @@ font:
   # Offset is the extra space around each character. `offset.y` can be thought
   # of as modifying the line spacing, and `offset.x` as modifying the letter
   # spacing.
-  #offset:
+  # offset:
   #  x: 0
   #  y: 0
 
   # Glyph offset determines the locations of the glyphs within their cells with
   # the default being at the bottom. Increasing `x` moves the glyph to the
   # right, increasing `y` moves the glyph upward.
-  #glyph_offset:
+  # glyph_offset:
   #  x: 0
   #  y: 0
 
@@ -258,33 +258,7 @@ scheme:
       magenta: '#c795ae'
       cyan:    '#95aec7'
       white:   '#f3f4f5'
-  
-  arc-dark: &arc-dark
-    primary:
-      background: '#222222'
-      foreground: '#F9F9F9'
-    normal:
-      black:   '#3f3f3f'
-      red:     '#cc0000'
-      green:   '#4e9a06'
-      yellow:  '#c4a000'
-      blue:    '#94bff3'
-      magenta: '#85678f'
-      cyan:    '#06989a'
-      white:   '#dcdccc'
-
-    # Bright colors
-    bright:
-      black:   '#545454'
-      red:     '#fc5454'
-      green:   '#8ae234'
-      yellow:  '#fce94f'
-      blue:    '#94bff3'
-      magenta: '#b294bb'
-      cyan:    '#93e0e3'
-      white:   '#ffffff'
-
-arc-dark2: &arc-dark2
+arc-dark: &arc-dark
     primary:
       background: '#222222'
       foreground: '#F9F9F9'
@@ -310,36 +284,36 @@ arc-dark2: &arc-dark2
       white:   '#ffffff'
 gruvbox: &gruvbox
   primary:
-    background: '0x1d2021'
-    foreground: '0xd5c4a1'
+    background: '#1d2021'
+    foreground: '#d5c4a1'
 
   # Colors the cursor will use if `custom_cursor_colors` is true
   cursor:
-    text: '0x1d2021'
-    cursor: '0xd5c4a1'
+    text: '#1d2021'
+    cursor: '#d5c4a1'
 
   # Normal colors
   normal:
-    black:   '0x1d2021'
-    red:     '0xfb4934'
-    green:   '0xb8bb26'
-    yellow:  '0xfabd2f'
-    blue:    '0x83a598'
-    magenta: '0xd3869b'
-    cyan:    '0x8ec07c'
-    white:   '0xd5c4a1'
+    black:   '#1d2021'
+    red:     '#fb4934'
+    green:   '#b8bb26'
+    yellow:  '#fabd2f'
+    blue:    '#83a598'
+    magenta: '#d3869b'
+    cyan:    '#8ec07c'
+    white:   '#d5c4a1'
 
   # Bright colors
   bright:
-    black:   '0x665c54'
-    red:     '0xfe8019'
-    green:   '0x3c3836'
-    yellow:  '0x504945'
-    blue:    '0xbdae93'
-    magenta: '0xebdbb2'
-    cyan:    '0xd65d0e'
-    white:   '0xfbf1c7'
-colors: *arc-dark2
+    black:   '#665c54'
+    red:     '#fe8019'
+    green:   '#98971a'
+    yellow:  '#d79921'
+    blue:    '#458588'
+    magenta: '#b16286'
+    cyan:    '#689d6a'
+    white:   '#fbf1c7'
+colors: *arc-dark
 
 # Bell
 #

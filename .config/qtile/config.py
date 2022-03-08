@@ -27,14 +27,9 @@ import os
 import re
 import subprocess
 
-from scripts.rofi_scripts import edit_configs
-
 import xcffib.xproto
 
-from typing import List  # noqa: F401
-
 from libqtile import bar, layout, widget, hook, qtile
-from libqtile.backend.base import FloatStates
 from libqtile.config import Click, Drag, Group, Key, Match, Screen, EzKey
 from libqtile.log_utils import logger
 from libqtile.lazy import lazy
@@ -55,11 +50,6 @@ def window_to_prev_screen(qtile):
         i = len(qtile.screens) - 1
     group = qtile.screens[i].group.name
     qtile.current_window.togroup(group)
-
-def switch_screens(qtile):
-    i = qtile.screens.index(qtile.current_screen)
-    group = qtile.screens[i - 1].group
-    qtile.current_screen.set_group(group)
 
 def go_to_group(name):
 
@@ -122,8 +112,7 @@ def switch_to_same_class(qtile):
         else:
             pass
         next_win.group.focus(next_win, False)
-        if group_floating_windows(next_win):
-            top_window(next_win)
+        top_window(next_win)
     return
 
 def windows_matching_shuffle(qtile, **kwargs):
@@ -189,20 +178,10 @@ def switch_window(direction=1):
             qtile.current_group.cmd_next_window(),
         if direction == -1:
             qtile.current_group.cmd_prev_window(),
-        if group_floating_windows(qtile.current_window):
-            top_window(qtile.current_window)
+        top_window(qtile.current_window)
 
     return _switch_window
 
-def group_floating_windows(window):
-    return window.group.floating_layout.find_clients(window.group)
-
-def fullscreen_neighbors(window):
-    for win in window.group.windows:
-        if win._float_state == FloatStates.FULLSCREEN:
-            return True
-    return False
-    
 def print_debug(obj):
     odict = obj.__dict__
     ostr = "\n"
@@ -295,7 +274,7 @@ file_manager = "pcmanfm"
 browser = "firefox"
 calendar = "morgen"
 rofi_cmd = ".config/rofi/launchers/colorful/launcher.sh"
-
+rofi_scripts = ".config/rofi_scripts/"
 
 my_keys = [
     ["M-j", 	                    switch_window(direction=1), 	                                "Move focus prev",],
@@ -309,22 +288,21 @@ my_keys = [
     ["M-l", 	                    lazy.layout.grow_main(), 	                                    "Shrink main window",],
     ["M-S-h", 	                    lazy.layout.shrink(), 	                                        "Grow window",],
     ["M-S-l", 	                    lazy.layout.grow(), 	                                        "Shrink window",],
-    # ["M-<space>",                   lazy.group.next_window(),                                       "",],
     ["M-S-j", 	                    lazy.layout.shuffle_down(), 	                                "Move window down",],
     ["M-S-k", 	                    lazy.layout.shuffle_up(),  	                                    "Move window up",],
     # ["M-<grave>",   	            lazy.function(window_to_next_screen),                           "Move winow to next screen",],
     # ["M-S-<grave>", 	            lazy.function(window_to_prev_screen), 	                        "Move winow to prev screen",],
     ["M-e", 	                    lazy.spawn(terminal),  	                                        "Launch terminal",],
     ["M-<Return>", 	                lazy.spawn(terminal),  	                                        "Launch terminal alt",],
-    ["M-b", 	                    lazy.spawn(terminal + " -e btop"),                              "Launch BTOP++",],
+    ["M-b", 	                    lazy.spawn(terminal + " -e btop"),                              "Launch BTOP",],
     ["M-m", 	                    lazy.spawn(file_manager),  	                                    "Launch file manager",],
     ["M-w", 	                    lazy.spawn("firefox"),                                          "Launch Firefox",],
     ["M-S-w", 	                    lazy.spawn("firefox -private-window"),                          "Launch Private Firefox",],
     ["M-z", 	                    lazy.spawn("qalculate-gtk"),                                    "Launch calculator",],
     ["C-S-e", 	                    lazy.spawn("copyq show"), 	                                    "Show Copyq",],
-    ["M-r", 	                    lazy.spawn(rofi_cmd + " -show run -i", shell=True), 	                            'Run Launcher',],
-    ["M-S-r", 	                    lazy.spawn(rofi_cmd + " -show drun -i -show-icons", shell=True), 	                'Run Launcher',],
-    ["M-c", 	                    lazy.function(edit_configs), 	                                'Config Launcher',],
+    ["M-r", 	                    lazy.spawn(rofi_cmd + " -show run -i", shell=True), 	        'Run Launcher',],
+    ["M-S-r", 	                    lazy.spawn(rofi_cmd + " -show drun -i -show-icons", shell=True),'Run Launcher',],
+    ["M-c", 	                    lazy.spawn(rofi_scripts + "edit_configs"), 	                                'Config Launcher',],
     ["M-f", 	                    lazy.window.toggle_floating(), 	                                'toggle floating',],
     ["M-S-f",         	            lazy.window.toggle_fullscreen(), 	                            'toggle fullscreen',],
     ["M-q", 	                    lazy.window.kill(),  	                                        "Kill focused window",],
@@ -335,7 +313,7 @@ my_keys = [
     ["M-<period>", 	                lazy.function(next_group),                                      "Switch to next group",],
     ["M-<comma>", 	                lazy.function(prev_group),                                      "Switch to previous group",],
     ["M-<Tab>", 	                lazy.next_layout(),  	                                        "Toggle between layouts",],
-    ["M-C-r", 	                    lazy.reload_config(),  	                                            "Reload the config",],
+    ["M-C-r", 	                    lazy.reload_config(),  	                                        "Reload the config",],
     ["M-A-r", 	                    lazy.restart(),  	                                            "Reload the config",],
     ["M-C-q", 	                    lazy.shutdown(),    	                                        "Shutdown Qtile",],
     ["M-<F1>", 	                    lazy.spawn("arcolinux-logout"), 	                            "Logout Menu",],
@@ -351,13 +329,12 @@ my_keys = [
 keys = [EzKey(bind, cmd, desc=desc) for bind, cmd, desc in my_keys]
 
 groups = [
-    Group("1", layout='max', position=0),
-    Group("2", layout='monadtall', position=1),
-    Group("3", layout='monadtall', position=2),
-    # Group("0", layout='monadtall', position=2, matches=[Match(title="")]),
-    Group("a", layout='monadtall', position=4, matches=[Match(wm_class="discord")]),
-    Group("s", layout='monadtall', position=5, matches=[]),
-    Group("d", layout='monadtall', position=6, matches=[]),
+    Group("1", layout='max', matches=[]),
+    Group("2", layout='monadtall', matches=[]),
+    Group("3", layout='monadtall', matches=[]),
+    Group("a", layout='monadtall', matches=[Match(wm_class="discord")]),
+    Group("s", layout='monadtall', matches=[]),
+    Group("d", layout='monadtall', matches=[]),
 ]
 
 group_keys = []
@@ -401,7 +378,7 @@ layouts = [
 
 
 widget_defaults = dict(
-    font='UbuntuMono Nerd Font',
+    font='Source Code Pro',
     fontsize=12,
     padding=2,
     foreground = colors[2],
@@ -421,9 +398,9 @@ def make_powerline(widgets):
             widget.TextBox(
                 foreground = bg,
                 background = fg,
-                text="", # Icon: nf-oct-triangle_left
-                fontsize=37,
-                padding=-3,
+                text="", # Icon: nf-oct-triangle_left
+                fontsize=18,
+                padding=0,
             )
         )
         if type(w) == list:
@@ -458,6 +435,7 @@ def make_widgets(screen):
             this_screen_border = colors [4],
             other_current_screen_border = colors[7],
             other_screen_border = colors[4],
+            # visible_groups = [g.name for g in groups if group_screen(g) == screen]
         ),
         widget.TaskList(
             font = "Ubuntu mono",
@@ -593,7 +571,7 @@ mouse = [
 ]
 
 dgroups_key_binder = None
-dgroups_app_rules = []  # type: List
+dgroups_app_rules = [] 
 follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
@@ -645,8 +623,7 @@ def set_floating(window):
 
 # @hook.subscribe.client_focus
 # def focus_change(window):
-#     if group_floating_windows(window):
-#         window.window.configure(stackmode=StackMode.Above)
+#     window.window.configure(stackmode=StackMode.Above)
 
 floating_types = ["notification", "toolbar", "splash", "dialog"]
 
