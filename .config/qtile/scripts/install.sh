@@ -5,4 +5,3 @@ pacman -Syu network-manager-applet steam kdeconnect variety xfce4-power-manager 
 systemctl enable sddm
 curl https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install | fish
 pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si && cd .. && rm -rf yay
-yay -Syu insync morgen-bin
