@@ -6,8 +6,10 @@ set -a config_list ~/.config/fish
 set -a config_list ~/.config/nvim
 set -a config_list /etc/logid.cfg
 set -a config_list ~/.config/rofi
+set -a config_list ~/.config/rofi_scripts
 set -a config_list ~/.mozilla/firefox/dwj268q6.default-release/chrome/userChrome.css
 
 set choice (printf '%s\n' $config_list | rofi -dmenu)
-echo nvim $choice
-alacritty -e nvim $choice
+if test $choice
+    alacritty -e nvim $choice
+end

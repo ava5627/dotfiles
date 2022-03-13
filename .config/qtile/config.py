@@ -267,7 +267,6 @@ colors = init_colors("blue")
 powerline_colors = [colors[6], colors[5]]
 
 
-
 mod = "mod4"
 terminal = "alacritty"
 file_manager = "pcmanfm"
@@ -282,8 +281,6 @@ my_keys = [
     ["M-<grave>", 	                lazy.function(switch_to_same_class),                            "Move focus to Window of same class",],
     ["M-S-<Right>", 	            lazy.next_screen(), 	                                        'Move focus to next monitor',],
     ["M-S-<Left>", 	                lazy.prev_screen(), 	                                        'Move focus to prev monitor',],
-    ["A-<Tab>", 	                lazy.function(next_group),                                      "Switch to next group",],
-    ["A-S-<Tab>", 	                lazy.function(prev_group),                                      "Switch to prev group",],
     ["M-h", 	                    lazy.layout.shrink_main(), 	                                    "Grow main window",],
     ["M-l", 	                    lazy.layout.grow_main(), 	                                    "Shrink main window",],
     ["M-S-h", 	                    lazy.layout.shrink(), 	                                        "Grow window",],
@@ -299,7 +296,7 @@ my_keys = [
     ["M-w", 	                    lazy.spawn("firefox"),                                          "Launch Firefox",],
     ["M-S-w", 	                    lazy.spawn("firefox -private-window"),                          "Launch Private Firefox",],
     ["M-z", 	                    lazy.spawn("qalculate-gtk"),                                    "Launch calculator",],
-    ["C-S-e", 	                    lazy.spawn("copyq show"), 	                                    "Show Copyq",],
+    ["M-S-e", 	                    lazy.spawn("copyq show"), 	                                    "Show Copyq",],
     ["M-r", 	                    lazy.spawn(rofi_cmd + " -show run -i", shell=True), 	        'Run Launcher',],
     ["M-S-r", 	                    lazy.spawn(rofi_cmd + " -show drun -i -show-icons", shell=True),'Run Launcher',],
     ["M-c", 	                    lazy.spawn(rofi_scripts + "edit_configs"), 	                                'Config Launcher',],
@@ -396,6 +393,7 @@ def make_powerline(widgets):
             fg = colors[0]
         powerline.append(
             widget.TextBox(
+                font='Source Code Pro',
                 foreground = bg,
                 background = fg,
                 text="", # Icon: nf-oct-triangle_left
@@ -420,8 +418,7 @@ def make_widgets(screen):
             background = colors[0]
         ),
         widget.GroupBox(
-            font = "Ubuntu Bold",
-            fontsize = 12,
+            font = 'Source Code Pro Bold',
             margin_y = 3,
             margin_x = 0,
             padding_y = 5,
@@ -438,9 +435,7 @@ def make_widgets(screen):
             # visible_groups = [g.name for g in groups if group_screen(g) == screen]
         ),
         widget.TaskList(
-            font = "Ubuntu mono",
             rounded = False,
-            fontsize = 12,
             background=colors[0],
             highlight_method = "block",
             margin_y=0,
@@ -505,7 +500,7 @@ def make_widgets(screen):
             padding = 5,
         ),
         widget.Clock(
-            font = "Ubuntu Bold",
+            font = 'Source Code Pro Bold',
             padding = 5,
             format = "%A, %B %d - %H:%M ",
             mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(calendar)},

@@ -16,8 +16,11 @@ set -g fish_prompt_pwd_dir_length 0
 
 set EDITOR nvim
 
-function fish_user_keybindings
-    fish_vi_keybindings
+function fish_user_key_bindings
+    fish_vi_key_bindings
+
+    # Just clear the commandline on control-q
+    bind -M insert \cq kill-whole-line
 end
 
 function fish_prompt --description 'Write out the prompt'
@@ -68,7 +71,7 @@ alias f='commandline -i "sudo $history[1]";history delete --exact --case-sensiti
 
 alias vim='nvim'
 
-alias qlog='watch -n 0.5 tail ~/.local/share/qtile/qtile.log -n 50'
+alias qlog='watch -n 0.5 tail ~/.local/share/qtile/qtile.log -n 30'
 
 # Directory cd
 
@@ -85,8 +88,6 @@ alias root='cd /'
 alias gconfig='git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 
 # Startup
-
-bind \cH backward-kill-path-component
 
 
 neofetch

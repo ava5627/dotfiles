@@ -19,21 +19,11 @@ function run {
 #autorandr horizontal
 
 #change your keyboard if you need it
-#setxkbmap -layout be
-
-keybLayout=$(setxkbmap -v | awk -F "+" '/symbols/ {print $2}')
-
-if [ $keybLayout = "be" ]; then
-  cp $HOME/.config/qtile/config-azerty.py $HOME/.config/qtile/config.py
-fi
-
-
 
 
 #starting utility applications at boot time
 variety &
 nm-applet &
-# run pamac-tray &
 run xfce4-power-manager &
 numlockx on &
 blueberry-tray &
@@ -45,17 +35,8 @@ picom --config $HOME/.config/qtile/scripts/picom.conf &
 # run volumeicon &
 discord &
 steam -silent &
-# nitrogen --restore &
 openrgb -p Off &
 copyq &
 kdeconnect-indicator &
-morgen --hidden
-#run caffeine -a &
-#run vivaldi-stable &
-#run firefox &
-#run thunar &
-#run dropbox &
+morgen --hidden &
 insync start &
-#run spotify &
-#run atom &
-#run telegram-desktop &

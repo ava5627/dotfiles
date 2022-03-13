@@ -96,6 +96,9 @@ return packer.startup(function(use)
       'Fymyte/rasi.vim',
       ft = 'rasi',
     }
+    use "AndrewRadev/switch.vim"
+
+
     -- nvim-tree
     use "kyazdani42/nvim-tree.lua"
 
@@ -116,11 +119,12 @@ return packer.startup(function(use)
     }
     use "JoosepAlviste/nvim-ts-context-commentstring"
     use "nvim-treesitter/nvim-treesitter-refactor"
+    use "romgrk/nvim-treesitter-context"
+    use "nvim-treesitter/playground"
 
     -- git
     use "lewis6991/gitsigns.nvim"
     use "tpope/vim-fugitive"
-
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins

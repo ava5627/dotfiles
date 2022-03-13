@@ -42,7 +42,7 @@ kmap("i", "<A-j>", "<down>", opts)
 kmap("i", "<A-k>", "<up>", opts)
 kmap("i", "<A-l>", "<right>", opts)
 
-kmap("i", ":w", "<ESC>:w<cr>", opts)
+-- kmap("i", ":w", "<ESC>:w<cr>", opts)
 
 kmap("i", "<A-d>", "<DELETE>", opts)
 kmap("i", "<C-d>", "<C-o>dw", opts)
@@ -98,6 +98,12 @@ kmap("t", "<C-t>p", "<cmd>lua _PYTHON_TOGGLE()<cr>", opts)
 
 kmap("n", "<C-t>g", "<cmd>lua _LAZYGIT_TOGGLE()<cr>", opts)
 kmap("t", "<C-t>g", "<cmd>lua _LAZYGIT_TOGGLE()<cr>", opts)
+
+-- Switch
+vim.g.switch_mapping = '<C-q>'
+
+vim.g.switch_custom_definitions = {
+}
 
 -- Yank
 vim.cmd [[ 
