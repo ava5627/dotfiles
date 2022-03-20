@@ -55,7 +55,7 @@ alias c='clear'
 alias cla='clear; exec fish'
 
 alias pacs='sudo pacman -Syu'
-alias pacr='sudo pacman -R'
+alias pacr='sudo pacman -Rns'
 alias pacss='pacman -Ss'
 alias pacar='sudo pacman -Rns (pacman -Qtdq)'
 

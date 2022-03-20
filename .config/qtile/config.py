@@ -24,163 +24,42 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import os
-import re
 import subprocess
+import importlib
+import sys
+import yaml
 
-import xcffib.xproto
+from Xlib import display as xdisplay
+from xcffib.xproto import StackMode
 
 from libqtile import bar, layout, widget, hook, qtile
-from libqtile.config import Click, Drag, Group, Key, Match, Screen, EzKey
+from libqtile.config import Click, Drag, Match, Screen, EzKey
 from libqtile.log_utils import logger
 from libqtile.lazy import lazy
 
-from xcffib.xproto import StackMode
+# Config imports
+def reload(module):
+    if module in sys.modules:
+        importlib.reload(sys.modules[module])
 
+reload('groups')
+from groups import groups, group_keys
+groups = groups
 
-def window_to_next_screen(qtile):
-    i = qtile.screens.index(qtile.current_screen) + 1
-    if i == len(qtile.screens):
-        i = 0
-    group = qtile.screens[i].group.name
-    qtile.current_window.togroup(group)
-
-def window_to_prev_screen(qtile):
-    i = qtile.screens.index(qtile.current_screen) - 1
-    if i < 0:
-        i = len(qtile.screens) - 1
-    group = qtile.screens[i].group.name
-    qtile.current_window.togroup(group)
-
-def go_to_group(name):
-
-    def helper(qtile):
-        old = qtile.current_screen
-        gs = group_screen(qtile.groups_map[name])
-        qtile.focus_screen(gs)
-        if qtile.current_screen != old:
-            qtile.warp_to_screen()
-        qtile.groups_map[name].cmd_toscreen(gs)
+@lazy.function
+def top_window(qtile):
+    qtile.current_window.window.configure(stackmode=StackMode.Above)
     
-    return helper
 
-def group_screen(group):
-    if len(qtile.screens) == 1:
-        return 0
-    
-    if group.name in '123':
-        return 0
-    elif group.name in 'asd':
-        return 1
+# https://github.com/ValveSoftware/steam-for-linux/issues/2685
+# https://old.reddit.com/r/i3wm/comments/9i81rf/close_steam_to_tray_instead_of_killing_the_process/
+@lazy.function
+def kill_or_steam(qtile):
+    if 'Steam' in qtile.current_window.window.get_wm_class():
+        qtile.cmd_spawn("xdotool windowunmap $(xdotool getactivewindow)", shell=True)
     else:
-        return 0
+        qtile.current_window.kill()
 
-def next_group(qtile):
-    cg = qtile.current_screen.group
-    next = cg
-    gs = -1
-    while gs != group_screen(cg):
-        next = next._get_group(1, False, False)
-        gs = group_screen(next)
-    next.cmd_toscreen()
-
-
-def prev_group(qtile):
-    cg = qtile.current_screen.group
-    next = cg
-    gs = -1
-    while gs != group_screen(cg):
-        next = next._get_group(-1, False, False)
-        gs = group_screen(next)
-    next.cmd_toscreen()
-
-# Taken from https://gist.github.com/TauPan/9c09bd9defc5ac3c9e06 and modified 
-
-def switch_to_same_class(qtile):
-    curr = qtile.current_window
-    if curr is not None:
-        wm_class = curr.window.get_wm_class()
-    else:
-        return
-
-    windows = windows_matching_shuffle(qtile, wmclass=wm_class)
-    if windows:
-        next_win = windows[0]
-        if next_win.group != qtile.current_group:
-            gs = group_screen(next_win.group)
-            qtile.focus_screen(gs)
-            qtile.current_screen.set_group(next_win.group)
-        else:
-            pass
-        next_win.group.focus(next_win, False)
-        top_window(next_win)
-    return
-
-def windows_matching_shuffle(qtile, **kwargs):
-    """return a list of windows matching window_match_re with **kwargs,
-    ordered so that the current Window (if it matches) comes last
-    """
-    windows = sorted(
-        [
-            w
-            for w in qtile.windows_map.values()
-            if w.group and window_match_re(w, **kwargs)
-        ],
-        key=lambda ww: ww.window.wid
-    )
-    
-    idx = 0
-    if qtile.current_window is not None:
-        try:
-            idx = windows.index(qtile.current_window)
-            idx += 1
-        except ValueError:
-            pass
-    if idx >= len(windows):
-        idx = 0
-    return windows[idx:] + windows[:idx]
-
-
-def window_match_re(window, wmname=None, wmclass=None, role=None):
-    """
-    match windows by name/title, class or role, by regular expressions
-    Multiple conditions will be OR'ed together
-    """
-
-    if not (wmname or wmclass or role):
-        raise TypeError(
-            "at least one of name, wmclass or role must be specified"
-        )
-    ret = False
-    if wmname:
-        ret = ret or re.match(wmname, window.name)
-    try:
-        if wmclass:
-            if type(wmclass) != list:
-                wmclass = [wmclass]
-            cls = window.window.get_wm_class()
-            if cls:
-                for wc in wmclass:
-                    for v in cls:
-                        ret = ret or re.match(wc, v)
-        if role:
-            rol = window.window.get_wm_window_role()
-            if rol:
-                ret = ret or re.match(role, rol)
-    except (xcffib.xproto.WindowError, xcffib.xproto.AccessError):
-        return False
-    return ret
-
-def switch_window(direction=1):
-
-    @lazy.function
-    def _switch_window(qtile):
-        if direction == 1:
-            qtile.current_group.cmd_next_window(),
-        if direction == -1:
-            qtile.current_group.cmd_prev_window(),
-        top_window(qtile.current_window)
-
-    return _switch_window
 
 def print_debug(obj):
     odict = obj.__dict__
@@ -191,81 +70,11 @@ def print_debug(obj):
         ostr += f"{k}: {odict[k]}\n"
     logger.warning(ostr)
 
-def top_window(window):
-    # x, y = window.cmd_get_position()
-    # w, h = window.cmd_get_size()
-    # window.cmd_place(x, y, w, h, 0, None, above=True)
-    window.window.configure(stackmode=StackMode.Above)
+theme = os.path.expanduser('~') + '/.config/qtile/themes/blue.yml'
+with open(theme) as theme_file:
+    colors = yaml.load(theme_file, yaml.Loader)
 
-
-
-def init_colors(theme):
-    theme_dict = dict(
-        dracula = [
-            "#282c34", # 0 panel background
-            "#3d3f4b", # 1 Inactive Window Margin Background
-            "#f8f8f2", # 2 font color for group names
-            "#74438f", # 3 Current Window Background
-            "#74438f", # 4 border line color for 'other tabs'
-            "#74438f", # 5 color for 'odd widgets'
-            "#3d3f4b", # 6 color for the 'even widgets'
-            "#bd93f9", # 7 Current Workspace
-            "#ecbbfb"  # 8 background for inactive screens
-        ],
-        blue = [
-            "#282c34", # 0 panel background
-            "#2F343F", # 1 Inactive Window Margin Background
-            "#f8f8f2", # 2 font color for everything
-            "#3384d0", # 3 Current Window Background # 3384d0
-            "#4c566a", # 4 Workspace open on other screen
-            "#3384d0", # 5 color for 'odd widgets'
-            "#2F343F", # 6 color for the 'even widgets'
-            "#3384d0", # 7 Current Workspace # 3384d0
-            "#a9a9a9", # 8 Inactive group with windows
-        ],
-        cyan = [
-            "#282c34", # 0 panel background
-            "#2F343F", # 1 Inactive Window Margin Background
-            "#f8f8f2", # 2 font color for everything
-            "#06989a", # 3 Current Window Background
-            "#3d3f4b", # 4 Workspace open on other screen
-            "#1e666b", # 5 color for 'odd widgets'
-            "#3d3f4b", # 6 color for the 'even widgets'
-            "#0f6f75", # 7 Current Workspace
-            "#33e8e2", # 8 Inactive group with windows
-        ],
-        debug = [
-            "#000000", # 0 panel background
-            "#00ff00", # 1 Inactive Window Margin Background
-            "#f8f8f2", # 2 font color for group names
-            "#fba922", # 3 Current Window Background
-            "#ff00ff", # 4 border line color for 'other tabs'
-            "#ff0000", # 5 color for 'odd widgets'
-            "#0000ff", # 6 color for the 'even widgets'
-            "#ffff00", # 7 Current Workspace
-            "#00ffff", # 8 background for inactive screens
-        ],
-        gruvbox = [
-            "#1d2021", # 0 panel background
-            "#282828", # 1 Inactive Window Margin Background
-            "#ebdbb2", # 2 font color for group names
-            "#d65d0e", # 3 Current Window Background
-            "#504945", # 4 border line color for 'other tabs'
-            "#d65d0e", # 5 color for 'odd widgets'
-            "#282828", # 6 color for the 'even widgets'
-            "#d65d0e", # 7 Current Workspace
-            "#a89984"  # 8 background for inactive screens
-        ],
-    )
-    return theme_dict[theme]
-
-# colors = init_colors("dracula")
-# colors = init_colors("cyan")
-colors = init_colors("blue")
-# colors = init_colors("debug")
-# colors = init_colors("gruvbox")
 powerline_colors = [colors[6], colors[5]]
-
 
 mod = "mod4"
 terminal = "alacritty"
@@ -273,46 +82,47 @@ file_manager = "pcmanfm"
 browser = "firefox"
 calendar = "morgen"
 rofi_cmd = ".config/rofi/launchers/colorful/launcher.sh"
-rofi_scripts = ".config/rofi_scripts/"
+rofi_scripts = ".config/rofi/scripts/"
 
 my_keys = [
-    ["M-j", 	                    switch_window(direction=1), 	                                "Move focus prev",],
-    ["M-k", 	                    switch_window(direction=-1), 	                                "Move focus next",],
-    ["M-<grave>", 	                lazy.function(switch_to_same_class),                            "Move focus to Window of same class",],
-    ["M-S-<Right>", 	            lazy.next_screen(), 	                                        'Move focus to next monitor',],
-    ["M-S-<Left>", 	                lazy.prev_screen(), 	                                        'Move focus to prev monitor',],
+    # window keys
+    ["M-j", 	                    lazy.group.next_window(), top_window,   	                    "Move focus next",],
+    ["M-k", 	                    lazy.group.prev_window(), top_window,   	                    "Move focus prev",],
     ["M-h", 	                    lazy.layout.shrink_main(), 	                                    "Grow main window",],
     ["M-l", 	                    lazy.layout.grow_main(), 	                                    "Shrink main window",],
     ["M-S-h", 	                    lazy.layout.shrink(), 	                                        "Grow window",],
     ["M-S-l", 	                    lazy.layout.grow(), 	                                        "Shrink window",],
     ["M-S-j", 	                    lazy.layout.shuffle_down(), 	                                "Move window down",],
     ["M-S-k", 	                    lazy.layout.shuffle_up(),  	                                    "Move window up",],
-    # ["M-<grave>",   	            lazy.function(window_to_next_screen),                           "Move winow to next screen",],
-    # ["M-S-<grave>", 	            lazy.function(window_to_prev_screen), 	                        "Move winow to prev screen",],
-    ["M-e", 	                    lazy.spawn(terminal),  	                                        "Launch terminal",],
-    ["M-<Return>", 	                lazy.spawn(terminal),  	                                        "Launch terminal alt",],
+    ["M-<Tab>", 	                lazy.next_layout(),  	                                        "Toggle between layouts",],
+    ["M-f", 	                    lazy.window.toggle_floating(), 	                                "toggle floating",],
+    ["M-S-f",         	            lazy.window.toggle_fullscreen(), 	                            "toggle fullscreen",],
+    ["M-S-<Right>", 	            lazy.next_screen(), 	                                        "Move focus to next monitor",],
+    ["M-S-<Left>", 	                lazy.prev_screen(), 	                                        "Move focus to prev monitor",],
+
+    # launch keys
+    ["M-e", 	                    lazy.spawn(terminal),  	                                        "Launch Terminal",],
+    ["M-<Return>", 	                lazy.spawn(terminal),  	                                        "Launch Terminal alt",],
     ["M-b", 	                    lazy.spawn(terminal + " -e btop"),                              "Launch BTOP",],
-    ["M-m", 	                    lazy.spawn(file_manager),  	                                    "Launch file manager",],
+    ["M-m", 	                    lazy.spawn(file_manager),  	                                    "Launch File manager",],
+    ["M-u", 	                    lazy.spawn('steam steam://open/friends'),  	                    "Launch Steam Friends",],
     ["M-w", 	                    lazy.spawn("firefox"),                                          "Launch Firefox",],
     ["M-S-w", 	                    lazy.spawn("firefox -private-window"),                          "Launch Private Firefox",],
-    ["M-z", 	                    lazy.spawn("qalculate-gtk"),                                    "Launch calculator",],
+    ["M-z", 	                    lazy.spawn("qalculate-gtk"),                                    "Launch Calculator",],
     ["M-S-e", 	                    lazy.spawn("copyq show"), 	                                    "Show Copyq",],
-    ["M-r", 	                    lazy.spawn(rofi_cmd + " -show run -i", shell=True), 	        'Run Launcher',],
-    ["M-S-r", 	                    lazy.spawn(rofi_cmd + " -show drun -i -show-icons", shell=True),'Run Launcher',],
-    ["M-c", 	                    lazy.spawn(rofi_scripts + "edit_configs"), 	                                'Config Launcher',],
-    ["M-f", 	                    lazy.window.toggle_floating(), 	                                'toggle floating',],
-    ["M-S-f",         	            lazy.window.toggle_fullscreen(), 	                            'toggle fullscreen',],
-    ["M-q", 	                    lazy.window.kill(),  	                                        "Kill focused window",],
+    ["M-r", 	                    lazy.spawn(rofi_cmd + " -show run -i", shell=True), 	        "Run Launcher",],
+    ["M-S-r", 	                    lazy.spawn(rofi_cmd + " -show drun -i", shell=True),            "Application Launcher",],
+    ["M-c", 	                    lazy.spawn(rofi_scripts + "edit_configs"), 	                    "Config Launcher",],
     ["<Print>",                     lazy.spawn("maim -s | xclip -selection clipboard -t image/png", shell=True), 
                                                                                                     "Take Screenshot and save to clipboard",],
     ["S-<Print>",                   lazy.spawn("maim -s ~/Pictures/Screenshots/screenshot_$(ls Pictures/Screenshots | grep screenshot_ | wc -l).png", shell=True),
                                                                                                     "Take Screenshot and save to Pictures",],
-    ["M-<period>", 	                lazy.function(next_group),                                      "Switch to next group",],
-    ["M-<comma>", 	                lazy.function(prev_group),                                      "Switch to previous group",],
-    ["M-<Tab>", 	                lazy.next_layout(),  	                                        "Toggle between layouts",],
+
+    # command keys
     ["M-C-r", 	                    lazy.reload_config(),  	                                        "Reload the config",],
-    ["M-A-r", 	                    lazy.restart(),  	                                            "Reload the config",],
+    ["M-A-r", 	                    lazy.restart(),  	                                            "Restart Qtile",],
     ["M-C-q", 	                    lazy.shutdown(),    	                                        "Shutdown Qtile",],
+    ["M-q", 	                    kill_or_steam,  	                                            "Kill focused window",],
     ["M-<F1>", 	                    lazy.spawn("arcolinux-logout"), 	                            "Logout Menu",],
     ["M-<F2>", 	                    lazy.spawn("systemctl suspend"),           	                    "Suspend",],
     ["<XF86AudioRaiseVolume>",  	lazy.spawn("amixer -q -D pulse set Master 5%+"), 	            "Raise volume by 5%",],
@@ -320,32 +130,12 @@ my_keys = [
     ["<XF86AudioMute>",             lazy.spawn("amixer -q -D pulse set Master toggle"),             "Toggle Mute",],
     ["<XF86AudioPlay>", 	        lazy.spawn("playerctl play-pause"), 	                        "Play/Pause",],
     ["M-p", 	                    lazy.spawn("playerctl play-pause"), 	                        "Play/Pause",],
-    # ["M-S-n", 	                    lazy.spawn("xdotool search --name youtube key \"shift+n\""),    "Next",],
-
-]
-keys = [EzKey(bind, cmd, desc=desc) for bind, cmd, desc in my_keys]
-
-groups = [
-    Group("1", layout='max', matches=[]),
-    Group("2", layout='monadtall', matches=[]),
-    Group("3", layout='monadtall', matches=[]),
-    Group("a", layout='monadtall', matches=[Match(wm_class="discord")]),
-    Group("s", layout='monadtall', matches=[]),
-    Group("d", layout='monadtall', matches=[]),
+    ["M-n", 	                    lazy.spawn("playerctl next"),                                   "Next",],
 ]
 
-group_keys = []
-for i in groups:
-    keys.extend([
-        # mod1 + letter of group = switch to group
-        # Key([mod], i.name, lazy.group[i.name].toscreen(),
-        Key([mod], i.name, lazy.function(go_to_group(i.name)),
-            desc=f"Switch to group {i.name}"),
+my_keys += group_keys
+keys = [EzKey(bind, *cmd, desc=desc) for bind, *cmd, desc in my_keys]
 
-        # mod1 + shift + letter of group = switch to & move focused window to group
-        Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
-            desc=f"Move focused window to group {i.name}"),
-    ])
 
 layout_theme = {"border_width": 2,
                 "margin": 4,
@@ -524,8 +314,6 @@ def make_widgets(screen):
 
     widget_list += make_powerline(pl_list)
     return widget_list
-
-from Xlib import display as xdisplay
 
 
 def get_num_monitors():

@@ -52,19 +52,19 @@ kmap("i", "<C-p>", "<left><C-o>p", opts)
 kmap("i", "jj", "<ESC>", opts)
 
 -- Indent Jump
-kmap("n", "[q", "<Plug>(IndentWisePreviousLesserIndent)", {silent=true})
-kmap("n", "[w", "<Plug>(IndentWisePreviousEqualIndent)", {silent=true})
-kmap("n", "[e", "<Plug>(IndentWisePreviousGreaterIndent)", {silent=true})
+kmap("", "[q", "<Plug>(IndentWisePreviousLesserIndent)", {silent=true})
+kmap("", "[w", "<Plug>(IndentWisePreviousEqualIndent)", {silent=true})
+kmap("", "[e", "<Plug>(IndentWisePreviousGreaterIndent)", {silent=true})
 
-kmap("n", "]q", "<Plug>(IndentWiseNextLesserIndent)", {silent=true})
-kmap("n", "]w", "<Plug>(IndentWiseNextEqualIndent)", {silent=true})
-kmap("n", "]e", "<Plug>(IndentWiseNextGreaterIndent)", {silent=true})
+kmap("", "]q", "<Plug>(IndentWiseNextLesserIndent)", {silent=true})
+kmap("", "]w", "<Plug>(IndentWiseNextEqualIndent)", {silent=true})
+kmap("", "]e", "<Plug>(IndentWiseNextGreaterIndent)", {silent=true})
 
-kmap("n", "[_", "<Plug>(IndentWisePreviousAbsoluteIndent)", {silent=true})
-kmap("n", "]_", "<Plug>(IndentWiseNextAbsoluteIndent)", {silent=true})
+kmap("", "[_", "<Plug>(IndentWisePreviousAbsoluteIndent)", {silent=true})
+kmap("", "]_", "<Plug>(IndentWiseNextAbsoluteIndent)", {silent=true})
 
-kmap("n", "[%", "<Plug>(IndentWiseBlockScopeBoundaryBegin)", {silent=true})
-kmap("n", "]%", "<Plug>(IndentWiseBlockScopeBoundaryEnd)", {silent=true})
+kmap("", "[%", "<Plug>(IndentWiseBlockScopeBoundaryBegin)", {silent=true})
+kmap("", "]%", "<Plug>(IndentWiseBlockScopeBoundaryEnd)", {silent=true})
 
 -- Visual
 kmap("v", "<", "<gv", opts)
