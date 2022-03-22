@@ -18,3 +18,4 @@ copyq &
 kdeconnect-indicator &
 morgen --hidden &
 insync start &
+flameshot &

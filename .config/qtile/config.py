@@ -113,10 +113,7 @@ my_keys = [
     ["M-r", 	                    lazy.spawn(rofi_cmd + " -show run -i", shell=True), 	        "Run Launcher",],
     ["M-S-r", 	                    lazy.spawn(rofi_cmd + " -show drun -i", shell=True),            "Application Launcher",],
     ["M-c", 	                    lazy.spawn(rofi_scripts + "edit_configs"), 	                    "Config Launcher",],
-    ["<Print>",                     lazy.spawn("maim -s | xclip -selection clipboard -t image/png", shell=True), 
-                                                                                                    "Take Screenshot and save to clipboard",],
-    ["S-<Print>",                   lazy.spawn("maim -s ~/Pictures/Screenshots/screenshot_$(ls Pictures/Screenshots | grep screenshot_ | wc -l).png", shell=True),
-                                                                                                    "Take Screenshot and save to Pictures",],
+    ["<Print>",                     lazy.spawn("flameshot gui"),                                    "Take Screenshot",],
 
     # command keys
     ["M-C-r", 	                    lazy.reload_config(),  	                                        "Reload the config",],

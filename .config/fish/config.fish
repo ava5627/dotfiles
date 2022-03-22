@@ -8,7 +8,8 @@ if not status --is-interactive
 end
 
 
-fish_add_path "/home/ava/.local/bin"
+fish_add_path "$HOME/.local/bin"
+# fish_add_path "$HOME/.config/rofi/bin"
 
 set fish_color_host $fish_color_user
 set fish_color_cwd magenta #$fish_color_param
