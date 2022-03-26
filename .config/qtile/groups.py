@@ -3,18 +3,15 @@ from libqtile.config import Group, Match
 from libqtile.lazy import lazy
 
 
-mod = 'mod4'
-
-
 def go_to_group(name):
 
     def _go_to_group(qtile):
         old = qtile.current_screen
         gs = group_screen(qtile.groups_map[name])
-        qtile.focus_screen(gs)
+        qtile.focus_screen(gs, warp=True)
+        qtile.groups_map[name].cmd_toscreen(gs)
         if qtile.current_screen != old:
             qtile.warp_to_screen()
-        qtile.groups_map[name].cmd_toscreen(gs)
     
     return _go_to_group
 

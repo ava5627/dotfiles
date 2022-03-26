@@ -99,6 +99,12 @@ kmap("t", "<C-t>p", "<cmd>lua _PYTHON_TOGGLE()<cr>", opts)
 kmap("n", "<C-t>g", "<cmd>lua _LAZYGIT_TOGGLE()<cr>", opts)
 kmap("t", "<C-t>g", "<cmd>lua _LAZYGIT_TOGGLE()<cr>", opts)
 
+-- Copilot
+kmap("i", "<C-a>", "copilot#Accept(\"\\<CR>\")", {noremap=false, silent=true, script=true, expr=true})
+kmap("i", "<C-q><C-q>", "<C-o>:Copilot disable<cr>", opts)
+kmap("i", "<C-q><C-e>", "<C-o>:Copilot enable<cr>", opts)
+vim.g.copilot_no_tab_map = true
+
 -- Switch
 vim.g.switch_mapping = '<C-q>'
 
@@ -115,7 +121,11 @@ vim.cmd [[
 
 -- Fix alacritty -e bug
 vim.cmd [[
+    augroup fix
+    autocmd!
     autocmd VimEnter * :silent exec "!kill -s SIGWINCH" getpid()
+    autocmd VimEnter * :Copilot disable
+    augroup END
 ]]
 
 function _G.ReloadConfig()

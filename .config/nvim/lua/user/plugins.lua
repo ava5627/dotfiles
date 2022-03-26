@@ -15,7 +15,6 @@ if fn.empty(fn.glob(install_path)) > 0 then
     vim.cmd [[packadd packer.nvim]]
 end
 
-
 vim.cmd [[
     augroup packer_user_config
         autocmd!
@@ -52,9 +51,12 @@ return packer.startup(function(use)
     use "hrsh7th/cmp-nvim-lsp"
     use "hrsh7th/cmp-nvim-lua"
  	use {
-        'tzachar/cmp-tabnine',
-        run='./install.sh',
-        requires = 'hrsh7th/nvim-cmp'
+        "tzachar/cmp-tabnine",
+        run="./install.sh",
+        requires = "hrsh7th/nvim-cmp"
+    }
+    use {
+        "github/copilot.vim",
     }
     use "f3fora/cmp-spell"
     use "jeetsukumaran/vim-indentwise"

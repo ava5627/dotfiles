@@ -49,7 +49,10 @@ groups = groups
 @lazy.function
 def top_window(qtile):
     qtile.current_window.window.configure(stackmode=StackMode.Above)
-    
+
+# @lazy.function
+# def test(qtile):
+#     pass
 
 # https://github.com/ValveSoftware/steam-for-linux/issues/2685
 # https://old.reddit.com/r/i3wm/comments/9i81rf/close_steam_to_tray_instead_of_killing_the_process/
@@ -88,6 +91,8 @@ my_keys = [
     # window keys
     ["M-j", 	                    lazy.group.next_window(), top_window,   	                    "Move focus next",],
     ["M-k", 	                    lazy.group.prev_window(), top_window,   	                    "Move focus prev",],
+    # ["M-o", 	                    test,   	                                                    "Top window",],
+    ["M-i", 	                    top_window,   	                                                    "Top window",],
     ["M-h", 	                    lazy.layout.shrink_main(), 	                                    "Grow main window",],
     ["M-l", 	                    lazy.layout.grow_main(), 	                                    "Shrink main window",],
     ["M-S-h", 	                    lazy.layout.shrink(), 	                                        "Grow window",],
@@ -96,7 +101,7 @@ my_keys = [
     ["M-S-k", 	                    lazy.layout.shuffle_up(),  	                                    "Move window up",],
     ["M-<Tab>", 	                lazy.next_layout(),  	                                        "Toggle between layouts",],
     ["M-f", 	                    lazy.window.toggle_floating(), 	                                "toggle floating",],
-    ["M-S-f",         	            lazy.window.toggle_fullscreen(), 	                            "toggle fullscreen",],
+    ["M-S-f",         	            lazy.window.toggle_fullscreen(),  	                            "toggle fullscreen",],
     ["M-S-<Right>", 	            lazy.next_screen(), 	                                        "Move focus to next monitor",],
     ["M-S-<Left>", 	                lazy.prev_screen(), 	                                        "Move focus to prev monitor",],
 
@@ -227,7 +232,7 @@ def make_widgets(screen):
             highlight_method = "block",
             margin_y=0,
             margin_x=0,
-            padding_y=6,
+            padding_y=4,
             padding_x=3,
             borderwidth = 3,
             icon_size = 0,
@@ -290,7 +295,7 @@ def make_widgets(screen):
             font = 'Source Code Pro Bold',
             padding = 5,
             format = "%A, %B %d - %H:%M ",
-            mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(calendar)},
+            # mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(calendar)},
         ),
     ]
 
@@ -352,7 +357,7 @@ mouse = [
 
 dgroups_key_binder = None
 dgroups_app_rules = [] 
-follow_mouse_focus = True
+follow_mouse_focus = True 
 bring_front_click = False
 cursor_warp = False
 floating_layout = layout.Floating(float_rules=[
@@ -401,9 +406,18 @@ def set_floating(window):
             or window.window.get_wm_type() in floating_types):
         window.floating = True
 
-# @hook.subscribe.client_focus
-# def focus_change(window):
-#     window.window.configure(stackmode=StackMode.Above)
+@hook.subscribe.client_focus
+def client_focus(window):
+    # qtile 0.21 implemented _NET_WM_STATE_FOCUSED
+    # if fullscreen windows have this set tabbing out of them removes it
+    # this re-sets the _NET_WM_STATE_FULLSCREEN state
+    # setting the stackmode of the new window directly afterwards doesn't work so the focused state is removed early
+    if window.fullscreen:
+        focused = window.qtile.core.conn.atoms["_NET_WM_STATE_FOCUSED"]
+        state = list(window.window.get_property("_NET_WM_STATE", "ATOM", unpack=int))
+        if focused in state:
+            state.remove(focused)
+            window.window.set_property("_NET_WM_STATE", state)
 
 floating_types = ["notification", "toolbar", "splash", "dialog"]
 
