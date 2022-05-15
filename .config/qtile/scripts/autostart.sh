@@ -19,3 +19,4 @@ kdeconnect-indicator &
 morgen --hidden &
 insync start &
 flameshot &
+setxkbmap -option ctrl:swapcaps
