@@ -1,5 +1,5 @@
 
-# EXPORT 
+# EXPORT
 set fish_greeting                                 # Supresses fish's intro message
 set TERM "xterm-256color"                         # Sets the terminal type
 
@@ -44,7 +44,7 @@ function fish_prompt --description 'Write out the prompt'
     set_color $fish_color_user --bold
     echo -n (prompt_pwd)
     set_color normal --bold
-    
+
     echo -n ' $ '
 
 end
@@ -73,6 +73,10 @@ alias f='commandline -i "sudo $history[1]";history delete --exact --case-sensiti
 alias vim='nvim'
 
 alias qlog='watch -n 0.5 tail ~/.local/share/qtile/qtile.log -n 30'
+
+alias vc='python -m venv .venv'
+alias va='source ./.venv/bin/activate.fish'
+alias vv='source ./.venv/bin/activate.fish & nvim .'
 
 # Directory cd
 

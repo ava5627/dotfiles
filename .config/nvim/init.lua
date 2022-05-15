@@ -1,16 +1,17 @@
-require "user.options"
-require "user.keymaps"
-require "user.plugins"
-require "user.colorscheme"
-require "user.cmp"
-require "user.lsp"
-require "user.telescope"
-require "user.treesitter"
-require "user.tabnine"
-require "user.autopairs"
-require "user.statusline"
-require "user.comment"
-require "user.gitsigns"
-require "user.nvim-tree"
-require "user.toggleterm"
-require "user.jaq"
+require("user.options")
+require("user.keymaps")
+require("user.plugins")
+require("user.colorscheme")
+require("user.cmp")
+require("user.lsp")
+require("user.telescope")
+require("user.treesitter")
+require("user.tabnine")
+require("user.autopairs")
+require("user.statusline")
+require("user.comment")
+require("user.gitsigns")
+require("user.nvim-tree")
+require("user.toggleterm")
+require("user.dial")
+require("user.dashboard")

@@ -8,7 +8,7 @@ local actions = require "telescope.actions"
 telescope.setup {
     defaults = {
 
-        prompt_prefix = " ",
+        prompt_prefix = "  ",
         selection_caret = " ",
         path_display = { "smart" },
         mappings = {
@@ -90,6 +90,11 @@ telescope.setup {
         -- extension_name = {
         --     extension_config_key = value,
         -- }
+        project = {
+            hidden_files = false,
+        }
         -- please take a look at the readme of the extension you want to configure
     },
 }
+
+require'telescope'.load_extension('project')

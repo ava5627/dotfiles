@@ -3,11 +3,12 @@ local options = {
     showmode = false,
     backup = false,                          -- creates a backup file
     clipboard = "unnamedplus",               -- allows neovim to access the system clipboard
+    colorcolumn = '120',
     cmdheight = 2,                           -- more space in the neovim command line for displaying messages
     completeopt = { "menuone", "noselect" }, -- mostly just for cmp
     conceallevel = 0,                        -- so that `` is visible in markdown files
-    fileencoding = "utf-8",                  -- the encoding written to a file
-    --hlsearch = true,                         -- highlight all matches on previous search pattern
+    encoding = "utf-8",                  -- the encoding written to a file
+    -- hlsearch = true,                         -- highlight all matches on previous search pattern
     ignorecase = true,                       -- ignore case in search patterns
     mouse = "a",                             -- allow the mouse to be used in neovim
     pumheight = 10,                          -- pop up menu height
@@ -34,8 +35,8 @@ local options = {
     scrolloff = 8,                           -- scroll 8 lines from end of screen
     sidescrolloff = 8,                       -- scroll 8 columns from edge of screen
     -- spell = true,
-    -- spelllang = { 'en_us'
-    guifont = "monospace:h17",               -- the font used in graphical neovim applications }
+    -- spelllang = {'en_us'}
+    -- guifont = "monospace:h17",               -- the font used in graphical neovim applications
 }
 
 vim.opt.shortmess:append "c"

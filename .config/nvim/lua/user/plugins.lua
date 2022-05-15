@@ -57,6 +57,7 @@ return packer.startup(function(use)
     }
     use {
         "github/copilot.vim",
+        commit = "573da1a"
     }
     use "f3fora/cmp-spell"
     use "jeetsukumaran/vim-indentwise"
@@ -65,10 +66,10 @@ return packer.startup(function(use)
     use "L3MON4D3/LuaSnip" --snippet engine
     use "rafamadriz/friendly-snippets" -- a bunch of snippets to use
 
+
     --lsp
     use "neovim/nvim-lspconfig"
     use "williamboman/nvim-lsp-installer"
-    use "jose-elias-alvarez/null-ls.nvim"
 
 
     -- colorschemes
@@ -77,42 +78,57 @@ return packer.startup(function(use)
     use "sainnhe/sonokai"
 
     -- utility
-    use {
-        "norcalli/nvim-colorizer.lua",
-        config = function() require'colorizer'.setup() end,
-    }
     use "windwp/nvim-autopairs"
     use "tpope/vim-surround"
     use "nvim-lualine/lualine.nvim"
+    -- use "akinsho/bufferline.nvim"
     use "numToStr/Comment.nvim" -- Easily comment stuff
     use {
-      "yamatsum/nvim-nonicons",
-      requires = {"kyazdani42/nvim-web-devicons"}
+        "kyazdani42/nvim-web-devicons",
+        config = function() require'nvim-web-devicons'.setup() end,
     }
+    -- use {
+    --   "yamatsum/nvim-nonicons",
+    --   requires = {"kyazdani42/nvim-web-devicons"}
+    -- }
     use "antoinemadec/FixCursorHold.nvim"
     use {
         "psliwka/vim-smoothie",
         config = function() vim.g.smoothie_speed_linear_factor=15 end
     }
+    use "monaqa/dial.nvim"
+    use "tpope/vim-repeat"
+    use "glepnir/dashboard-nvim"
+
+    -- highlighting
     use {
-      'Fymyte/rasi.vim',
-      ft = 'rasi',
+        "norcalli/nvim-colorizer.lua",
+        config = function() require'colorizer'.setup() end,
     }
-    use "AndrewRadev/switch.vim"
+    use {
+      "Fymyte/rasi.vim",
+      ft = "rasi",
+    }
+    use "mechatroner/rainbow_csv"
 
 
     -- nvim-tree
     use "kyazdani42/nvim-tree.lua"
 
     -- Code Running/Debugging
-    use "is0n/jaq-nvim"
-    use "puremourning/vimspector"
+    -- use "puremourning/vimspector"
+    use "mfussenegger/nvim-dap"
+    use "Pocco81/DAPInstall.nvim"
 
     -- Toggle Term
-    use "akinsho/toggleterm.nvim"
+    use {
+        "akinsho/toggleterm.nvim",
+        branch = "main"
+    }
 
     --Telescope
     use "nvim-telescope/telescope.nvim"
+    use "nvim-telescope/telescope-project.nvim"
 
     --Treesitter
     use {

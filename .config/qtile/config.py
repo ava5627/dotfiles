@@ -1,4 +1,4 @@
-# Copyright (c) 2010 Aldo Cortesi
+# 0 Copyright (c) 2010 Aldo Cortesi
 # Copyright (c) 2010, 2014 dequis
 # Copyright (c) 2012 Randall Ma
 # Copyright (c) 2012-2014 Tycho Andersen
@@ -23,10 +23,9 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
 import os
 import subprocess
-import importlib
-import sys
 import yaml
 
 from Xlib import display as xdisplay
@@ -36,15 +35,10 @@ from libqtile import bar, layout, widget, hook, qtile
 from libqtile.config import Click, Drag, Match, Screen, EzKey
 from libqtile.log_utils import logger
 from libqtile.lazy import lazy
+from groups import groups_list, group_keys
 
-# Config imports
-def reload(module):
-    if module in sys.modules:
-        importlib.reload(sys.modules[module])
+groups = groups_list
 
-reload('groups')
-from groups import groups, group_keys
-groups = groups
 
 @lazy.function
 def top_window(qtile):
@@ -53,6 +47,7 @@ def top_window(qtile):
 # @lazy.function
 # def test(qtile):
 #     pass
+
 
 # https://github.com/ValveSoftware/steam-for-linux/issues/2685
 # https://old.reddit.com/r/i3wm/comments/9i81rf/close_steam_to_tray_instead_of_killing_the_process/
@@ -73,6 +68,7 @@ def print_debug(obj):
         ostr += f"{k}: {odict[k]}\n"
     logger.warning(ostr)
 
+
 theme = os.path.expanduser('~') + '/.config/qtile/themes/blue.yml'
 with open(theme) as theme_file:
     colors = yaml.load(theme_file, yaml.Loader)
@@ -80,72 +76,75 @@ with open(theme) as theme_file:
 powerline_colors = [colors[6], colors[5]]
 
 mod = "mod4"
+home = os.path.expanduser('~')
 terminal = "alacritty"
 file_manager = "pcmanfm"
 browser = "firefox"
 calendar = "morgen"
-rofi_cmd = ".config/rofi/launchers/colorful/launcher.sh"
-rofi_scripts = ".config/rofi/scripts/"
+rofi_cmd = "colorful_launcher"
+rofi_scripts = home + "/.config/rofi/scripts/"
 
 my_keys = [
     # window keys
-    ["M-j", 	                    lazy.group.next_window(), top_window,   	                    "Move focus next",],
-    ["M-k", 	                    lazy.group.prev_window(), top_window,   	                    "Move focus prev",],
-    # ["M-o", 	                    test,   	                                                    "Top window",],
-    ["M-i", 	                    top_window,   	                                                    "Top window",],
-    ["M-h", 	                    lazy.layout.shrink_main(), 	                                    "Grow main window",],
-    ["M-l", 	                    lazy.layout.grow_main(), 	                                    "Shrink main window",],
-    ["M-S-h", 	                    lazy.layout.shrink(), 	                                        "Grow window",],
-    ["M-S-l", 	                    lazy.layout.grow(), 	                                        "Shrink window",],
-    ["M-S-j", 	                    lazy.layout.shuffle_down(), 	                                "Move window down",],
-    ["M-S-k", 	                    lazy.layout.shuffle_up(),  	                                    "Move window up",],
-    ["M-<Tab>", 	                lazy.next_layout(),  	                                        "Toggle between layouts",],
-    ["M-f", 	                    lazy.window.toggle_floating(), 	                                "toggle floating",],
-    ["M-S-f",         	            lazy.window.toggle_fullscreen(),  	                            "toggle fullscreen",],
-    ["M-S-<Right>", 	            lazy.next_screen(), 	                                        "Move focus to next monitor",],
-    ["M-S-<Left>", 	                lazy.prev_screen(), 	                                        "Move focus to prev monitor",],
+    ["M-j", 	                    lazy.group.next_window(), top_window,   	         "Move focus next"],
+    ["M-k", 	                    lazy.group.prev_window(), top_window,   	         "Move focus prev"],
+    # ["M-o", 	                    test,   	                                         "Top window"],
+    ["M-h", 	                    lazy.layout.shrink_main(), 	                         "Grow main window"],
+    ["M-l", 	                    lazy.layout.grow_main(), 	                         "Shrink main window"],
+    ["M-S-h", 	                    lazy.layout.shrink(), 	                             "Grow window"],
+    ["M-S-l", 	                    lazy.layout.grow(), 	                             "Shrink window"],
+    ["M-S-j", 	                    lazy.layout.shuffle_down(), 	                     "Move window down"],
+    ["M-S-k", 	                    lazy.layout.shuffle_up(),  	                         "Move window up"],
+    ["M-<Tab>", 	                lazy.next_layout(),  	                             "Toggle between layouts"],
+    ["M-f", 	                    lazy.window.toggle_floating(), 	                     "toggle floating"],
+    ["M-S-f",         	            lazy.window.toggle_fullscreen(),  	                 "toggle fullscreen"],
+    ["M-S-<Right>", 	            lazy.next_screen(), 	                             "Move focus to next monitor"],
+    ["M-S-<Left>", 	                lazy.prev_screen(), 	                             "Move focus to prev monitor"],
 
     # launch keys
-    ["M-e", 	                    lazy.spawn(terminal),  	                                        "Launch Terminal",],
-    ["M-<Return>", 	                lazy.spawn(terminal),  	                                        "Launch Terminal alt",],
-    ["M-b", 	                    lazy.spawn(terminal + " -e btop"),                              "Launch BTOP",],
-    ["M-m", 	                    lazy.spawn(file_manager),  	                                    "Launch File manager",],
-    ["M-u", 	                    lazy.spawn('steam steam://open/friends'),  	                    "Launch Steam Friends",],
-    ["M-w", 	                    lazy.spawn("firefox"),                                          "Launch Firefox",],
-    ["M-S-w", 	                    lazy.spawn("firefox -private-window"),                          "Launch Private Firefox",],
-    ["M-z", 	                    lazy.spawn("qalculate-gtk"),                                    "Launch Calculator",],
-    ["M-S-e", 	                    lazy.spawn("copyq show"), 	                                    "Show Copyq",],
-    ["M-r", 	                    lazy.spawn(rofi_cmd + " -show run -i", shell=True), 	        "Run Launcher",],
-    ["M-S-r", 	                    lazy.spawn(rofi_cmd + " -show drun -i", shell=True),            "Application Launcher",],
-    ["M-c", 	                    lazy.spawn(rofi_scripts + "edit_configs"), 	                    "Config Launcher",],
-    ["<Print>",                     lazy.spawn("flameshot gui"),                                    "Take Screenshot",],
+    ["M-e", 	                    lazy.spawn(terminal),  	                             "Launch Terminal"],
+    ["M-<Return>", 	                lazy.spawn(terminal),  	                             "Launch Terminal alt"],
+    ["M-b", 	                    lazy.spawn(terminal + " -e btop"),                   "Launch BTOP"],
+    ["M-m", 	                    lazy.spawn(file_manager),  	                         "Launch File manager"],
+    ["M-u", 	                    lazy.spawn("steam steam://open/friends"),  	         "Launch Steam Friends"],
+    ["M-w", 	                    lazy.spawn("firefox"),                               "Launch Firefox"],
+    ["M-S-w", 	                    lazy.spawn("firefox -private-window"),               "Launch Private Firefox"],
+    ["M-z", 	                    lazy.spawn("qalculate-gtk"),                         "Launch Calculator"],
+    ["M-S-e", 	                    lazy.spawn("copyq show"), 	                         "Show Copyq"],
+    ["M-r", 	                    lazy.spawn(rofi_cmd + " -show run -i", shell=True),  "Run Launcher"],
+    ["M-S-r", 	                    lazy.spawn(rofi_cmd + " -show drun -i", shell=True), "Application Launcher"],
+    ["M-c", 	                    lazy.spawn(rofi_scripts + "edit_configs"), 	         "Config Launcher"],
+    ["M-v", 	                    lazy.spawn(terminal + " -e nvim"),                   "Launch Neovim"],
+    ["<Print>",                     lazy.spawn("flameshot gui"),                         "Take Screenshot"],
 
     # command keys
-    ["M-C-r", 	                    lazy.reload_config(),  	                                        "Reload the config",],
-    ["M-A-r", 	                    lazy.restart(),  	                                            "Restart Qtile",],
-    ["M-C-q", 	                    lazy.shutdown(),    	                                        "Shutdown Qtile",],
-    ["M-q", 	                    kill_or_steam,  	                                            "Kill focused window",],
-    ["M-<F1>", 	                    lazy.spawn("arcolinux-logout"), 	                            "Logout Menu",],
-    ["M-<F2>", 	                    lazy.spawn("systemctl suspend"),           	                    "Suspend",],
-    ["<XF86AudioRaiseVolume>",  	lazy.spawn("amixer -q -D pulse set Master 5%+"), 	            "Raise volume by 5%",],
-    ["<XF86AudioLowerVolume>", 	    lazy.spawn("amixer -q -D pulse set Master 5%-"), 	            "Lower volume by 5%",],
-    ["<XF86AudioMute>",             lazy.spawn("amixer -q -D pulse set Master toggle"),             "Toggle Mute",],
-    ["<XF86AudioPlay>", 	        lazy.spawn("playerctl play-pause"), 	                        "Play/Pause",],
-    ["M-p", 	                    lazy.spawn("playerctl play-pause"), 	                        "Play/Pause",],
-    ["M-n", 	                    lazy.spawn("playerctl next"),                                   "Next",],
+    ["M-C-r", 	                    lazy.reload_config(),  	                             "Reload Qtile config"],
+    ["M-A-r", 	                    lazy.restart(),  	                                 "Restart Qtile"],
+    ["M-C-q", 	                    lazy.shutdown(),    	                             "Shutdown Qtile"],
+    ["M-q", 	                    kill_or_steam,  	                                 "Kill focused window"],
+    ["M-<F1>", 	                    lazy.spawn("archlinux-logout"), 	                 "Logout Menu"],
+    ["M-<F2>", 	                    lazy.spawn("systemctl suspend"),           	         "Suspend"],
+    ["<XF86AudioRaiseVolume>",  	lazy.spawn("amixer -q -D pulse set Master 5%+"), 	 "Raise volume by 5%"],
+    ["<XF86AudioLowerVolume>", 	    lazy.spawn("amixer -q -D pulse set Master 5%-"), 	 "Lower volume by 5%"],
+    ["<XF86AudioMute>",             lazy.spawn("amixer -q -D pulse set Master toggle"),  "Toggle Mute"],
+    ["<XF86AudioPlay>", 	        lazy.spawn("playerctl play-pause"), 	             "Play/Pause"],
+    ["M-p", 	                    lazy.spawn("playerctl play-pause"), 	             "Play/Pause"],
+    ["M-n", 	                    lazy.spawn("playerctl next"),                        "Next"],
 ]
+
 
 my_keys += group_keys
 keys = [EzKey(bind, *cmd, desc=desc) for bind, *cmd, desc in my_keys]
 
 
-layout_theme = {"border_width": 2,
-                "margin": 4,
-                "border_focus": colors[3],
-                "border_normal": colors[1],
-                "single_border_width": 0,
-                "single_margin": 0,
-            }
+layout_theme = {
+    "border_width": 2,
+    "margin": 4,
+    "border_focus": colors[3],
+    "border_normal": colors[1],
+    "single_border_width": 0,
+    "single_margin": 0,
+}
 
 layouts = [
     layout.MonadTall(**layout_theme),
@@ -164,13 +163,11 @@ layouts = [
 ]
 
 
-
-
 widget_defaults = dict(
     font='Source Code Pro',
     fontsize=12,
     padding=2,
-    foreground = colors[2],
+    foreground=colors[2],
     background=colors[0]
 )
 extension_defaults = widget_defaults.copy()
@@ -186,9 +183,9 @@ def make_powerline(widgets):
         powerline.append(
             widget.TextBox(
                 font='Source Code Pro',
-                foreground = bg,
-                background = fg,
-                text="", # Icon: nf-oct-triangle_left
+                foreground=bg,
+                background=fg,
+                text="",  # Icon: nf-oct-triangle_left
                 fontsize=18,
                 padding=0,
             )
@@ -202,45 +199,46 @@ def make_powerline(widgets):
             powerline.append(w)
     return powerline
 
+
 def make_widgets(screen):
     widget_list = [
         widget.Sep(
-            linewidth = 0,
-            padding = 6,
-            background = colors[0]
+            linewidth=0,
+            padding=6,
+            background=colors[0]
         ),
         widget.GroupBox(
-            font = 'Source Code Pro Bold',
-            margin_y = 3,
-            margin_x = 0,
-            padding_y = 5,
-            padding_x = 3,
-            borderwidth = 3,
-            active = colors[8],
-            inactive = colors[2],
-            rounded = False,
-            highlight_method = "block",
-            this_current_screen_border = colors[7],
-            this_screen_border = colors [4],
-            other_current_screen_border = colors[7],
-            other_screen_border = colors[4],
-            # visible_groups = [g.name for g in groups if group_screen(g) == screen]
+            font='Source Code Pro Bold',
+            margin_y=3,
+            margin_x=0,
+            padding_y=5,
+            padding_x=3,
+            borderwidth=3,
+            active=colors[8],
+            inactive=colors[2],
+            rounded=False,
+            highlight_method="block",
+            this_current_screen_border=colors[7],
+            this_screen_border=colors[4],
+            other_current_screen_border=colors[7],
+            other_screen_border=colors[4],
+            # visible_groups=[g.name for g in groups if group_screen(g) == screen]
         ),
         widget.TaskList(
-            rounded = False,
+            rounded=False,
             background=colors[0],
-            highlight_method = "block",
+            highlight_method="block",
             margin_y=0,
             margin_x=0,
             padding_y=4,
             padding_x=3,
-            borderwidth = 3,
-            icon_size = 0,
+            borderwidth=3,
+            icon_size=0,
             border=colors[3],
         ),
         widget.Sep(
-            linewidth = 0,
-            padding = 6,
+            linewidth=0,
+            padding=6,
         ),
         # widget.Prompt(),
         # widget.WindowName(),
@@ -253,66 +251,61 @@ def make_widgets(screen):
     ]
     pl_list = [
         widget.CPU(
-            padding = 6,
+            padding=6,
         ),
         widget.Memory(
-            format = '{MemUsed: .0f}{mm} /{MemTotal: .0f}{mm}',
-            mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(terminal + ' -e btop')},
-            padding = 5
+            format='{MemUsed: .0f}{mm} /{MemTotal: .0f}{mm}',
+            mouse_callbacks={'Button1': lambda: qtile.cmd_spawn(terminal + ' -e btop')},
+            padding=5
         ),
         widget.Net(
-            format = '{down} ↓↑ {up}',
-            # prefix = 'M',
-            padding = 5
+            format='{down} ↓↑ {up}',
+            # prefix='M',
+            padding=5
         ),
-        [widget.TextBox(
-            text = " Vol:",
-            padding = 0,
-            mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('pavucontrol')},
+        widget.PulseVolume(
+            fmt='Vol: {}',
+            padding=5,
+            mouse_callbacks={
+                'Button1': lambda: qtile.cmd_spawn('pavucontrol'),
+                'Button3': lambda: qtile.cmd_spawn('amixer -q -D pulse set Master toggle')
+            },
+            step=5,
         ),
-        widget.Volume(
-            padding = 5,
-            mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('pavucontrol')},
-            mute_command = 'amixer -q -D pulse set Master toggle',
-            volume_up_command = 'amixer -q -D pulse set Master 5%+',
-            volume_down_command = 'amixer -q -D pulse set Master 5%-',
-            get_volume_command = 'amixer -D pulse get Master'.split(),
-        )],  
         widget.CurrentLayout(
-            padding = 5
+            padding=5
         ),
         widget.CheckUpdates(
-            update_interval = 3600,
-            distro = "Arch_checkupdates",
-            display_format = "{updates} Updates",
-            foreground = colors[2],
-            mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(terminal + ' -e sudo pacman -Syu')},
-            background = colors[5],
-            no_update_string = '0 Updates',
-            padding = 5,
+            update_interval=3600,
+            distro="Arch_checkupdates",
+            display_format="{updates} Updates",
+            foreground=colors[2],
+            mouse_callbacks={'Button1': lambda: qtile.cmd_spawn(terminal + ' -e sudo pacman -Syu')},
+            background=colors[5],
+            no_update_string='0 Updates',
+            padding=5,
         ),
         widget.Clock(
-            font = 'Source Code Pro Bold',
-            padding = 5,
-            format = "%A, %B %d - %H:%M ",
-            # mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(calendar)},
+            font='Source Code Pro Bold',
+            padding=5,
+            format="%A, %B %d - %H:%M ",
+            mouse_callbacks={'Button1': lambda: qtile.cmd_spawn('xdotool key "alt+c"')},
         ),
     ]
 
     systray = [
         widget.Systray(
-            icon_size = 20,
-            padding = 5,
+            icon_size=20,
+            padding=5,
         ),
         widget.Sep(
-            linewidth = 0,
-            padding = 6,
+            linewidth=0,
+            padding=6,
         ),
     ]
-    
+
     if screen == 0:
         pl_list.insert(-1, systray)
-
 
     widget_list += make_powerline(pl_list)
     return widget_list
@@ -334,16 +327,18 @@ def get_num_monitors():
                 preferred = monitor.num_preferred
             if preferred:
                 num_monitors += 1
-    except Exception as _:
+    except Exception as e:
         # always setup at least one monitor
+        logger.error(f"Exception while getting num monitors: {e}")
         return 1
     else:
         return num_monitors
 
+
 num_monitors = get_num_monitors()
 
 
-screens = [Screen(top=bar.Bar(widgets=make_widgets(i), size = 24)) for i in range(num_monitors)]
+screens = [Screen(top=bar.Bar(widgets=make_widgets(i), size=24)) for i in range(num_monitors)]
 
 
 # Drag floating layouts.
@@ -356,30 +351,30 @@ mouse = [
 ]
 
 dgroups_key_binder = None
-dgroups_app_rules = [] 
-follow_mouse_focus = True 
+dgroups_app_rules = []
+follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
 floating_layout = layout.Floating(float_rules=[
-        # Run the utility of `xprop` to see the wm class and name of an X client.
-        *layout.Floating.default_float_rules,
-        Match(wm_class='copyq'),
-        Match(wm_class='qalculate-gtk'),
-        Match(title='Friends List'),
-        Match(title='Volume Control'),
-        Match(wm_class='confirmreset'),  # gitk
-        Match(wm_class='makebranch'),  # gitk
-        Match(wm_class='maketag'),  # gitk
-        Match(wm_class='ssh-askpass'),  # ssh-askpass
-        Match(title='branchdialog'),  # gitk
-        Match(title='pinentry'),  # GPG key password entry
-        Match(wm_class='Arcolinux-welcome-app.py'),
-        Match(wm_class='Arcolinux-tweak-tool.py'),
-        Match(wm_class='Arcolinux-calamares-tool.py'),
-        Match(wm_class='Arandr'),
-        Match(wm_class='feh'),
-        Match(wm_class='arcolinux-logout'),
-    ],
+    # Run the utility of `xprop` to see the wm class and name of an X client.
+    *layout.Floating.default_float_rules,
+    Match(wm_class='copyq'),
+    Match(wm_class='qalculate-gtk'),
+    Match(title='Friends List'),
+    Match(title='Volume Control'),
+    Match(wm_class='confirmreset'),  # gitk
+    Match(wm_class='makebranch'),  # gitk
+    Match(wm_class='maketag'),  # gitk
+    Match(wm_class='ssh-askpass'),  # ssh-askpass
+    Match(title='branchdialog'),  # gitk
+    Match(title='pinentry'),  # GPG key password entry
+    Match(wm_class='Arcolinux-welcome-app.py'),
+    Match(wm_class='Arcolinux-tweak-tool.py'),
+    Match(wm_class='Arcolinux-calamares-tool.py'),
+    Match(wm_class='Arandr'),
+    Match(wm_class='feh'),
+    Match(wm_class='arcolinux-logout'),
+],
     border_focus=colors[7],
     border_normal=colors[4],
     border_width=2,
@@ -392,19 +387,21 @@ reconfigure_screens = True
 # focus, should we respect this or not?
 auto_minimize = False
 
+
 @hook.subscribe.startup_once
 def start_once():
     if len(qtile.screens) > 1:
-        qtile.groups_map['a'].cmd_toscreen(1, toggle=False)
-        qtile.groups_map['1'].cmd_toscreen(0, toggle=False)
-    home = os.path.expanduser('~')
+        qtile.groups_map['a'].cmd_toscreen(1)
+        qtile.groups_map['1'].cmd_toscreen(0)
     subprocess.call([home + '/.config/qtile/scripts/autostart.sh'])
+
 
 @hook.subscribe.client_new
 def set_floating(window):
     if (window.window.get_wm_transient_for()
             or window.window.get_wm_type() in floating_types):
         window.floating = True
+
 
 @hook.subscribe.client_focus
 def client_focus(window):
@@ -418,6 +415,7 @@ def client_focus(window):
         if focused in state:
             state.remove(focused)
             window.window.set_property("_NET_WM_STATE", state)
+
 
 floating_types = ["notification", "toolbar", "splash", "dialog"]
 

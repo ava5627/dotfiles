@@ -112,6 +112,9 @@ cmp.setup {
             return vim_item
         end,
     },
+    window = {
+        documentation = cmp.config.window.bordered()
+    },
     sources = {
         { name = "nvim_lsp" },
         { name = 'cmp_tabnine' },
@@ -124,9 +127,6 @@ cmp.setup {
     confirm_opts = {
         behavior = cmp.ConfirmBehavior.Replace,
         select = false,
-    },
-    documentation = {
-        border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
     },
     experimental = {
         ghost_text = false,

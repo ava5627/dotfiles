@@ -16,8 +16,8 @@ kmap("n", "<A-a>", ":nohl<cr>", opts)
 kmap("n", "<a-o>", "moO<esc>`o", opts)
 
 -- Better window navigation
-kmap("n", "<leader>l", ":bnext<cr>", opts)
-kmap("n", "<leader>h", ":bprevious<cr>", opts)
+kmap("n", "<leader>h", ":bnext<cr>", opts)
+kmap("n", "<leader>l", ":bprevious<cr>", opts)
 
 -- kmap("n", "<C-[", ":cprevious<cr>", opts)
 -- kmap("n", "<C-]", ":cnext<cr>", opts)
@@ -76,9 +76,11 @@ kmap("v", "p", '"_dP', opts)
 
 -- Telescope
 kmap("n", "<leader>pp", "<cmd>Telescope find_files<cr>", opts)
+kmap("n", "<leader>ph", "<cmd>Telescope find_files<cr>", opts)
 kmap("n", "<leader>pg", "<cmd>Telescope live_grep<cr>", opts)
 kmap("n", "<leader>pw", "<cmd>lua require('telescope.builtin').grep_string { search = vim.fn.expand(\"<cword>\") }<cr>", opts)
 kmap("n", "<leader>pb", "<cmd>Telescope buffers<cr>", opts)
+kmap("n", "<leader>po", "<cmd>Telescope project project<cr>", opts)
 
 -- LSP
 kmap("n", "<leader>m", ":Format<cr>", opts)
@@ -88,9 +90,6 @@ kmap("n", "<leader>gs", ":G<cr>", opts)
 kmap("n", "<leader>gf", ":diffget //2<cr>", opts)
 kmap("n", "<leader>gj", ":diffget //3<cr>", opts)
 
--- Debuger
-vim.g.vimspector_enable_mappings = 'HUMAN'
-kmap("n", "<leader>d", ":VimspectorReset<cr>", opts)
 
 -- Toggle Term
 kmap("n", "<C-t>p", "<cmd>lua _PYTHON_TOGGLE()<cr>", opts)
@@ -105,23 +104,34 @@ kmap("i", "<C-q><C-q>", "<C-o>:Copilot disable<cr>", opts)
 kmap("i", "<C-q><C-e>", "<C-o>:Copilot enable<cr>", opts)
 vim.g.copilot_no_tab_map = true
 
--- Switch
-vim.g.switch_mapping = '<C-q>'
-
-vim.g.switch_custom_definitions = {
-}
+-- Dial
+vim.api.nvim_set_keymap("n", "<C-a>", require("dial.map").inc_normal(), {noremap = true})
+vim.api.nvim_set_keymap("n", "<C-x>", require("dial.map").dec_normal(), {noremap = true})
+vim.api.nvim_set_keymap("v", "<C-a>", require("dial.map").inc_visual(), {noremap = true})
+vim.api.nvim_set_keymap("v", "<C-x>", require("dial.map").dec_visual(), {noremap = true})
+vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual(), {noremap = true})
+vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual(), {noremap = true})
 
 -- Yank
-vim.cmd [[ 
+vim.cmd [[
     augroup highlight_yank
     autocmd!
     autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank({timeout = 40})
     augroup END
 ]]
 
--- Fix alacritty -e bug
+
+-- Remove trailing whitespace
 vim.cmd [[
-    augroup fix
+    augroup trim_whitespace
+    autocmd!
+    autocmd BufWritePre * %s/\s\+$//e
+]]
+
+-- Fix alacritty -e bug
+-- disable copilot
+vim.cmd [[
+    augroup vim_enter
     autocmd!
     autocmd VimEnter * :silent exec "!kill -s SIGWINCH" getpid()
     autocmd VimEnter * :Copilot disable

@@ -21,9 +21,9 @@ lsp_installer.on_server_ready(function(server)
 		opts = vim.tbl_deep_extend("force", sumneko_opts, opts)
 	end
 
-	if server.name == "pyright" then
-		local pyright_opts = require("user.lsp.settings.pyright")
-		opts = vim.tbl_deep_extend("force", pyright_opts, opts)
+	if server.name == "pylsp" then
+		local pylsp_opts = require("user.lsp.settings.pylsp")
+		opts = vim.tbl_deep_extend("force", pylsp_opts, opts)
 	end
 
     -- if server.name == "ccls" then
