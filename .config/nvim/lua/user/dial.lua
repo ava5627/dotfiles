@@ -1,5 +1,6 @@
-local status_ok, _ = pcall(require, "dial")
+local status_ok, _ = pcall(require, "dial.augend")
 if not status_ok then
+    vim.notify("dial not found")
     return
 end
 local augend = require("dial.augend")

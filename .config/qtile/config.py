@@ -75,7 +75,15 @@ with open(theme) as theme_file:
 
 powerline_colors = [colors[6], colors[5]]
 
-mod = "mod4"
+
+EzKey.modifier_keys = {
+    'M': 'mod4',
+    'A': 'mod1',
+    'S': 'shift',
+    'C': 'control',
+    'H': 'mod3',
+}
+mod = 'mod4'
 home = os.path.expanduser('~')
 terminal = "alacritty"
 file_manager = "pcmanfm"

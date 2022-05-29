@@ -109,8 +109,6 @@ return packer.startup(function(use)
       "Fymyte/rasi.vim",
       ft = "rasi",
     }
-    use "mechatroner/rainbow_csv"
-
 
     -- nvim-tree
     use "kyazdani42/nvim-tree.lua"

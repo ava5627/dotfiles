@@ -11,11 +11,21 @@ end
 fish_add_path "$HOME/.local/bin"
 fish_add_path "$HOME/.config/rofi/bin"
 
+set XDG_CONFIG_HOME "$HOME/.config"
+set XDG_CACHE_HOME "$HOME/.cache"
+set XDG_DATA_HOME "$HOME/.local/share"
+set XDG_STATE_HOME "$HOME/.local/state"
+
 set fish_color_host $fish_color_user
 set fish_color_cwd magenta #$fish_color_param
 set -g fish_prompt_pwd_dir_length 0
 
 set EDITOR nvim
+
+# clean home dir
+set NPM_CONFIG_USERCONFIG "$XDG_CONFIG_HOME/npm/npmrc"
+set CUDA_CACHE_PATH "$XDG_CACHE_HOME/nv"
+set HISTFILE = "$XDG_STATE_HOME/bash/history"
 
 function fish_user_key_bindings
     fish_vi_key_bindings

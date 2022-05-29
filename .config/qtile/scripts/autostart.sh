@@ -19,4 +19,5 @@ kdeconnect-indicator &
 morgen --hidden &
 insync start &
 flameshot &
-setxkbmap -option ctrl:swapcaps
+# setxkbmap -option ctrl:swapcaps &
+# xcape -e "Control_L=Escape" &
