@@ -92,6 +92,7 @@ return packer.startup(function(use)
     --   requires = {"kyazdani42/nvim-web-devicons"}
     -- }
     use "antoinemadec/FixCursorHold.nvim"
+    use "lukas-reineke/indent-blankline.nvim"
     use {
         "psliwka/vim-smoothie",
         config = function() vim.g.smoothie_speed_linear_factor=15 end
