@@ -38,16 +38,16 @@ packer.init {
 -- Install your plugins here
 return packer.startup(function(use)
     -- My plugins here
-    use "wbthomason/packer.nvim" -- Have packer manage itself
-    use "nvim-lua/popup.nvim" -- An implementation of the Popup API from vim in Neovim
-    use "nvim-lua/plenary.nvim" -- Useful lua functions used ny lots of plugins
+    use "wbthomason/packer.nvim"
+    use "nvim-lua/popup.nvim"
+    use "nvim-lua/plenary.nvim"
 
     --cmp
-    use "hrsh7th/nvim-cmp" -- The completion plugin
-    use "hrsh7th/cmp-buffer" -- buffer completions
-    use "hrsh7th/cmp-path" -- path completions
-    use "hrsh7th/cmp-cmdline" -- cmdline completions
-    use "saadparwaiz1/cmp_luasnip" -- snippet completions
+    use "hrsh7th/nvim-cmp"
+    use "hrsh7th/cmp-buffer"
+    use "hrsh7th/cmp-path"
+    use "hrsh7th/cmp-cmdline"
+    use "saadparwaiz1/cmp_luasnip"
     use "hrsh7th/cmp-nvim-lsp"
     use "hrsh7th/cmp-nvim-lua"
  	use {
@@ -60,11 +60,10 @@ return packer.startup(function(use)
         commit = "573da1a"
     }
     use "f3fora/cmp-spell"
-    use "jeetsukumaran/vim-indentwise"
 
     -- snippets
-    use "L3MON4D3/LuaSnip" --snippet engine
-    use "rafamadriz/friendly-snippets" -- a bunch of snippets to use
+    use "L3MON4D3/LuaSnip"
+    use "rafamadriz/friendly-snippets"
 
 
     --lsp
@@ -79,27 +78,24 @@ return packer.startup(function(use)
 
     -- utility
     use "windwp/nvim-autopairs"
-    use "tpope/vim-surround"
+    use "numToStr/Comment.nvim"
+
     use "nvim-lualine/lualine.nvim"
     -- use "akinsho/bufferline.nvim"
-    use "numToStr/Comment.nvim" -- Easily comment stuff
-    use {
-        "kyazdani42/nvim-web-devicons",
-        config = function() require'nvim-web-devicons'.setup() end,
-    }
-    -- use {
-    --   "yamatsum/nvim-nonicons",
-    --   requires = {"kyazdani42/nvim-web-devicons"}
-    -- }
+
     use "antoinemadec/FixCursorHold.nvim"
     use "lukas-reineke/indent-blankline.nvim"
+    use "glepnir/dashboard-nvim"
+
+    -- movement
+    use "tpope/vim-surround"
+    use "jeetsukumaran/vim-indentwise"
     use {
         "psliwka/vim-smoothie",
         config = function() vim.g.smoothie_speed_linear_factor=15 end
     }
     use "monaqa/dial.nvim"
     use "tpope/vim-repeat"
-    use "glepnir/dashboard-nvim"
 
     -- highlighting
     use {
@@ -111,8 +107,6 @@ return packer.startup(function(use)
       ft = "rasi",
     }
 
-    -- nvim-tree
-    use "kyazdani42/nvim-tree.lua"
 
     -- Code Running/Debugging
     -- use "puremourning/vimspector"
@@ -124,6 +118,17 @@ return packer.startup(function(use)
         "akinsho/toggleterm.nvim",
         branch = "main"
     }
+
+    -- nvim-tree
+    use "kyazdani42/nvim-tree.lua"
+    use {
+        "kyazdani42/nvim-web-devicons",
+        config = function() require'nvim-web-devicons'.setup() end,
+    }
+    -- use {
+    --   "yamatsum/nvim-nonicons",
+    --   requires = {"kyazdani42/nvim-web-devicons"}
+    -- }
 
     --Telescope
     use "nvim-telescope/telescope.nvim"

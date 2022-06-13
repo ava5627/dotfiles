@@ -4,5 +4,6 @@ configuration {
     show-icons:         true;
     matching:           "fuzzy";
     modi:               [window, run, drun, ssh];
+    pid:                "/run/user/1000/rofi.pid";
 }
-@theme "./launchers/colorful/style_7.rasi"
+@theme "styles/launcher/style_8.rasi"

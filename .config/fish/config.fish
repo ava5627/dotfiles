@@ -30,9 +30,9 @@ export HISTFILE="$XDG_STATE_HOME/bash/history"
 
 function fish_user_key_bindings
     # fish_vi_key_bindings
+    # bind -M insert \cq kill-whole-line
 
-    # Just clear the commandline on control-q
-    bind -M insert \cq kill-whole-line
+    bind \cq kill-whole-line
 end
 
 function fish_prompt --description 'Write out the prompt'
@@ -76,6 +76,8 @@ alias ll='lsd -l'
 alias la='lsd -A'
 alias lla='lsd -lA'
 alias lt='lsd --tree'
+
+alias ip='ip --color=auto'
 
 alias q=exit
 
