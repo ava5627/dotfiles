@@ -61,15 +61,24 @@ end
 
 # Quick aliases
 
+# clear
 alias cls='clear'
 alias c='clear'
 alias cla='clear; exec fish'
 
+# pacman
 alias pacs='sudo pacman -Syu'
+alias pacq='pacman -Q'
 alias pacr='sudo pacman -Rns'
 alias pacss='pacman -Ss'
+alias pacqs='pacman -Qs'
 alias pacar='sudo pacman -Rns (pacman -Qtdq)'
 
+# yay
+alias ys='yay -Syu'
+alias yss='yay -Ss'
+
+# ls
 alias ls='lsd'
 alias ll='lsd -l'
 alias la='lsd -A'
@@ -84,19 +93,17 @@ alias vim='nvim'
 
 alias qlog='watch -n 0.5 tail ~/.local/share/qtile/qtile.log -n 30'
 
+# python
 alias vc='python -m venv .venv'
 alias va='source ./.venv/bin/activate.fish'
 alias vv='source ./.venv/bin/activate.fish & nvim .'
+
 
 # Directory cd
 
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
-
-alias doc='cd ~/Documents'
-alias dow='cd ~/Downloads'
-alias root='cd /'
 
 # Dotfiles
 

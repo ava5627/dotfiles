@@ -105,18 +105,24 @@ kmap("i", "<C-q><C-e>", "<C-o>:Copilot enable<cr>", opts)
 vim.g.copilot_no_tab_map = true
 
 -- Dial
-vim.api.nvim_set_keymap("n", "<C-a>", require("dial.map").inc_normal(), {noremap = true})
-vim.api.nvim_set_keymap("n", "<C-x>", require("dial.map").dec_normal(), {noremap = true})
-vim.api.nvim_set_keymap("v", "<C-a>", require("dial.map").inc_visual(), {noremap = true})
-vim.api.nvim_set_keymap("v", "<C-x>", require("dial.map").dec_visual(), {noremap = true})
-vim.api.nvim_set_keymap("v", "g<C-a>", require("dial.map").inc_gvisual(), {noremap = true})
-vim.api.nvim_set_keymap("v", "g<C-x>", require("dial.map").dec_gvisual(), {noremap = true})
+kmap("n", "<C-a>", require("dial.map").inc_normal(), {noremap = true})
+kmap("n", "<C-x>", require("dial.map").dec_normal(), {noremap = true})
+kmap("v", "<C-a>", require("dial.map").inc_visual(), {noremap = true})
+kmap("v", "<C-x>", require("dial.map").dec_visual(), {noremap = true})
+kmap("v", "g<C-a>", require("dial.map").inc_gvisual(), {noremap = true})
+kmap("v", "g<C-x>", require("dial.map").dec_gvisual(), {noremap = true})
+
+-- Debugging
+vim.g.vimspector_enable_mappings = 'HUMAN'
+kmap("n", "<F3>", ":VimspectorReset<cr>", opts)
+
+
 
 -- Yank
 vim.cmd [[
     augroup highlight_yank
     autocmd!
-    autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank({timeout = 40})
+    autocmd TextYankPost * silent! lua require("vim.highlight").on_yank({timeout = 40})
     augroup END
 ]]
 
@@ -148,5 +154,5 @@ function _G.ReloadConfig()
     vim.notify("Reloaded Config")
 end
 
-vim.api.nvim_set_keymap('n', '<Leader><cr>', '<Cmd>lua ReloadConfig()<CR>', { silent = true, noremap = true })
-vim.cmd('command! ReloadConfig lua ReloadConfig()')
+vim.api.nvim_set_keymap("n", "<Leader><cr>", "<Cmd>lua ReloadConfig()<CR>", { silent = true, noremap = true })
+vim.cmd("command! ReloadConfi lua ReloadConfig()")
