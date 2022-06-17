@@ -57,7 +57,6 @@ return packer.startup(function(use)
     }
     use {
         "github/copilot.vim",
-        commit = "573da1a"
     }
     use "f3fora/cmp-spell"
 
@@ -109,9 +108,9 @@ return packer.startup(function(use)
 
 
     -- Code Running/Debugging
-    -- use "puremourning/vimspector"
-    use "mfussenegger/nvim-dap"
-    use "Pocco81/DAPInstall.nvim"
+    use "puremourning/vimspector"
+    -- use "mfussenegger/nvim-dap"
+    -- use "Pocco81/DAPInstall.nvim"
 
     -- Toggle Term
     use {

@@ -183,8 +183,8 @@ extension_defaults = widget_defaults.copy()
 def make_powerline(widgets):
     powerline = []
     for i, w in enumerate(widgets):
-        bg = powerline_colors[i % len(powerline_colors)]
-        fg = powerline_colors[(i-1) % len(powerline_colors)]
+        bg = powerline_colors[(len(widgets) - i) % len(powerline_colors)]
+        fg = powerline_colors[(len(widgets) - i - 1) % len(powerline_colors)]
         if i == 0:
             fg = colors[0]
         powerline.append(
@@ -258,6 +258,7 @@ def make_widgets(screen):
     ]
     pl_list = [
         widget.CPU(
+            format='CPU {load_percent}%',
             padding=6,
         ),
         widget.Memory(
@@ -268,10 +269,17 @@ def make_widgets(screen):
         widget.Net(
             format='{down} ↓↑ {up}',
             # prefix='M',
-            padding=5
+            padding=5,
+        ),
+        widget.Battery(
+            format=' {percent:2.0%} {char}{hour:d}:{min:02d}',
+            charge_char='+',
+            discharge_char='-',
+            empty_char='x',
+            notify_below=10,
         ),
         widget.PulseVolume(
-            fmt='Vol: {}',
+            fmt=' {}',
             padding=5,
             mouse_callbacks={
                 'Button1': lambda: qtile.cmd_spawn('pavucontrol'),
@@ -279,8 +287,9 @@ def make_widgets(screen):
             },
             step=5,
         ),
-        widget.CurrentLayout(
-            padding=5
+        widget.CurrentLayoutIcon(
+            padding=5,
+            scale=.7,
         ),
         widget.CheckUpdates(
             update_interval=3600,
