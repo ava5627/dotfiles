@@ -3,7 +3,7 @@
 ## Edited version of powermenu script from https://github.com/adi1090x/rofi
 
 dir="$HOME/.config/rofi/styles/powermenu"
-rofi_command="rofi -theme $dir/powermenu.rasi"
+rofi_command="rofi -theme $dir/powermenu.rasi -kb-select-1 s -kb-select-2 r -kb-select-3 l -kb-select-4 u"
 
 uptime=$(uptime -p | sed -e 's/up //g')
 

@@ -5,5 +5,7 @@ configuration {
     matching:           "fuzzy";
     modi:               [window, run, drun, ssh];
     pid:                "/run/user/1000/rofi.pid";
+	kb-remove-word-back: "Control+w,Control+BackSpace";
+	kb-clear-line: "Control+q";
 }
 @theme "styles/launcher/style_8.rasi"
