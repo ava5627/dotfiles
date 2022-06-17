@@ -10,9 +10,6 @@ if not status then
   --   vim.cmd [[hi Normal guibg=NONE ctermbg=NONE]]
 end
 
-vim.cmd [[
-    highlight NormalNC guibg=#1E1E1E
-    highlight NvimTreeGitDirty guifg=#FFFFFF
-    highlight EndOfBuffer guibg=NONE
-]]
-
+-- vim.api.nvim_set_hl(0, "NormalNC", {bg = "#1E1E1E"})
+vim.api.nvim_set_hl(0, "NvimTreeGitDirty", {fg = "#FFFFFF"})
+-- vim.api.nvim_set_hl(0, "EndOfBuffer", {bg = "NONE", fg="bg"})

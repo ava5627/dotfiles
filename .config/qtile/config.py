@@ -90,7 +90,6 @@ file_manager = "pcmanfm"
 browser = "firefox"
 calendar = "morgen"
 rofi_cmd = "colorful_launcher"
-rofi_scripts = home + "/.config/rofi/scripts/"
 
 my_keys = [
     # window keys
@@ -121,7 +120,7 @@ my_keys = [
     ["M-S-e", 	                    lazy.spawn("copyq show"), 	                         "Show Copyq"],
     ["M-r", 	                    lazy.spawn(rofi_cmd + " -show run -i", shell=True),  "Run Launcher"],
     ["M-S-r", 	                    lazy.spawn(rofi_cmd + " -show drun -i", shell=True), "Application Launcher"],
-    ["M-c", 	                    lazy.spawn(rofi_scripts + "edit_configs"), 	         "Config Launcher"],
+    ["M-c", 	                    lazy.spawn("edit_configs"), 	                     "Config Launcher"],
     ["M-v", 	                    lazy.spawn(terminal + " -e nvim"),                   "Launch Neovim"],
     ["<Print>",                     lazy.spawn("flameshot gui"),                         "Take Screenshot"],
 
@@ -130,7 +129,7 @@ my_keys = [
     ["M-A-r", 	                    lazy.restart(),  	                                 "Restart Qtile"],
     ["M-C-q", 	                    lazy.shutdown(),    	                             "Shutdown Qtile"],
     ["M-q", 	                    kill_or_steam,  	                                 "Kill focused window"],
-    ["M-<F1>", 	                    lazy.spawn("archlinux-logout"), 	                 "Logout Menu"],
+    ["M-<F1>", 	                    lazy.spawn("powermenu"),         	                 "Logout Menu"],
     ["M-<F2>", 	                    lazy.spawn("systemctl suspend"),           	         "Suspend"],
     ["<XF86AudioRaiseVolume>",  	lazy.spawn("amixer -q -D pulse set Master 5%+"), 	 "Raise volume by 5%"],
     ["<XF86AudioLowerVolume>", 	    lazy.spawn("amixer -q -D pulse set Master 5%-"), 	 "Lower volume by 5%"],
