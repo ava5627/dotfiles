@@ -31,7 +31,7 @@ export HISTFILE="$XDG_STATE_HOME/bash/history"
 function fish_user_key_bindings
     # fish_vi_key_bindings
     # bind -M insert \cq kill-whole-line
-
+    fish_default_key_bindings
     bind \cq kill-whole-line
 end
 
