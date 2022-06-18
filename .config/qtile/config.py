@@ -39,6 +39,9 @@ from groups import groups_list, group_keys
 
 groups = groups_list
 
+hostname = os.uname().nodename
+laptop = ('MSI' in hostname)
+
 
 @lazy.function
 def top_window(qtile):
@@ -271,13 +274,6 @@ def make_widgets(screen):
             # prefix='M',
             padding=5,
         ),
-        widget.Battery(
-            format=' {percent:2.0%} {char}{hour:d}:{min:02d}',
-            charge_char='+',
-            discharge_char='-',
-            empty_char='x',
-            notify_below=10,
-        ),
         widget.PulseVolume(
             fmt=' {}',
             padding=5,
@@ -286,10 +282,6 @@ def make_widgets(screen):
                 'Button3': lambda: qtile.cmd_spawn('amixer -q -D pulse set Master toggle')
             },
             step=5,
-        ),
-        widget.CurrentLayoutIcon(
-            padding=5,
-            scale=.7,
         ),
         widget.CheckUpdates(
             update_interval=3600,
@@ -322,6 +314,25 @@ def make_widgets(screen):
 
     if screen == 0:
         pl_list.insert(-1, systray)
+    if laptop:
+        battery_widget = widget.Battery(
+            format=' {percent:2.0%} {char}{hour:d}:{min:02d}',
+            charge_char='+',
+            discharge_char='-',
+            empty_char='x',
+            notify_below=10,
+        )
+        current_layout = widget.CurrentLayoutIcon(
+            padding=5,
+            scale=.7,
+        )
+        pl_list.insert(3, battery_widget)
+        pl_list.insert(5, current_layout)
+    else:
+        current_layout = widget.CurrentLayout(
+            padding=5,
+        )
+        pl_list.insert(4, current_layout)
 
     widget_list += make_powerline(pl_list)
     return widget_list
@@ -384,12 +395,8 @@ floating_layout = layout.Floating(float_rules=[
     Match(wm_class='ssh-askpass'),  # ssh-askpass
     Match(title='branchdialog'),  # gitk
     Match(title='pinentry'),  # GPG key password entry
-    Match(wm_class='Arcolinux-welcome-app.py'),
-    Match(wm_class='Arcolinux-tweak-tool.py'),
-    Match(wm_class='Arcolinux-calamares-tool.py'),
     Match(wm_class='Arandr'),
     Match(wm_class='feh'),
-    Match(wm_class='arcolinux-logout'),
 ],
     border_focus=colors[7],
     border_normal=colors[4],

@@ -3,19 +3,14 @@
 set fish_greeting                                 # Supresses fish's intro message
 export TERM="xterm-256color"                         # Sets the terminal type
 
-if not status --is-interactive
-  exit
-end
-
-
 fish_add_path "$HOME/.local/bin"
 fish_add_path "$HOME/.config/rofi/bin"
 
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_STATE_HOME="$HOME/.local/state"
-export XDG_RUNTIME_DIR="/run/user/$UID"
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CACHE_HOME=$HOME/.cache
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_STATE_HOME=$HOME/.local/state
+export XDG_RUNTIME_DIR=/run/user/(id -u)
 
 set fish_color_host $fish_color_user
 set fish_color_cwd magenta #$fish_color_param
@@ -27,6 +22,10 @@ export EDITOR=nvim
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
 export HISTFILE="$XDG_STATE_HOME/bash/history"
+
+if not status --is-interactive
+  exit
+end
 
 function fish_user_key_bindings
     # fish_vi_key_bindings
@@ -113,6 +112,4 @@ alias ....='cd ../../..'
 alias gconfig='git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 
 # Startup
-
-
 neofetch
