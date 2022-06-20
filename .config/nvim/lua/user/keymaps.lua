@@ -13,7 +13,9 @@ kmap("n", "<leader>wq", ":wq<cr>", opts)
 kmap("n", "<leader>q", ":q<cr>", opts)
 
 kmap("n", "<A-a>", ":nohl<cr>", opts)
+
 kmap("n", "<a-o>", "moO<esc>`o", opts)
+kmap("n", "<a-i>", "moo<esc>`o", opts)
 
 -- Better window navigation
 kmap("n", "<leader>h", ":bnext<cr>", opts)
@@ -90,6 +92,8 @@ kmap("n", "<leader>gs", ":G<cr>", opts)
 kmap("n", "<leader>gf", ":diffget //2<cr>", opts)
 kmap("n", "<leader>gj", ":diffget //3<cr>", opts)
 
+-- Undo tree
+kmap("n", "<leader>u", ":UndotreeShow<cr>", opts)
 
 -- Toggle Term
 kmap("n", "<C-t>p", "<cmd>lua _PYTHON_TOGGLE()<cr>", opts)
@@ -116,16 +120,22 @@ kmap("v", "g<C-x>", require("dial.map").dec_gvisual(), {noremap = true})
 vim.g.vimspector_enable_mappings = 'HUMAN'
 kmap("n", "<F3>", ":VimspectorReset<cr>", opts)
 
-
+local autocmd = vim.api.nvim_create_autocmd
+local augroup = vim.api.nvim_create_augroup
 
 -- Yank
-vim.cmd [[
-    augroup highlight_yank
-    autocmd!
-    autocmd TextYankPost * silent! lua require("vim.highlight").on_yank({timeout = 40})
-    augroup END
-]]
+local yank_group = augroup('HighlightYank', {})
 
+autocmd('TextYankPost', {
+    group = yank_group,
+    pattern = '*',
+    callback = function()
+        vim.highlight.on_yank({
+            higroup = 'IncSearch',
+            timeout = 40,
+        })
+    end,
+})
 
 -- Remove trailing whitespace
 vim.cmd [[
@@ -154,5 +164,6 @@ function _G.ReloadConfig()
     vim.notify("Reloaded Config")
 end
 
-vim.api.nvim_set_keymap("n", "<Leader><cr>", "<Cmd>lua ReloadConfig()<CR>", { silent = true, noremap = true })
-vim.cmd("command! ReloadConfi lua ReloadConfig()")
+vim.cmd("command! ReloadConfig lua ReloadConfig()")
+kmap("n", "<leader><cr>", "<Cmd>lua ReloadConfig()<CR>", opts)
+

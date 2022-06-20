@@ -78,6 +78,7 @@ return packer.startup(function(use)
     -- utility
     use "windwp/nvim-autopairs"
     use "numToStr/Comment.nvim"
+    use "mbbill/undotree"
 
     use "nvim-lualine/lualine.nvim"
     -- use "akinsho/bufferline.nvim"
@@ -105,6 +106,15 @@ return packer.startup(function(use)
       "Fymyte/rasi.vim",
       ft = "rasi",
     }
+
+    use {
+        "lervag/vimtex",
+        config = function () vim.g.vimtex_view_method = "zathura" end,
+    }
+    -- use {
+    --     "neomake/neomake",
+    --     -- ft = "tex"
+    -- }
 
 
     -- Code Running/Debugging

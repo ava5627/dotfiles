@@ -119,11 +119,12 @@ my_keys = [
     ["M-u", 	                    lazy.spawn("steam steam://open/friends"),  	         "Launch Steam Friends"],
     ["M-w", 	                    lazy.spawn("firefox"),                               "Launch Firefox"],
     ["M-S-w", 	                    lazy.spawn("firefox -private-window"),               "Launch Private Firefox"],
-    ["M-z", 	                    lazy.spawn("qalculate-gtk"),                         "Launch Calculator"],
+    ["M-x", 	                    lazy.spawn("qalculate-gtk"),                         "Launch Calculator"],
     ["M-S-e", 	                    lazy.spawn("copyq show"), 	                         "Show Copyq"],
     ["M-r", 	                    lazy.spawn(rofi_cmd + " -show run -i", shell=True),  "Run Launcher"],
     ["M-S-r", 	                    lazy.spawn(rofi_cmd + " -show drun -i", shell=True), "Application Launcher"],
     ["M-c", 	                    lazy.spawn("edit_configs"), 	                     "Config Launcher"],
+    ["M-z", 	                    lazy.spawn("zathura"),                               "Open PDF reader"],
     ["M-v", 	                    lazy.spawn(terminal + " -e nvim"),                   "Launch Neovim"],
     ["<Print>",                     lazy.spawn("flameshot gui"),                         "Take Screenshot"],
 

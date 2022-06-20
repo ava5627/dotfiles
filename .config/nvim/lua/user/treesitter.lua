@@ -11,7 +11,7 @@ require("nvim-treesitter.configs").setup {
     },
     highlight = {
         enable = true, -- false will disable the whole extension
-        disable = { "" }, -- list of language that will be disabled
+        disable = { "latex" }, -- list of language that will be disabled
         additional_vim_regex_highlighting = false,
         custom_captures = {
             -- Highlight the @foo.bar capture group with the "Identifier" highlight group.

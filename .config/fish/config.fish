@@ -95,6 +95,8 @@ alias vim='nvim'
 
 alias qlog='watch -n 0.5 tail ~/.local/share/qtile/qtile.log -n 30'
 
+alias rgr='ranger'
+
 # python
 alias vc='python -m venv .venv'
 alias va='source ./.venv/bin/activate.fish'
