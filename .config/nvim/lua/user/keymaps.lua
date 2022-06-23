@@ -17,6 +17,7 @@ kmap("n", "<A-a>", ":nohl<cr>", opts)
 kmap("n", "<a-o>", "moO<esc>`o", opts)
 kmap("n", "<a-i>", "moo<esc>`o", opts)
 
+
 -- Better window navigation
 kmap("n", "<leader>h", ":bnext<cr>", opts)
 kmap("n", "<leader>l", ":bprevious<cr>", opts)
@@ -125,7 +126,6 @@ local augroup = vim.api.nvim_create_augroup
 
 -- Yank
 local yank_group = augroup('HighlightYank', {})
-
 autocmd('TextYankPost', {
     group = yank_group,
     pattern = '*',
@@ -138,21 +138,27 @@ autocmd('TextYankPost', {
 })
 
 -- Remove trailing whitespace
-vim.cmd [[
-    augroup trim_whitespace
-    autocmd!
-    autocmd BufWritePre * %s/\s\+$//e
-]]
+local trim_whitespace = augroup("trim_whitespace", {})
+autocmd("BufWritePre",{
+    group = trim_whitespace,
+    pattern = '*',
+    command = "%s/\\s+$//e",
+})
+
 
 -- Fix alacritty -e bug
 -- disable copilot
-vim.cmd [[
-    augroup vim_enter
-    autocmd!
-    autocmd VimEnter * :silent exec "!kill -s SIGWINCH" getpid()
-    autocmd VimEnter * :Copilot disable
-    augroup END
-]]
+augroup("vim_enter", {})
+autocmd("VimEnter", {
+    group = "vim_enter",
+    pattern = "*",
+    command = "silent! exec '!kill -s SIGWINCH' getpid()",
+})
+autocmd("VimEnter", {
+    group = "vim_enter",
+    pattern = "*",
+    command = "silent! Copilot disable",
+})
 
 function _G.ReloadConfig()
     for name,_ in pairs(package.loaded) do

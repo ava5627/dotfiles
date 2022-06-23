@@ -38,12 +38,12 @@ nvim_tree.setup {
     },
     renderer = {
         add_trailing = false,
-        group_empty = false,
+        group_empty = true,
         highlight_git = false,
         highlight_opened_files = "none",
         root_folder_modifier = ":~",
         indent_markers = {
-            enable = false,
+            enable = true,
             icons = {
                 corner = "└ ",
                 edge = "│ ",
@@ -117,6 +117,9 @@ nvim_tree.setup {
         enable = true,
         ignore = true,
         timeout = 400,
+    },
+    filesystem_watchers = {
+        enable = true,
     },
     actions = {
         change_dir = {

@@ -1,4 +1,8 @@
 -- vim.wo["spell"] = true
+local kmap = vim.api.nvim_set_keymap
+
+kmap("i", "<c-f>", "<Esc>[dga`]a", {noremap = false, silent = true})
+
 
 if vim.g.vim_window_id == nil then
     local openPop = assert(io.popen('xdotool getactivewindow', 'r'))
@@ -11,9 +15,14 @@ function TexFocusVim()
     os.execute("sleep .05 && xdotool windowactivate " .. vim.g.vim_window_id)
 end
 
-vim.api.nvim_create_augroup("vimtex_event_focus", {})
+vim.api.nvim_create_augroup("vimtex", {})
 vim.api.nvim_create_autocmd( {"User"}, {
     pattern = "VimtexEventView",
-    group = "vimtex_event_focus",
-    command = "lua TexFocusVim()"
+    group = "vimtex",
+    callback = TexFocusVim,
+})
+vim.api.nvim_create_autocmd( {"User"}, {
+    pattern = "VimtexEventQuit",
+    group = "vimtex",
+    command = "VimtexClean"
 })

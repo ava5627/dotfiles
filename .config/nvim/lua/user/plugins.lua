@@ -38,124 +38,136 @@ packer.init {
 -- Install your plugins here
 return packer.startup(function(use)
     -- My plugins here
-    use "wbthomason/packer.nvim"
-    use "nvim-lua/popup.nvim"
-    use "nvim-lua/plenary.nvim"
+    use("wbthomason/packer.nvim")
+    use("nvim-lua/popup.nvim")
+    use("nvim-lua/plenary.nvim")
 
     --cmp
-    use "hrsh7th/nvim-cmp"
-    use "hrsh7th/cmp-buffer"
-    use "hrsh7th/cmp-path"
-    use "hrsh7th/cmp-cmdline"
-    use "saadparwaiz1/cmp_luasnip"
-    use "hrsh7th/cmp-nvim-lsp"
-    use "hrsh7th/cmp-nvim-lua"
- 	use {
+    use("hrsh7th/nvim-cmp")
+    use("hrsh7th/cmp-buffer")
+    use("hrsh7th/cmp-path")
+    use("hrsh7th/cmp-cmdline")
+    use("saadparwaiz1/cmp_luasnip")
+    use("hrsh7th/cmp-nvim-lsp")
+    use("hrsh7th/cmp-nvim-lua")
+    use({
         "tzachar/cmp-tabnine",
         run="./install.sh",
         requires = "hrsh7th/nvim-cmp"
-    }
-    use {
+    })
+    use({
         "github/copilot.vim",
-    }
-    use "f3fora/cmp-spell"
+    })
+    use("f3fora/cmp-spell")
 
     -- snippets
-    use "L3MON4D3/LuaSnip"
-    use "rafamadriz/friendly-snippets"
+    use("L3MON4D3/LuaSnip")
+    use({
+        "SirVer/ultisnips",
+        config = function()
+            vim.g.UltiSnipsExpandTrigger = '<C-l>'
+            vim.g.UltiSnipsJumpForwardTrigger = '<C-l>'
+            vim.g.UltiSnipsJumpBackwardTrigger = '<C-h>'
+            vim.g.UltiSnipsListSnippets = '<c-x><c-s>'
+            vim.g.UltiSnipsRemoveSelectModeMappings = 0
+            vim.g.UltiSnipsSnippetDirectories={vim.fn.expand("$HOME/.config/nvim/UltiSnips/"), "UltiSnips"}
+        end
+    })
+    use("rafamadriz/friendly-snippets")
+    use("quangnguyen30192/cmp-nvim-ultisnips")
 
 
     --lsp
-    use "neovim/nvim-lspconfig"
-    use "williamboman/nvim-lsp-installer"
+    use("neovim/nvim-lspconfig")
+    use("williamboman/nvim-lsp-installer")
 
 
     -- colorschemes
-    use "ellisonleao/gruvbox.nvim"
-    use "lunarvim/darkplus.nvim"
-    use "sainnhe/sonokai"
+    use("ellisonleao/gruvbox.nvim")
+    use("lunarvim/darkplus.nvim")
+    use("sainnhe/sonokai")
 
     -- utility
-    use "windwp/nvim-autopairs"
-    use "numToStr/Comment.nvim"
-    use "mbbill/undotree"
+    use("windwp/nvim-autopairs")
+    use("numToStr/Comment.nvim")
+    use("mbbill/undotree")
 
-    use "nvim-lualine/lualine.nvim"
-    -- use "akinsho/bufferline.nvim"
+    use("nvim-lualine/lualine.nvim")
+    -- use("akinsho/bufferline.nvim")
 
-    use "antoinemadec/FixCursorHold.nvim"
-    use "lukas-reineke/indent-blankline.nvim"
-    use "glepnir/dashboard-nvim"
+    use("antoinemadec/FixCursorHold.nvim")
+    use("lukas-reineke/indent-blankline.nvim")
+    use("glepnir/dashboard-nvim")
 
     -- movement
-    use "tpope/vim-surround"
-    use "jeetsukumaran/vim-indentwise"
-    use {
+    use("tpope/vim-surround")
+    use("jeetsukumaran/vim-indentwise")
+    use({
         "psliwka/vim-smoothie",
         config = function() vim.g.smoothie_speed_linear_factor=15 end
-    }
-    use "monaqa/dial.nvim"
-    use "tpope/vim-repeat"
+    })
+    use("monaqa/dial.nvim")
+    use("tpope/vim-repeat")
 
     -- highlighting
-    use {
+    use({
         "norcalli/nvim-colorizer.lua",
         config = function() require'colorizer'.setup() end,
-    }
-    use {
-      "Fymyte/rasi.vim",
-      ft = "rasi",
-    }
+    })
+    use({
+        "Fymyte/rasi.vim",
+        ft = "rasi",
+    })
 
-    use {
+    use({
         "lervag/vimtex",
         config = function () vim.g.vimtex_view_method = "zathura" end,
-    }
-    -- use {
+    })
+    -- use({
     --     "neomake/neomake",
     --     -- ft = "tex"
-    -- }
+    -- })
 
 
     -- Code Running/Debugging
-    use "puremourning/vimspector"
-    -- use "mfussenegger/nvim-dap"
-    -- use "Pocco81/DAPInstall.nvim"
+    use("puremourning/vimspector")
+    -- use("mfussenegger/nvim-dap")
+    -- use("Pocco81/DAPInstall.nvim")
 
     -- Toggle Term
-    use {
+    use({
         "akinsho/toggleterm.nvim",
         branch = "main"
-    }
+    })
 
     -- nvim-tree
-    use "kyazdani42/nvim-tree.lua"
-    use {
+    use("kyazdani42/nvim-tree.lua")
+    use({
         "kyazdani42/nvim-web-devicons",
         config = function() require'nvim-web-devicons'.setup() end,
-    }
-    -- use {
+    })
+    -- use({
     --   "yamatsum/nvim-nonicons",
     --   requires = {"kyazdani42/nvim-web-devicons"}
-    -- }
+    -- })
 
     --Telescope
-    use "nvim-telescope/telescope.nvim"
-    use "nvim-telescope/telescope-project.nvim"
+    use("nvim-telescope/telescope.nvim")
+    use("nvim-telescope/telescope-project.nvim")
 
     --Treesitter
-    use {
+    use({
         "nvim-treesitter/nvim-treesitter",
         run = ":TSUpdate",
-    }
-    use "JoosepAlviste/nvim-ts-context-commentstring"
-    use "nvim-treesitter/nvim-treesitter-refactor"
-    use "romgrk/nvim-treesitter-context"
-    use "nvim-treesitter/playground"
+    })
+    use("JoosepAlviste/nvim-ts-context-commentstring")
+    use("nvim-treesitter/nvim-treesitter-refactor")
+    use("romgrk/nvim-treesitter-context")
+    use("nvim-treesitter/playground")
 
     -- git
-    use "lewis6991/gitsigns.nvim"
-    use "tpope/vim-fugitive"
+    use("lewis6991/gitsigns.nvim")
+    use("tpope/vim-fugitive")
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins

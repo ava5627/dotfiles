@@ -124,6 +124,7 @@ my_keys = [
     ["M-r", 	                    lazy.spawn(rofi_cmd + " -show run -i", shell=True),  "Run Launcher"],
     ["M-S-r", 	                    lazy.spawn(rofi_cmd + " -show drun -i", shell=True), "Application Launcher"],
     ["M-c", 	                    lazy.spawn("edit_configs"), 	                     "Config Launcher"],
+    ["M-o", 	                    lazy.spawn("edit_homework"), 	                     "Homework Launcher"],
     ["M-z", 	                    lazy.spawn("zathura"),                               "Open PDF reader"],
     ["M-v", 	                    lazy.spawn(terminal + " -e nvim"),                   "Launch Neovim"],
     ["<Print>",                     lazy.spawn("flameshot gui"),                         "Take Screenshot"],
