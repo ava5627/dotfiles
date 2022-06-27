@@ -10,6 +10,15 @@ if not status then
   --   vim.cmd [[hi Normal guibg=NONE ctermbg=NONE]]
 end
 
+local set_hl = vim.api.nvim_set_hl
+
+local function get_bg(name)
+    return vim.api.nvim_get_hl_by_name(name, {}).background
+end
+
 -- vim.api.nvim_set_hl(0, "NormalNC", {bg = "#1E1E1E"})
-vim.api.nvim_set_hl(0, "NvimTreeGitDirty", {fg = "#FFFFFF"})
--- vim.api.nvim_set_hl(0, "EndOfBuffer", {bg = "NONE", fg="bg"})
+set_hl(0, "NvimTreeGitDirty", {fg = "#FFFFFF"})
+
+local normal_bg = get_bg('Normal')
+set_hl(0, "EndOfBuffer", {bg=normal_bg, fg=normal_bg})
+

@@ -15,12 +15,16 @@ if fn.empty(fn.glob(install_path)) > 0 then
     vim.cmd [[packadd packer.nvim]]
 end
 
-vim.cmd [[
-    augroup packer_user_config
-        autocmd!
-        autocmd BufWritePost plugins.lua source <afile> | PackerSync
-    augroup end
-]]
+
+local autocmd = vim.api.nvim_create_autocmd
+local augroup = vim.api.nvim_create_augroup
+
+augroup('packer_user_config', {})
+autocmd('BufWritePost',{
+    group = 'packer_user_config',
+    pattern = 'plugins.lua',
+    command = 'source <afile> | PackerSync'
+})
 
 local status_ok, packer = pcall(require, "packer")
 if not status_ok then
@@ -37,10 +41,14 @@ packer.init {
 
 -- Install your plugins here
 return packer.startup(function(use)
-    -- My plugins here
+    -- Dependencies
     use("wbthomason/packer.nvim")
     use("nvim-lua/popup.nvim")
     use("nvim-lua/plenary.nvim")
+    use({
+        "kyazdani42/nvim-web-devicons",
+        config = function() require'nvim-web-devicons'.setup() end,
+    })
 
     --cmp
     use("hrsh7th/nvim-cmp")
@@ -93,11 +101,10 @@ return packer.startup(function(use)
     use("mbbill/undotree")
 
     use("nvim-lualine/lualine.nvim")
-    -- use("akinsho/bufferline.nvim")
-
+    use("akinsho/bufferline.nvim")
+    use("moll/vim-bbye")
     use("antoinemadec/FixCursorHold.nvim")
     use("lukas-reineke/indent-blankline.nvim")
-    use("glepnir/dashboard-nvim")
 
     -- movement
     use("tpope/vim-surround")
@@ -130,9 +137,9 @@ return packer.startup(function(use)
 
 
     -- Code Running/Debugging
-    use("puremourning/vimspector")
-    -- use("mfussenegger/nvim-dap")
-    -- use("Pocco81/DAPInstall.nvim")
+    use("mfussenegger/nvim-dap")
+    use("rcarriga/nvim-dap-ui")
+    use("ravenxrz/DAPInstall.nvim")
 
     -- Toggle Term
     use({
@@ -142,10 +149,6 @@ return packer.startup(function(use)
 
     -- nvim-tree
     use("kyazdani42/nvim-tree.lua")
-    use({
-        "kyazdani42/nvim-web-devicons",
-        config = function() require'nvim-web-devicons'.setup() end,
-    })
     -- use({
     --   "yamatsum/nvim-nonicons",
     --   requires = {"kyazdani42/nvim-web-devicons"}

@@ -1,4 +1,4 @@
-local status_ok, tabnine = pcall(require, "tabnine")
+local status_ok, tabnine = pcall(require, "cmp_tabnine")
 if not status_ok then
     return
 end

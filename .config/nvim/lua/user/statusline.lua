@@ -1,5 +1,6 @@
 local status_ok, lualine = pcall(require, "lualine")
 if not status_ok then
+    vim.notify("Lualine Not Found")
     return
 end
 
@@ -28,10 +29,6 @@ lualine.setup {
         lualine_x = {'location'},
         lualine_y = {},
         lualine_z = {}
-    },
-    tabline = {
-        lualine_a = {'filename'},
-        lualine_z = {'tabs'}
     },
     extensions = {
         'nvim-tree',

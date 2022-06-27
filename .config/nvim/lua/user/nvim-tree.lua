@@ -2,9 +2,9 @@
 
 local status_ok, nvim_tree = pcall(require, "nvim-tree")
 if not status_ok then
+    vim.notify("Nvim Tree Not Found")
     return
 end
-
 
 nvim_tree.setup {
     auto_reload_on_write = true,
@@ -14,7 +14,7 @@ nvim_tree.setup {
     hijack_unnamed_buffer_when_opening = false,
     ignore_buffer_on_setup = false,
     open_on_setup = false,
-    open_on_setup_file = false,
+    open_on_setup_file = true,
     open_on_tab = false,
     sort_by = "name",
     update_cwd = true,

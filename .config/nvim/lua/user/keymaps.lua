@@ -1,40 +1,41 @@
 local opts = {noremap = true, silent = true}
 
-local kmap = vim.api.nvim_set_keymap
+local kmap = vim.keymap.set
 
 kmap("", "<Space>", "<Nop>", opts)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Misc
-kmap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 kmap("n", "<leader>ww", ":w<cr>", opts)
 kmap("n", "<leader>wq", ":wq<cr>", opts)
-kmap("n", "<leader>q", ":q<cr>", opts)
+kmap("n", "<leader>q", ":Bdelete<cr>", opts)
 
+-- Clear search highlights
 kmap("n", "<A-a>", ":nohl<cr>", opts)
 
+-- Insert line above/below without leaving normal mode
 kmap("n", "<a-o>", "moO<esc>`o", opts)
 kmap("n", "<a-i>", "moo<esc>`o", opts)
 
+-- Switch Buffers
+kmap("n", "<S-l>", ":BufferLineCycleNext<CR>", opts)
+kmap("n", "<S-h>", ":BufferLineCyclePrev<CR>", opts)
 
 -- Better window navigation
-kmap("n", "<leader>h", ":bnext<cr>", opts)
-kmap("n", "<leader>l", ":bprevious<cr>", opts)
-
--- kmap("n", "<C-[", ":cprevious<cr>", opts)
--- kmap("n", "<C-]", ":cnext<cr>", opts)
-
 kmap("n", "<C-h>", "<C-w>h", opts)
 kmap("n", "<C-j>", "<C-w>j", opts)
 kmap("n", "<C-k>", "<C-w>k", opts)
 kmap("n", "<C-l>", "<C-w>l", opts)
+kmap("n", "<C-q>", "<C-w>q", opts)
 
-kmap("n", "<A-k>", ":resize +5<cr>", opts)
-kmap("n", "<A-j>", ":resize -5<cr>", opts)
-kmap("n", "<A-h>", ":vertical resize +5<cr>", opts)
-kmap("n", "<A-l>", ":vertical resize -5<cr>", opts)
+-- Resize windows with arrow keys
+kmap("n", "<A-Up>", ":resize +5<cr>", opts)
+kmap("n", "<A-Down>", ":resize -5<cr>", opts)
+kmap("n", "<A-Left>", ":vertical resize +5<cr>", opts)
+kmap("n", "<A-Right>", ":vertical resize -5<cr>", opts)
 
+-- Open/Close windows
 kmap("n", "<leader>v", "<C-w>v", opts)
 kmap("n", "<leader>o", "<C-w>o", opts)
 kmap("n", "<leader>s", "<C-w>s", opts)
@@ -47,11 +48,14 @@ kmap("i", "<A-l>", "<right>", opts)
 
 -- kmap("i", ":w", "<ESC>:w<cr>", opts)
 
+-- Delete backwards
 kmap("i", "<A-d>", "<DELETE>", opts)
 kmap("i", "<C-d>", "<C-o>dw", opts)
 
+-- Paste in insert mode
 kmap("i", "<C-p>", "<left><C-o>p", opts)
 
+-- Leave insert mode
 kmap("i", "jj", "<ESC>", opts)
 
 -- Indent Jump
@@ -73,20 +77,26 @@ kmap("", "]%", "<Plug>(IndentWiseBlockScopeBoundaryEnd)", {silent=true})
 kmap("v", "<", "<gv", opts)
 kmap("v", ">", ">gv", opts)
 
+-- Move selection up/down
 kmap("v", "<S-j>", ":m '>+1<CR>gv=gv", opts)
 kmap("v", "<S-k>", ":m '<-2<CR>gv=gv", opts)
+
+-- paste without copying selection
 kmap("v", "p", '"_dP', opts)
+
+-- Nvim tree
+kmap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
+
+-- Commenting
+kmap("n", "<C-/>", require("Comment.api").toggle_current_linewise, opts)
 
 -- Telescope
 kmap("n", "<leader>pp", "<cmd>Telescope find_files<cr>", opts)
 kmap("n", "<leader>ph", "<cmd>Telescope find_files<cr>", opts)
 kmap("n", "<leader>pg", "<cmd>Telescope live_grep<cr>", opts)
-kmap("n", "<leader>pw", "<cmd>lua require('telescope.builtin').grep_string { search = vim.fn.expand(\"<cword>\") }<cr>", opts)
+kmap("n", "<leader>pw", function() require('telescope.builtin').grep_string { search = vim.fn.expand("<cword>") } end, opts)
 kmap("n", "<leader>pb", "<cmd>Telescope buffers<cr>", opts)
 kmap("n", "<leader>po", "<cmd>Telescope project project<cr>", opts)
-
--- LSP
-kmap("n", "<leader>m", ":Format<cr>", opts)
 
 -- Git
 kmap("n", "<leader>gs", ":G<cr>", opts)
@@ -97,11 +107,7 @@ kmap("n", "<leader>gj", ":diffget //3<cr>", opts)
 kmap("n", "<leader>u", ":UndotreeShow<cr>", opts)
 
 -- Toggle Term
-kmap("n", "<C-t>p", "<cmd>lua _PYTHON_TOGGLE()<cr>", opts)
-kmap("t", "<C-t>p", "<cmd>lua _PYTHON_TOGGLE()<cr>", opts)
-
-kmap("n", "<C-t>g", "<cmd>lua _LAZYGIT_TOGGLE()<cr>", opts)
-kmap("t", "<C-t>g", "<cmd>lua _LAZYGIT_TOGGLE()<cr>", opts)
+kmap({"n", "t"}, "<C-t>p", "<cmd>lua _PYTHON_TOGGLE<cr>" , opts)
 
 -- Copilot
 kmap("i", "<C-a>", "copilot#Accept(\"\\<CR>\")", {noremap=false, silent=true, script=true, expr=true})
@@ -110,55 +116,29 @@ kmap("i", "<C-q><C-e>", "<C-o>:Copilot enable<cr>", opts)
 vim.g.copilot_no_tab_map = true
 
 -- Dial
-kmap("n", "<C-a>", require("dial.map").inc_normal(), {noremap = true})
-kmap("n", "<C-x>", require("dial.map").dec_normal(), {noremap = true})
-kmap("v", "<C-a>", require("dial.map").inc_visual(), {noremap = true})
-kmap("v", "<C-x>", require("dial.map").dec_visual(), {noremap = true})
+kmap({"n", "v"}, "<C-a>", require("dial.map").inc_normal(), {noremap = true})
+kmap({"n", "v"}, "<C-x>", require("dial.map").dec_normal(), {noremap = true})
 kmap("v", "g<C-a>", require("dial.map").inc_gvisual(), {noremap = true})
-kmap("v", "g<C-x>", require("dial.map").dec_gvisual(), {noremap = true})
+kmap("v", "g<C-x>", require("dial.map").dec_gvisual(), {noremap = false})
 
 -- Debugging
-vim.g.vimspector_enable_mappings = 'HUMAN'
-kmap("n", "<F3>", ":VimspectorReset<cr>", opts)
-
-local autocmd = vim.api.nvim_create_autocmd
-local augroup = vim.api.nvim_create_augroup
-
--- Yank
-local yank_group = augroup('HighlightYank', {})
-autocmd('TextYankPost', {
-    group = yank_group,
-    pattern = '*',
-    callback = function()
-        vim.highlight.on_yank({
-            higroup = 'IncSearch',
-            timeout = 40,
-        })
-    end,
-})
-
--- Remove trailing whitespace
-local trim_whitespace = augroup("trim_whitespace", {})
-autocmd("BufWritePre",{
-    group = trim_whitespace,
-    pattern = '*',
-    command = "%s/\\s+$//e",
-})
-
-
--- Fix alacritty -e bug
--- disable copilot
-augroup("vim_enter", {})
-autocmd("VimEnter", {
-    group = "vim_enter",
-    pattern = "*",
-    command = "silent! exec '!kill -s SIGWINCH' getpid()",
-})
-autocmd("VimEnter", {
-    group = "vim_enter",
-    pattern = "*",
-    command = "silent! Copilot disable",
-})
+kmap("n", "<leader>db", require("dap").toggle_breakpoint, opts)
+kmap("n", "<F9>",       require("dap").toggle_breakpoint, opts)
+kmap("n", "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input("Breakpoint Condition: ")) end, opts)
+kmap("n", "<leader>dc", require("dap").continue, opts)
+kmap("n", "<F5>",       require("dap").continue, opts)
+kmap("n", "<leader>do", require("dap").step_over, opts)
+kmap("n", "<F6>",       require("dap").step_over, opts)
+kmap("n", "<leader>di", require("dap").step_into, opts)
+kmap("n", "<F7>",       require("dap").step_into, opts)
+kmap("n", "<leader>dO", require("dap").step_out, opts)
+kmap("n", "<F19>",     require("dap").step_out, opts)
+kmap("n", "<leader>dr", require("dap").repl.toggle, opts)
+kmap("n", "<leader>dl", require("dap").run_last, opts)
+kmap("n", "<leader>du", require("dapui").toggle, opts)
+kmap("n", "<leader>dt", require("dap").terminate, opts)
+kmap("n", "<F8>",       require("dap").terminate, opts)
+kmap("n", "<leader>de", require("dapui").eval, opts)
 
 function _G.ReloadConfig()
     for name,_ in pairs(package.loaded) do
@@ -171,5 +151,8 @@ function _G.ReloadConfig()
 end
 
 vim.cmd("command! ReloadConfig lua ReloadConfig()")
-kmap("n", "<leader><cr>", "<Cmd>lua ReloadConfig()<CR>", opts)
+kmap("n", "<leader><cr>", "", {
+    callback=ReloadConfig,
+    noremap=true, silent=true
+})
 

@@ -1,13 +1,17 @@
+vim.g.python3_host_prog = '/usr/bin/python'
 
 local options = {
     showmode = false,
     backup = false,                          -- creates a backup file
     clipboard = "unnamedplus",               -- allows neovim to access the system clipboard
-    colorcolumn = '120',
+    colorcolumn = '120',                     -- draws a line at column n
     cmdheight = 2,                           -- more space in the neovim command line for displaying messages
     completeopt = { "menuone", "noselect" }, -- mostly just for cmp
     conceallevel = 0,                        -- so that `` is visible in markdown files
-    encoding = "utf-8",                  -- the encoding written to a file
+    encoding = "utf-8",                      -- the encoding written to a file
+    foldmethod = "expr",                           -- Treesitter based folding
+    foldexpr = "nvim_treesitter#foldexpr()", -- TreeSitter based folding
+    foldlevel = 100000,                      -- Level after which foldings are closed
     -- hlsearch = true,                         -- highlight all matches on previous search pattern
     ignorecase = true,                       -- ignore case in search patterns
     mouse = "a",                             -- allow the mouse to be used in neovim
@@ -20,6 +24,8 @@ local options = {
     swapfile = false,                        -- creates a swapfile
     termguicolors = true,                    -- set term gui colors (most terminals support this)
     timeoutlen = 1000,                       -- time to wait for a mapped sequence to complete (in milliseconds)
+    title = true,                            -- set the title of window to the value of the titlestring
+    titlestring = "%t - nvim",               -- what the title of the window will be set to
     undofile = true,                         -- enable persistent undo
     updatetime = 100,                        -- faster completion (4000ms default)
     writebackup = false,                     -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
@@ -37,7 +43,6 @@ local options = {
     -- spell = true,
     -- spelllang = {'en_us'}
     -- guifont = "monospace:h17",               -- the font used in graphical neovim applications
-    filetype = "on"
 }
 
 vim.opt.shortmess:append "c"

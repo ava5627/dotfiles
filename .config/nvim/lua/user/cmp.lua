@@ -1,10 +1,12 @@
 local cmp_status_ok, cmp = pcall(require, "cmp")
 if not cmp_status_ok then
+    vim.notify("Cmp Not Found")
     return
 end
 
 local snip_status_ok, luasnip = pcall(require, "luasnip")
 if not snip_status_ok then
+    vim.notify("LuaSnip Not Found")
     return
 end
 require("luasnip/loaders/from_vscode").lazy_load()
@@ -40,6 +42,8 @@ local kind_icons = {
     Operator = "",
     TypeParameter = "",
 }
+
+
 -- find more here: https://www.nerdfonts.com/cheat-sheet
 
 cmp.setup {
@@ -172,6 +176,7 @@ cmp.setup {
         end,
     },
     window = {
+        completion = cmp.config.window.bordered(),
         documentation = cmp.config.window.bordered()
     },
     sources = {
@@ -190,7 +195,6 @@ cmp.setup {
     },
     experimental = {
         ghost_text = false,
-        native_menu = false,
     },
 }
 

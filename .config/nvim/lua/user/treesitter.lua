@@ -1,5 +1,6 @@
 local status_ok, _ = pcall(require, "nvim-treesitter")
 if not status_ok then
+    vim.notify("Treesitter Not Found")
     return
 end
 require("nvim-treesitter.configs").setup {
@@ -18,7 +19,10 @@ require("nvim-treesitter.configs").setup {
             ["foo.bar"] = "Identifier",
         }
     },
-    indent = { enable = true, disable = { "yaml" } },
+    indent = {
+        enable = true,
+        disable = { "yaml" }
+    },
     refactor = {
         highlight_definitions = {
             enable = false,
@@ -34,7 +38,14 @@ require("nvim-treesitter.configs").setup {
     },
 }
 
-require('treesitter-context').setup {
+local ts_context
+status_ok, ts_context = pcall(require, "treesitter-context")
+if not status_ok then
+    vim.notify("Treesitter Context Not Found")
+    return
+end
+
+ts_context.setup {
     enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
     throttle = true, -- Throttles plugin updates (may improve performance)
     max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
