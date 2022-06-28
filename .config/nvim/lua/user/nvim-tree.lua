@@ -52,7 +52,7 @@ nvim_tree.setup {
         },
         icons = {
             webdev_colors = true,
-            git_placement = "before",
+            git_placement = "after",
             padding = " ",
             symlink_arrow = " ➛ ",
             show = {
@@ -65,12 +65,12 @@ nvim_tree.setup {
                 default = "",
                 symlink = "",
                 git = {
-                    unstaged = "",
-                    staged = "",
+                    unstaged = "●",
+                    staged = "✓",
                     unmerged = "",
                     renamed = "➜",
-                    deleted = "",
-                    untracked = "U",
+                    untracked = "★",
+                    deleted = "",
                     ignored = "◌",
                 },
                 folder = {
@@ -120,6 +120,7 @@ nvim_tree.setup {
     },
     filesystem_watchers = {
         enable = true,
+        interval = 150,
     },
     actions = {
         change_dir = {

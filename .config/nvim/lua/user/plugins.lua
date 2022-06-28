@@ -109,10 +109,7 @@ return packer.startup(function(use)
     -- movement
     use("tpope/vim-surround")
     use("jeetsukumaran/vim-indentwise")
-    use({
-        "psliwka/vim-smoothie",
-        config = function() vim.g.smoothie_speed_linear_factor=15 end
-    })
+    use("karb94/neoscroll.nvim")
     use("monaqa/dial.nvim")
     use("tpope/vim-repeat")
 

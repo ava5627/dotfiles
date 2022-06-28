@@ -116,9 +116,11 @@ end
 dap.listeners.before.event_terminated["dapui_config"] = function()
     dapui.close()
     vim.cmd("NvimTreeOpen")
+    vim.cmd("wincmp p")
 end
 
 dap.listeners.before.event_exited["dapui_config"] = function()
     dapui.close()
     vim.cmd("NvimTreeOpen")
+    vim.cmd("wincmp p")
 end

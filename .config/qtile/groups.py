@@ -69,7 +69,7 @@ for i in groups_list:
         ['M-C-' + i.name, lazy.window.togroup(i.name), go_to_group(i.name), f"Switch to group {i.name}"],
     ])
 
-group_keys.extend([
-    ["M-<period>", 	    switch_group(direction=1),     "Switch to next group", ],
-    ["M-<comma>", 	    switch_group(direction=-1),    "Switch to previous group", ],
-])
+# group_keys.extend([
+#     ["M-<period>", 	    switch_group(direction=1),     "Switch to next group", ],
+#     ["M-<comma>", 	    switch_group(direction=-1),    "Switch to previous group", ],
+# ])

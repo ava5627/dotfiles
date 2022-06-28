@@ -16,9 +16,12 @@ local function get_bg(name)
     return vim.api.nvim_get_hl_by_name(name, {}).background
 end
 
+local function get_fg(name)
+    return vim.api.nvim_get_hl_by_name(name, {}).foreground
+end
+
 -- vim.api.nvim_set_hl(0, "NormalNC", {bg = "#1E1E1E"})
-set_hl(0, "NvimTreeGitDirty", {fg = "#FFFFFF"})
+set_hl(0, "NvimTreeGitDirty", {fg = get_fg("NvimTreeFolderIcon")})
 
 local normal_bg = get_bg('Normal')
 set_hl(0, "EndOfBuffer", {bg=normal_bg, fg=normal_bg})
-

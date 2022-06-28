@@ -139,20 +139,3 @@ kmap("n", "<leader>du", require("dapui").toggle, opts)
 kmap("n", "<leader>dt", require("dap").terminate, opts)
 kmap("n", "<F8>",       require("dap").terminate, opts)
 kmap("n", "<leader>de", require("dapui").eval, opts)
-
-function _G.ReloadConfig()
-    for name,_ in pairs(package.loaded) do
-        if name:match('^user') then
-            package.loaded[name] = nil
-        end
-    end
-    dofile(vim.env.MYVIMRC)
-    vim.notify("Reloaded Config")
-end
-
-vim.cmd("command! ReloadConfig lua ReloadConfig()")
-kmap("n", "<leader><cr>", "", {
-    callback=ReloadConfig,
-    noremap=true, silent=true
-})
-
