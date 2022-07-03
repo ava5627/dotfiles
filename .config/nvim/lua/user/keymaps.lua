@@ -87,14 +87,10 @@ kmap("v", "p", '"_dP', opts)
 -- Nvim tree
 kmap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 
--- Commenting
-kmap("n", "<C-/>", require("Comment.api").toggle_current_linewise, opts)
-
 -- Telescope
 kmap("n", "<leader>pp", "<cmd>Telescope find_files<cr>", opts)
 kmap("n", "<leader>ph", "<cmd>Telescope find_files<cr>", opts)
 kmap("n", "<leader>pg", "<cmd>Telescope live_grep<cr>", opts)
-kmap("n", "<leader>pw", function() require('telescope.builtin').grep_string { search = vim.fn.expand("<cword>") } end, opts)
 kmap("n", "<leader>pb", "<cmd>Telescope buffers<cr>", opts)
 kmap("n", "<leader>po", "<cmd>Telescope project project<cr>", opts)
 
@@ -107,7 +103,7 @@ kmap("n", "<leader>gj", ":diffget //3<cr>", opts)
 kmap("n", "<leader>u", ":UndotreeShow<cr>", opts)
 
 -- Toggle Term
-kmap({"n", "t"}, "<C-t>p", "<cmd>lua _PYTHON_TOGGLE<cr>" , opts)
+kmap({"n", "t"}, "<C-t>p", "<cmd>lua _PYTHON_TOGGLE()<cr>" , opts)
 
 -- Copilot
 kmap("i", "<C-a>", "copilot#Accept(\"\\<CR>\")", {noremap=false, silent=true, script=true, expr=true})
