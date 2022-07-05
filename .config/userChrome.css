@@ -1,5 +1,4 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
-/*hello*/
 /* These are root variables that may affect tabs */
 :root {
     /* This sets the minimum height for the tab */
@@ -8,50 +7,52 @@
     --tab-border-radius: 0px !important;
     /* This sets horizontal padding... you may want to use 1px instead */
     /* --inline-tab-padding: 0px !important; */
-  }
-  /* This targets the container for all tabs to add a gray line at the
-  bottom... the numbers are just fudged by eye and it may not work in
-  your setup.  It does seem to work at both 100% and 200% scaling in
-  Windows though */
-  /* #tabbrowser-tabs {
+}
+/* This targets the container for all tabs to add a gray line at the
+bottom... the numbers are just fudged by eye and it may not work in
+your setup.  It does seem to work at both 100% and 200% scaling in
+Windows though */
+/* #tabbrowser-tabs {
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%,  rgba(0, 0, 0, 0) 95%, #888 96%) !important;
-  } */
-  /* This targets all tabs, all it does is to remove any padding and
-  minimum height restrictions. Note that tabs will still be sized in
-  their contents - like the close button icon and the tab title */
-  .tabbrowser-tab {
+} */
+/* This targets all tabs, all it does is to remove any padding and
+minimum height restrictions. Note that tabs will still be sized in
+their contents - like the close button icon and the tab title */
+.tabbrowser-tab {
     min-height: 0px !important;
     padding: 0px !important;
     padding-top: 2px !important;
 
-  }
-  /* Tabs have a separate "background" element and this is where the
-  pill-like shadow is set. THis just removes those. The margin stuff
-  is just for adjusting the backgrounds so they overlap to avoid
-  double edges */
-  .tab-background {
+}
+/* Tabs have a separate "background" element and this is where the
+pill-like shadow is set. THis just removes those. The margin stuff
+is just for adjusting the backgrounds so they overlap to avoid
+double edges */
+.tab-background {
     border-radius: 0px 0px 0px 0px !important;
     box-shadow: 0px 0px !important;
     margin-block: 0px !important;
     margin-left: -2px !important;
     margin-right: 1px !important;
-  }
-  /* A separate style for when a tab is selected either by itself
-  (selected=true) or as part of a multiselection (ctrl+clicking tabs) */
-  .tab-background[selected="true"], .tab-background[multiselected="true"] {
-    /* border-top: 0px !important; */
+}
+/* A separate style for when a tab is selected either by itself
+(selected=true) or as part of a multiselection (ctrl+clicking tabs) */
+.tab-background[selected="true"], .tab-background[multiselected="true"] {
+    outline: none !important;
+    border: 1px solid var(--lwt-tab-line-color, var(--lwt-tabs-border-color, currentColor)) !important;
     border-bottom: 0px !important;
+    /* border-top: 0px !important; */
     /* border-left: 0px !important;  */
     /* border-right: 0px !important;  */
-  }
-  /* Style for when a tab is *not* selected */
-  /* .tab-background:not([selected="true"], [multiselected="true"]) {
+}
+/* Style for when a tab is *not* selected */
+/* .tab-background:not([selected="true"], [multiselected="true"]) {
     border-top: 1px solid #ccc !important;
     border-right: 1px solid #ccc !important;
     border-left: 1px solid #ccc !important;
-  } */
+} */
 
-  .tab-secondary-label {
+.tab-secondary-label {
     visibility: hidden !important;
     font-size: 0% !important;
-  }
+}

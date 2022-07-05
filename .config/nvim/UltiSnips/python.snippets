@@ -1,5 +1,5 @@
 
-snippet "([^f])(\".*\{)" "Auto fstring" irA
+snippet "([^f])(\".*\{[^\}\"]+)" "Auto fstring" irA
 `!p snip.rv = match.group(1) + 'f' + match.group(2)`
 endsnippet
 

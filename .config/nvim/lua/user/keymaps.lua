@@ -10,6 +10,7 @@ vim.g.maplocalleader = " "
 kmap("n", "<leader>ww", ":w<cr>", opts)
 kmap("n", "<leader>wq", ":wq<cr>", opts)
 kmap("n", "<leader>q", ":Bdelete<cr>", opts)
+kmap("n", "<leader>fq", ":Bdelete!<cr>", opts)
 
 -- Clear search highlights
 kmap("n", "<A-a>", ":nohl<cr>", opts)

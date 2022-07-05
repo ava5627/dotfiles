@@ -73,6 +73,14 @@ dapui.setup({
     layouts = {
         {
             elements = {
+                {id = "repl", size = .5},
+                {id = "console", size = .5},
+            },
+            size = 0.25, -- 25% of total lines
+            position = "bottom",
+        },
+        {
+            elements = {
                 -- Elements can be strings or table with id and size keys.
                 { id = "scopes", size = 0.25 },
                 "breakpoints",
@@ -81,15 +89,7 @@ dapui.setup({
             },
             size = 100, -- 100 columns
             position = "right",
-        },
-        {
-            elements = {
-                "repl",
-                "console",
-            },
-            size = 0.25, -- 25% of total lines
-            position = "bottom",
-        },
+        }
     },
     floating = {
         max_height = nil, -- These can be integers or a float between 0 and 1.
@@ -116,11 +116,11 @@ end
 dap.listeners.before.event_terminated["dapui_config"] = function()
     dapui.close()
     vim.cmd("NvimTreeOpen")
-    vim.cmd("wincmp p")
+    vim.cmd("wincmd p")
 end
 
 dap.listeners.before.event_exited["dapui_config"] = function()
     dapui.close()
     vim.cmd("NvimTreeOpen")
-    vim.cmd("wincmp p")
+    vim.cmd("wincmd p")
 end

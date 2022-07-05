@@ -88,6 +88,7 @@ return packer.startup(function(use)
     --lsp
     use("neovim/nvim-lspconfig")
     use("williamboman/nvim-lsp-installer")
+    use("ray-x/lsp_signature.nvim")
 
 
     -- colorschemes
@@ -162,7 +163,6 @@ return packer.startup(function(use)
     })
     use("JoosepAlviste/nvim-ts-context-commentstring")
     use("nvim-treesitter/nvim-treesitter-refactor")
-    use("romgrk/nvim-treesitter-context")
     use("nvim-treesitter/playground")
 
     -- git
