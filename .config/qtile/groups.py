@@ -1,6 +1,7 @@
 from libqtile import qtile
 from libqtile.config import Group, Match
 from libqtile.lazy import lazy
+from libqtile.log_utils import logger
 
 
 def go_to_group(name):
@@ -48,12 +49,12 @@ def switch_group(direction):
 
 
 groups_list = [
-    Group("1", layout='max',       matches=[]),
-    Group("2", layout='monadtall', matches=[]),
-    Group("3", layout='monadtall', matches=[]),
-    Group("a", layout='monadtall', matches=[Match(wm_class="discord")]),
-    Group("s", layout='monadtall', matches=[]),
-    Group("d", layout='monadtall', matches=[]),
+    Group("1", layout='max', matches=[]),
+    Group("2", matches=[]),
+    Group("3", matches=[]),
+    Group("a", matches=[Match(wm_class="discord")]),
+    Group("s", matches=[]),
+    Group("d", matches=[]),
 ]
 
 group_keys = []
@@ -61,12 +62,12 @@ for i in groups_list:
     group_keys.extend([
         # mod1 + letter of group = switch to group
         # Key([mod], i.name, lazy.group[i.name].toscreen(),
-        ['M-' + i.name, go_to_group(i.name), f"Switch to group {i.name}"],
+        ['M-' + i.name, go_to_group(i.name),                                f"Switch to group {i.name}"],
 
         # mod1 + shift + letter of group = move focused window to group
-        ['M-S-' + i.name, lazy.window.togroup(i.name),      f"Switch to group {i.name}"],
+        ['M-S-' + i.name, lazy.window.togroup(i.name),                      f"Move window to group {i.name}"],
         # mod1 + control + letter of group = switch to & move focused window to group
-        ['M-C-' + i.name, lazy.window.togroup(i.name), go_to_group(i.name), f"Switch to group {i.name}"],
+        ['M-C-' + i.name, lazy.window.togroup(i.name), go_to_group(i.name), f"Move and switch to group {i.name}"],
     ])
 
 group_keys.extend([

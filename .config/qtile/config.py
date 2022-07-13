@@ -95,23 +95,28 @@ calendar = "morgen"
 rofi_cmd = "colorful_launcher"
 
 my_keys = [
-    # window keys
+    # Window keys
     ["M-j", 	                    lazy.group.next_window(), top_window,   	         "Move focus next"],
     ["M-k", 	                    lazy.group.prev_window(), top_window,   	         "Move focus prev"],
-    # ["M-o", 	                    test,   	                                         "Top window"],
-    ["M-h", 	                    lazy.layout.shrink_main(), 	                         "Grow main window"],
-    ["M-l", 	                    lazy.layout.grow_main(), 	                         "Shrink main window"],
-    ["M-S-h", 	                    lazy.layout.shrink(), 	                             "Grow window"],
-    ["M-S-l", 	                    lazy.layout.grow(), 	                             "Shrink window"],
+    ["M-h", 	                    lazy.layout.left(), 	                             "Grow main window"],
+    ["M-l", 	                    lazy.layout.right(), 	                             "Shrink main window"],
+    ["M-S-h", 	                    lazy.layout.shuffle_left(), 	                     "Move window left"],
+    ["M-S-l", 	                    lazy.layout.shuffle_right(), 	                     "Move window right"],
     ["M-S-j", 	                    lazy.layout.shuffle_down(), 	                     "Move window down"],
     ["M-S-k", 	                    lazy.layout.shuffle_up(),  	                         "Move window up"],
+    ["M-C-h",                       lazy.layout.grow_left(), 	                         "Grow window left"],
+    ["M-C-l",                       lazy.layout.grow_right(), 	                         "Grow window right"],
+    ["M-C-j",                       lazy.layout.grow_down(), 	                         "Grow window down"],
+    ["M-C-k",                       lazy.layout.grow_up(), 	                             "Grow window up"],
+
+    # Layout keys
     ["M-<Tab>", 	                lazy.next_layout(),  	                             "Toggle between layouts"],
     ["M-f", 	                    lazy.window.toggle_floating(), 	                     "toggle floating"],
     ["M-S-f",         	            lazy.window.toggle_fullscreen(),  	                 "toggle fullscreen"],
     ["M-S-<Right>", 	            lazy.next_screen(), 	                             "Move focus to next monitor"],
     ["M-S-<Left>", 	                lazy.prev_screen(), 	                             "Move focus to prev monitor"],
 
-    # launch keys
+    # Launch keys
     ["M-e", 	                    lazy.spawn(terminal),  	                             "Launch Terminal"],
     ["M-<Return>", 	                lazy.spawn(terminal),  	                             "Launch Terminal alt"],
     ["M-b", 	                    lazy.spawn(terminal + " -e btop"),                   "Launch BTOP"],
@@ -129,7 +134,7 @@ my_keys = [
     ["M-v", 	                    lazy.spawn(terminal + " -e nvim"),                   "Launch Neovim"],
     ["<Print>",                     lazy.spawn("flameshot gui"),                         "Take Screenshot"],
 
-    # command keys
+    # Command keys
     ["M-C-r", 	                    lazy.reload_config(),  	                             "Reload Qtile config"],
     ["M-A-r", 	                    lazy.restart(),  	                                 "Restart Qtile"],
     ["M-C-q", 	                    lazy.shutdown(),    	                             "Shutdown Qtile"],
@@ -151,18 +156,20 @@ keys = [EzKey(bind, *cmd, desc=desc) for bind, *cmd, desc in my_keys]
 
 layout_theme = {
     "border_width": 2,
-    "margin": 4,
+    "margin": 2,
     "border_focus": colors[3],
     "border_normal": colors[1],
     "single_border_width": 0,
     "single_margin": 0,
+    "border_on_single": 0,
+    "margin_on_single": 0,
 }
 
 layouts = [
-    layout.MonadTall(**layout_theme),
+    # layout.MonadTall(**layout_theme),
+    layout.Columns(**layout_theme, insert_position=1),
     layout.Max(**layout_theme),
     # Try more layouts by unleashing below layouts.
-    # layout.Columns(**layout_theme),
     # layout.Stack(**layout_theme, num_stacks=2),
     # layout.Bsp(**layout_theme),
     # layout.Matrix(**layout_theme),

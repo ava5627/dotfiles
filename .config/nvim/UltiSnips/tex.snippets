@@ -5,13 +5,21 @@ def math():
 def not_math():
 	return vim.eval('vimtex#syntax#in_mathzone()') == '0'
 
-def comment(): 
+def comment():
 	return vim.eval('vimtex#syntax#in_comment()') == '1'
 
 def env(name):
-	[x,y] = vim.eval("vimtex#env#is_inside('" + name + "')") 
+	[x,y] = vim.eval("vimtex#env#is_inside('" + name + "')")
 	return x != '0' and y != '0'
 endglobal
+
+snippet date "date" w
+	`date +%B %d, %Y`
+endsnippet
+
+snippet time "time" w
+	`date +%H:%M:%S`
+endsnippet
 
 snippet template "basic template"
 \documentclass{${1:article}}
