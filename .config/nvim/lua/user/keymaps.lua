@@ -90,9 +90,9 @@ kmap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 
 -- Telescope
 kmap("n", "<leader>pp", "<cmd>Telescope find_files<cr>", opts)
-kmap("n", "<leader>ph", "<cmd>Telescope find_files<cr>", opts)
 kmap("n", "<leader>pg", "<cmd>Telescope live_grep<cr>", opts)
-kmap("n", "<leader>pb", "<cmd>Telescope buffers<cr>", opts)
+kmap("n", "<leader>pb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", opts)
+kmap("n", "<leader>pv", "<cmd>Telescope lsp_document_symbols<cr>", opts)
 kmap("n", "<leader>po", "<cmd>Telescope project project<cr>", opts)
 
 -- Git

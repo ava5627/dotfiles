@@ -44,10 +44,11 @@ nvim_tree.setup {
         root_folder_modifier = ":~",
         indent_markers = {
             enable = true,
+            inline_arrows = true,
             icons = {
-                corner = "└ ",
-                edge = "│ ",
-                none = "    ",
+                corner = "└",
+                edge = "│",
+                none = " ",
             },
         },
         icons = {
@@ -71,7 +72,7 @@ nvim_tree.setup {
                     renamed = "➜",
                     untracked = "★",
                     deleted = "",
-                    ignored = "◌",
+                    ignored = "●",
                 },
                 folder = {
                     default = "",
@@ -99,8 +100,8 @@ nvim_tree.setup {
         args = {},
     },
     diagnostics = {
-        enable = false,
-        show_on_dirs = false,
+        enable = true,
+        show_on_dirs = true,
         icons = {
             hint = "",
             info = "",

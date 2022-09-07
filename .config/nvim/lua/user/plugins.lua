@@ -65,6 +65,7 @@ return packer.startup(function(use)
     })
     use({
         "github/copilot.vim",
+        config = function() vim.g.copilot_filetypes = {["dap-repl"]=false} end,
     })
     use("f3fora/cmp-spell")
 
@@ -78,7 +79,7 @@ return packer.startup(function(use)
             vim.g.UltiSnipsJumpBackwardTrigger = '<C-h>'
             vim.g.UltiSnipsListSnippets = '<c-x><c-s>'
             vim.g.UltiSnipsRemoveSelectModeMappings = 0
-            vim.g.UltiSnipsSnippetDirectories={vim.fn.expand("$HOME/.config/nvim/UltiSnips/"), "UltiSnips"}
+            vim.g.UltiSnipsSnippetDirectories={vim.fn.expand("$XDG_CONFIG_HOME/nvim/UltiSnips/"), "UltiSnips"}
         end
     })
     use("rafamadriz/friendly-snippets")
@@ -89,6 +90,10 @@ return packer.startup(function(use)
     use("neovim/nvim-lspconfig")
     use("williamboman/nvim-lsp-installer")
     use("ray-x/lsp_signature.nvim")
+    use({
+      'j-hui/fidget.nvim',
+      config = function() require('fidget').setup() end,
+    })
 
 
     -- colorschemes
@@ -98,14 +103,14 @@ return packer.startup(function(use)
 
     -- utility
     use("windwp/nvim-autopairs")
-    use("numToStr/Comment.nvim")
     use("mbbill/undotree")
-
+    use("gpanders/editorconfig.nvim")
     use("nvim-lualine/lualine.nvim")
     use("akinsho/bufferline.nvim")
     use("moll/vim-bbye")
     use("antoinemadec/FixCursorHold.nvim")
     use("lukas-reineke/indent-blankline.nvim")
+    use("tpope/vim-sleuth")
 
     -- movement
     use("tpope/vim-surround")
@@ -119,10 +124,7 @@ return packer.startup(function(use)
         "norcalli/nvim-colorizer.lua",
         config = function() require'colorizer'.setup() end,
     })
-    use({
-        "Fymyte/rasi.vim",
-        ft = "rasi",
-    })
+    use({ "Fymyte/rasi.vim", ft = "rasi" })
 
     use({
         "lervag/vimtex",
@@ -133,17 +135,19 @@ return packer.startup(function(use)
     --     -- ft = "tex"
     -- })
 
+    -- Comments
+    use("numToStr/Comment.nvim")
+    use("folke/todo-comments.nvim")
+
 
     -- Code Running/Debugging
     use("mfussenegger/nvim-dap")
     use("rcarriga/nvim-dap-ui")
     use("ravenxrz/DAPInstall.nvim")
+    use("theHamsta/nvim-dap-virtual-text")
 
     -- Toggle Term
-    use({
-        "akinsho/toggleterm.nvim",
-        branch = "main"
-    })
+    use({ "akinsho/toggleterm.nvim", branch = "main" })
 
     -- nvim-tree
     use("kyazdani42/nvim-tree.lua")

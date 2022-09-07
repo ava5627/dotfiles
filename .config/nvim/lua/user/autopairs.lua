@@ -10,16 +10,15 @@ npairs.setup {
     ts_config = {
         lua = { "string", "source" },
         javascript = { "string", "template_string" },
-        java = false,
     },
     disable_filetype = { "TelescopePrompt", "spectre_panel" },
     fast_wrap = {
         map = "<M-e>",
         chars = { "{", "[", "(", '"', "'" },
-        pattern = string.gsub([[ [%'%"%)%>%]%)%}%,] ]], "%s+", ""),
+        pattern = [=[[%'%"%)%>%]%)%}%,% ]]=],
         offset = 0, -- Offset from pattern match
-        end_key = "$",
-        keys = "qwertyuiopzxcvbnmasdfghjkl",
+        end_key = "q",
+        keys = "weruiopzxcvbnmasdfghjkl",
         check_comma = true,
         highlight = "PmenuSel",
         highlight_grey = "LineNr",

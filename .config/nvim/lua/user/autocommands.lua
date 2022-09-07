@@ -3,9 +3,12 @@ local augroup = vim.api.nvim_create_augroup
 
 
 autocmd("FileType", {
-    pattern = { "qf", "help", "man", "lspinfo", "spectre_panel", "lir" },
+    pattern = { "qf", "help", "man", "lspinfo", "spectre_panel", "lir", "fugitive", "gitcommit" },
     callback = function()
-        vim.keymap.set('n', 'q', ':close<cr>', {noremap=true, silent=true})
+        vim.cmd [[
+            nnoremap <silent> <buffer> q :close<CR>
+            set nobuflisted
+        ]]
     end,
 })
 

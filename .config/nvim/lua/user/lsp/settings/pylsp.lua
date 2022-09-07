@@ -3,6 +3,7 @@ local opts = {
         pylsp = {
             plugins = {
                 pycodestyle = {
+                    enabled = true,
                     maxLineLength = 120,
                     ignore = {}
                 },

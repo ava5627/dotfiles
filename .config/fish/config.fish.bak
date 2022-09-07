@@ -1,3 +1,4 @@
+
 # EXPORT
 set fish_greeting                                 # Supresses fish's intro message
 export TERM="xterm-256color"                         # Sets the terminal type
@@ -18,16 +19,9 @@ set -g fish_prompt_pwd_dir_length 0
 export EDITOR=nvim
 
 # clean home dir
-export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
-export CUDA_CACHE_PATH=$XDG_CACHE_HOME/nv
-export HISTFILE=$XDG_STATE_HOME/bash/history
-export GNUPGHOME=$XDG_DATA_HOME/gnupg
-export SCREENRC=$XDG_CONFIG_HOME/screen/screenrc
-export GTK2_RC_FILES=$XDG_CONFIG_HOME/gtk-2.0/gtkrc
-export NUGET_PACKAGES=$XDG_CACHE_HOME/NuGetPackages
-export KERAS_HOME=$XDG_STATE_HOME/keras
-export WINEPREFIX="$XDG_DATA_HOME"/wine
-export XINITRC="$XDG_CONFIG_HOME"/X11/xinitrc
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
+export HISTFILE="$XDG_STATE_HOME/bash/history"
 
 if not status --is-interactive
   exit
@@ -81,7 +75,7 @@ alias pacqs='pacman -Qs'
 alias pacar='sudo pacman -Rns (pacman -Qtdq)'
 
 # yay
-alias ys='yay -Syu'
+alias ys='yay -Sua'
 alias yss='yay -Ss'
 
 # ls
@@ -101,7 +95,7 @@ alias vim='nvim'
 
 alias qlog='watch -n 0.5 tail ~/.local/share/qtile/qtile.log -n 30'
 
-alias ranger='ranger --choosedir=/tmp/ranger_dir; set LASTDIR (cat /tmp/ranger_dir); cd $LASTDIR; rm /tmp/ranger_dir'
+alias rgr='ranger'
 
 # python
 alias vc='python -m venv .venv'

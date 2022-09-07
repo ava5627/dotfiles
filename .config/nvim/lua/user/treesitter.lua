@@ -30,7 +30,7 @@ require("nvim-treesitter.configs").setup {
             clear_on_cursor_move = true,
         },
         smart_rename = {
-            enable = true,
+            enable = false,
             keymaps = {
                 smart_rename = "grn",
             },

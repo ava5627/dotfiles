@@ -35,7 +35,7 @@ from libqtile import bar, layout, widget, hook, qtile
 from libqtile.config import Click, Drag, Match, Screen, EzKey
 from libqtile.log_utils import logger
 from libqtile.lazy import lazy
-from groups import groups_list, group_keys
+from group_config import groups_list, group_keys
 
 groups = groups_list
 
@@ -90,6 +90,7 @@ mod = 'mod4'
 home = os.path.expanduser('~')
 terminal = "alacritty"
 file_manager = "pcmanfm"
+term_file_manager = "ranger"
 browser = "firefox"
 calendar = "morgen"
 rofi_cmd = "colorful_launcher"
@@ -98,29 +99,30 @@ my_keys = [
     # Window keys
     ["M-j", 	                    lazy.group.next_window(), top_window,   	         "Move focus next"],
     ["M-k", 	                    lazy.group.prev_window(), top_window,   	         "Move focus prev"],
-    ["M-h", 	                    lazy.layout.left(), 	                             "Grow main window"],
-    ["M-l", 	                    lazy.layout.right(), 	                             "Shrink main window"],
-    ["M-S-h", 	                    lazy.layout.shuffle_left(), 	                     "Move window left"],
-    ["M-S-l", 	                    lazy.layout.shuffle_right(), 	                     "Move window right"],
-    ["M-S-j", 	                    lazy.layout.shuffle_down(), 	                     "Move window down"],
+    ["M-h", 	                    lazy.layout.left(), 	                         "Grow main window"],
+    ["M-l", 	                    lazy.layout.right(), 	                         "Shrink main window"],
+    ["M-S-h", 	                    lazy.layout.shuffle_left(), 	                 "Move window left"],
+    ["M-S-l", 	                    lazy.layout.shuffle_right(), 	                 "Move window right"],
+    ["M-S-j", 	                    lazy.layout.shuffle_down(), 	                 "Move window down"],
     ["M-S-k", 	                    lazy.layout.shuffle_up(),  	                         "Move window up"],
     ["M-C-h",                       lazy.layout.grow_left(), 	                         "Grow window left"],
     ["M-C-l",                       lazy.layout.grow_right(), 	                         "Grow window right"],
     ["M-C-j",                       lazy.layout.grow_down(), 	                         "Grow window down"],
-    ["M-C-k",                       lazy.layout.grow_up(), 	                             "Grow window up"],
+    ["M-C-k",                       lazy.layout.grow_up(), 	                         "Grow window up"],
 
     # Layout keys
-    ["M-<Tab>", 	                lazy.next_layout(),  	                             "Toggle between layouts"],
-    ["M-f", 	                    lazy.window.toggle_floating(), 	                     "toggle floating"],
+    ["M-<Tab>", 	            lazy.next_layout(),  	                         "Toggle between layouts"],
+    ["M-f", 	                    lazy.window.toggle_floating(), 	                 "toggle floating"],
     ["M-S-f",         	            lazy.window.toggle_fullscreen(),  	                 "toggle fullscreen"],
-    ["M-S-<Right>", 	            lazy.next_screen(), 	                             "Move focus to next monitor"],
-    ["M-S-<Left>", 	                lazy.prev_screen(), 	                             "Move focus to prev monitor"],
+    ["M-S-<Right>", 	            lazy.next_screen(), 	                         "Move focus to next monitor"],
+    ["M-S-<Left>", 	            lazy.prev_screen(), 	                         "Move focus to prev monitor"],
 
     # Launch keys
-    ["M-e", 	                    lazy.spawn(terminal),  	                             "Launch Terminal"],
-    ["M-<Return>", 	                lazy.spawn(terminal),  	                             "Launch Terminal alt"],
+    ["M-e", 	                    lazy.spawn(terminal),  	                         "Launch Terminal"],
+    ["M-<Return>", 	            lazy.spawn(terminal),  	                         "Launch Terminal alt"],
     ["M-b", 	                    lazy.spawn(terminal + " -e btop"),                   "Launch BTOP"],
     ["M-m", 	                    lazy.spawn(file_manager),  	                         "Launch File manager"],
+    ["M-S-m", 	                    lazy.spawn(terminal + " -e " + term_file_manager),   "Launch Terminal File manager"],
     ["M-u", 	                    lazy.spawn("steam steam://open/friends"),  	         "Launch Steam Friends"],
     ["M-w", 	                    lazy.spawn("firefox"),                               "Launch Firefox"],
     ["M-S-w", 	                    lazy.spawn("firefox -private-window"),               "Launch Private Firefox"],
@@ -128,31 +130,32 @@ my_keys = [
     ["M-S-e", 	                    lazy.spawn("copyq show"), 	                         "Show Copyq"],
     ["M-r", 	                    lazy.spawn(rofi_cmd + " -show run -i", shell=True),  "Run Launcher"],
     ["M-S-r", 	                    lazy.spawn(rofi_cmd + " -show drun -i", shell=True), "Application Launcher"],
-    ["M-c", 	                    lazy.spawn("edit_configs"), 	                     "Config Launcher"],
-    ["M-o", 	                    lazy.spawn("edit_homework"), 	                     "Homework Launcher"],
+    ["M-c", 	                    lazy.spawn("edit_configs"), 	                 "Config Launcher"],
+    ["M-o", 	                    lazy.spawn("edit_homework"), 	                 "Homework Launcher"],
     ["M-z", 	                    lazy.spawn("zathura"),                               "Open PDF reader"],
     ["M-v", 	                    lazy.spawn(terminal + " -e nvim"),                   "Launch Neovim"],
     ["<Print>",                     lazy.spawn("flameshot gui"),                         "Take Screenshot"],
 
     # Command keys
-    ["M-C-r", 	                    lazy.reload_config(),  	                             "Reload Qtile config"],
+    ["M-C-r", 	                    lazy.reload_config(),  	                         "Reload Qtile config"],
     ["M-A-r", 	                    lazy.restart(),  	                                 "Restart Qtile"],
-    ["M-C-q", 	                    lazy.shutdown(),    	                             "Shutdown Qtile"],
+    ["M-C-q", 	                    lazy.shutdown(),    	                         "Shutdown Qtile"],
     ["M-q", 	                    kill_or_steam,  	                                 "Kill focused window"],
+    ["M-C-q", 	                    lazy.spawn("xkill"),  	                         "Kill focused window"],
     ["M-<F1>", 	                    lazy.spawn("powermenu"),         	                 "Logout Menu"],
     ["M-<F2>", 	                    lazy.spawn("systemctl suspend"),           	         "Suspend"],
-    ["<XF86AudioRaiseVolume>",  	lazy.spawn("amixer -q -D pulse set Master 5%+"), 	 "Raise volume by 5%"],
+    ["<XF86AudioRaiseVolume>",      lazy.spawn("amixer -q -D pulse set Master 5%+"), 	 "Raise volume by 5%"],
     ["<XF86AudioLowerVolume>", 	    lazy.spawn("amixer -q -D pulse set Master 5%-"), 	 "Lower volume by 5%"],
     ["<XF86AudioMute>",             lazy.spawn("amixer -q -D pulse set Master toggle"),  "Toggle Mute"],
-    ["<XF86AudioPlay>", 	        lazy.spawn("playerctl play-pause"), 	             "Play/Pause"],
-    ["M-p", 	                    lazy.spawn("playerctl play-pause"), 	             "Play/Pause"],
+    ["<XF86AudioPlay>", 	    lazy.spawn("playerctl play-pause"), 	         "Play/Pause"],
+    ["M-p", 	                    lazy.spawn("playerctl play-pause"), 	         "Play/Pause"],
     ["M-n", 	                    lazy.spawn("playerctl next"),                        "Next"],
 ]
 
 
 my_keys += group_keys
-keys = [EzKey(bind, *cmd, desc=desc) for bind, *cmd, desc in my_keys]
 
+keys = [EzKey(bind, *cmd, desc=desc) for bind, *cmd, desc in my_keys]
 
 layout_theme = {
     "border_width": 2,
@@ -460,3 +463,13 @@ floating_types = ["notification", "toolbar", "splash", "dialog"]
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
 wmname = "LG3D"
+
+
+# logger.error("New")
+# keys_str = '\n'
+# for i, key in enumerate(keys):
+#     for i, m in enumerate(key.modifiers):
+#         keys_str += f'{m:<9}'
+#     keys_str += " " * 9 * (2 - len(key.modifiers))
+#     keys_str += f"{key.key:<20} {key.desc}\n"
+# logger.error(keys_str)

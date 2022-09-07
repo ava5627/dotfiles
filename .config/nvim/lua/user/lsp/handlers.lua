@@ -13,9 +13,7 @@ M.setup = function()
     end
 
     local config = {
-        -- disable virtual text
-        virtual_text = true,
-        -- show signs
+        virtual_text = false,
         signs = {
             active = signs,
         },
@@ -48,34 +46,37 @@ local function lsp_highlight_document(client)
     if client.resolved_capabilities.document_highlight then
         vim.api.nvim_create_augroup("lsp_document_highlight", {})
         vim.api.nvim_create_autocmd("CursorHold", {
-            pattern="<buffer>",
-            callback=vim.lsp.buf.document_highlight
+            pattern = "<buffer>",
+            callback = vim.lsp.buf.document_highlight
         })
         vim.api.nvim_create_autocmd("CursorMoved", {
-            pattern="<buffer>",
-            callback=vim.lsp.buf.clear_references
+            pattern = "<buffer>",
+            callback = vim.lsp.buf.clear_references
         })
     end
 end
 
 local function lsp_keymaps(bufnr)
-    local opts = { noremap = true, silent = true }
-    vim.api.nvim_buf_set_keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "n", "gk", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "i", "<C-g><C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "n", "grf", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "", "ga", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-    -- vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>f", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "n", "[d", '<cmd>lua vim.diagnostic.goto_prev({ border = "rounded" })<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "n", "gl", '<cmd>lua vim.diagnostic.open_float({ border = "rounded" })<CR>', opts)
-    -- vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", '<cmd>lua vim.diagnostic.show()<CR>', opts)
-    -- vim.api.nvim_buf_set_keymap(bufnr, "n", "gh", '<cmd>lua vim.diagnostic.hide()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "n", "]d", '<cmd>lua vim.diagnostic.goto_next({ border = "rounded" })<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>c", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>m", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+    local opts = { buffer = bufnr, noremap = true, silent = true }
+    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, opts)
+    vim.keymap.set("n", "gh", vim.lsp.buf.hover, opts)
+    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+    vim.keymap.set("n", "gk", vim.lsp.buf.signature_help, opts)
+    vim.keymap.set("i", "<C-g><C-k>", vim.lsp.buf.signature_help, opts)
+    vim.keymap.set("n", "grf", vim.lsp.buf.references, opts)
+    vim.keymap.set("n", "grn", vim.lsp.buf.rename, opts)
+    vim.keymap.set("n", "ga", vim.lsp.buf.code_action, opts)
+    vim.keymap.set("v", "ga", vim.lsp.buf.range_code_action, opts)
+    -- vim.keymap.set("n", "<leader>f", vim.diagnostic.open_float, opts)
+    vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev({ border = "rounded" }) end, opts)
+    vim.keymap.set("n", "gl", function() vim.diagnostic.open_float({ border = "rounded" }) end, opts)
+    -- vim.keymap.set("n", "gs", vim.diagnostic.show, opts)
+    -- vim.keymap.set("n", "gh", vim.diagnostic.hide, opts)
+    vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next({ border = "rounded" }) end, opts)
+    vim.keymap.set("n", "<leader>c", vim.diagnostic.setloclist, opts)
+    vim.keymap.set("n", "<leader>m", vim.lsp.buf.formatting, opts)
 end
 
 M.on_attach = function(client, bufnr)

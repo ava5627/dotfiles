@@ -7,6 +7,7 @@ config_list[fish]=~/.config/fish
 config_list[nvim]=~/.config/nvim
 config_list[logid]=/etc/logid.cfg
 config_list[rofi]=~/.config/rofi
+config_list[ranger]=~/.config/ranger
 config_list[userChrome]=~/.config/userChrome.css
 
 

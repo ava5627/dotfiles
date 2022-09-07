@@ -1,5 +1,36 @@
+global !p
+def get_args():
+	if snip.tabstop == 0:
+		line = snip.tabstops[0].start[0]
+		args = snip.tabstops[2].current_text.split(', ')
+		indent = snip.buffer[line]
+		for arg in reversed(args):
+			snip.buffer[line:line] = [indent + f"self.{arg} = {arg}"]
+endglobal
 
-snippet "([^f])(\".*\{[^\}\"]+)" "Auto fstring" irA
+snippet "([^f])(\"[^\"]*\{.)" "Auto fstring" irA
 `!p snip.rv = match.group(1) + 'f' + match.group(2)`
+endsnippet
+
+# Enumerate for loop
+snippet "for (.+) in (.+)enum" "Auto enumerate" irA
+for ${1:i}, `!p
+snip.rv = (match.group(1) + ' in enumerate('
+		   + match.group(2).replace(':', '') + ')'
+	 	   + (':' if ':' in match.group(2) else ''))
+`$0
+endsnippet
+
+# ++ to += 1
+snippet ++ "Fix ++" iA
+ += 1
+endsnippet
+
+post_jump "get_args()"
+snippet class "Create Class" w
+class $1:
+
+	def __init__(self, $2):
+		$0
 endsnippet
 

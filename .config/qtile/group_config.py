@@ -1,7 +1,6 @@
 from libqtile import qtile
 from libqtile.config import Group, Match
 from libqtile.lazy import lazy
-from libqtile.log_utils import logger
 
 
 def go_to_group(name):
@@ -60,13 +59,11 @@ groups_list = [
 group_keys = []
 for i in groups_list:
     group_keys.extend([
-        # mod1 + letter of group = switch to group
-        # Key([mod], i.name, lazy.group[i.name].toscreen(),
+        # mod1 + key of group = switch to group
         ['M-' + i.name, go_to_group(i.name),                                f"Switch to group {i.name}"],
-
-        # mod1 + shift + letter of group = move focused window to group
+        # mod1 + shift + key of group = move focused window to group
         ['M-S-' + i.name, lazy.window.togroup(i.name),                      f"Move window to group {i.name}"],
-        # mod1 + control + letter of group = switch to & move focused window to group
+        # mod1 + control + key of group = move focused window and switch to group
         ['M-C-' + i.name, lazy.window.togroup(i.name), go_to_group(i.name), f"Move and switch to group {i.name}"],
     ])
 

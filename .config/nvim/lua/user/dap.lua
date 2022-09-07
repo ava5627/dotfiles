@@ -16,38 +16,15 @@ if not dap_install_status_ok then
     return
 end
 
+local dap_virt_text_status_ok, dap_virt_text = pcall(require, "nvim-dap-virtual-text")
+if not dap_virt_text_status_ok then
+    vim.api.nvim_err_writeln("nvim-dap-virtual-text not found")
+    return
+end
+
 dap_install.setup {}
 
 dap_install.config("python", {})
-
--- dapui.setup {
---     layouts = {
---         {
---             elements = {
---                 {
---                     id = "breakpoints",
---                     size = 0.25
---                 },
---                 {
---                     id = "scopes",
---                     size = 0.25, -- Can be float or integer > 1
---                 },
---                 {
---                     id = "watches",
---                 }
---             },
---             size = 40,
---             position = "right", -- Can be "left", "right", "top", "bottom"
---         },
---         {
---             elements = {
---                 "repl",
---                 "console",
---             },
---             size = 0.3,
---         },
---     }
--- }
 
 dapui.setup({
     icons = { expanded = "▾", collapsed = "▸" },
@@ -73,23 +50,23 @@ dapui.setup({
     layouts = {
         {
             elements = {
+                -- Elements can be strings or table with id and size keys.
+                { id = "scopes", size = 0.25 },
+                "watches",
+                "breakpoints",
+                "stacks",
+            },
+            size = .25, -- 100 columns
+            position = "left",
+        },
+        {
+            elements = {
                 {id = "repl", size = .5},
                 {id = "console", size = .5},
             },
             size = 0.25, -- 25% of total lines
             position = "bottom",
         },
-        {
-            elements = {
-                -- Elements can be strings or table with id and size keys.
-                { id = "scopes", size = 0.25 },
-                "breakpoints",
-                "stacks",
-                "watches",
-            },
-            size = 100, -- 100 columns
-            position = "right",
-        }
     },
     floating = {
         max_height = nil, -- These can be integers or a float between 0 and 1.
@@ -107,6 +84,8 @@ dapui.setup({
 
 vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "DiagnosticSignError", linehl = "", numhl = "" })
 vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "DiagnosticSignWarn", linehl = "", numhl = "" })
+
+dap_virt_text.setup()
 
 dap.listeners.after.event_initialized["dapui_config"] = function()
     vim.cmd("NvimTreeClose")
