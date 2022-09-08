@@ -95,8 +95,6 @@ alias ip='ip --color=auto'
 
 alias q=exit
 
-alias f='commandline -i "sudo $history[1]";history delete --exact --case-sensitive f'
-
 alias vim='nvim'
 
 alias qlog='watch -n 0.5 tail ~/.local/share/qtile/qtile.log -n 30'
