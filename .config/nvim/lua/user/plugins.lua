@@ -1,7 +1,7 @@
 local fn = vim.fn
 
 -- Automatically install packer
-local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
+local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 if fn.empty(fn.glob(install_path)) > 0 then
     PACKER_BOOTSTRAP = fn.system {
         "git",
@@ -43,11 +43,11 @@ packer.init {
 return packer.startup(function(use)
     -- Dependencies
     use("wbthomason/packer.nvim")
-    use("nvim-lua/popup.nvim")
     use("nvim-lua/plenary.nvim")
+    use("nvim-lua/popup.nvim")
     use({
         "kyazdani42/nvim-web-devicons",
-        config = function() require'nvim-web-devicons'.setup() end,
+        config = function() require('nvim-web-devicons').setup() end,
     })
 
     --cmp
@@ -88,12 +88,20 @@ return packer.startup(function(use)
 
     --lsp
     use("neovim/nvim-lspconfig")
-    use("williamboman/nvim-lsp-installer")
+    use("williamboman/mason.nvim")
+    use("williamboman/mason-lspconfig.nvim")
     use("ray-x/lsp_signature.nvim")
+    use "jose-elias-alvarez/null-ls.nvim" -- for formatters and linters
     use({
-      'j-hui/fidget.nvim',
-      config = function() require('fidget').setup() end,
+        'j-hui/fidget.nvim',
+        config = function() require('fidget').setup() end,
     })
+
+    -- Java
+    use("mfussenegger/nvim-jdtls")
+
+    -- Lua
+    use("folke/lua-dev.nvim")
 
 
     -- colorschemes
@@ -111,6 +119,8 @@ return packer.startup(function(use)
     use("antoinemadec/FixCursorHold.nvim")
     use("lukas-reineke/indent-blankline.nvim")
     use("tpope/vim-sleuth")
+    use("ThePrimeagen/harpoon")
+    use("stevearc/dressing.nvim")
 
     -- movement
     use("tpope/vim-surround")
@@ -145,6 +155,7 @@ return packer.startup(function(use)
     use("rcarriga/nvim-dap-ui")
     use("ravenxrz/DAPInstall.nvim")
     use("theHamsta/nvim-dap-virtual-text")
+    use("is0n/jaq-nvim")
 
     -- Toggle Term
     use({ "akinsho/toggleterm.nvim", branch = "main" })
@@ -168,6 +179,7 @@ return packer.startup(function(use)
     use("JoosepAlviste/nvim-ts-context-commentstring")
     use("nvim-treesitter/nvim-treesitter-refactor")
     use("nvim-treesitter/playground")
+    use("p00f/nvim-ts-rainbow")
 
     -- git
     use("lewis6991/gitsigns.nvim")

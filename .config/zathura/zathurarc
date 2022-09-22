@@ -6,8 +6,9 @@ map K feedkeys <C-u>
 set selection-clipboard "clipboard"
 set show-hidden true
 set statusbar-home-tilde true
+set window-title-basename true
 set recolor false
-set adjust-open "width"
+set adjust-open "best-fit"
 
 set completion-bg "#3a3e4e"
 set completion-fg "#c5cdd9"

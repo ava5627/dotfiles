@@ -25,6 +25,7 @@ end
 dap_install.setup {}
 
 dap_install.config("python", {})
+dap_install.config("go", {})
 
 dapui.setup({
     icons = { expanded = "▾", collapsed = "▸" },
@@ -61,8 +62,8 @@ dapui.setup({
         },
         {
             elements = {
-                {id = "repl", size = .5},
-                {id = "console", size = .5},
+                --[[ {id = "repl", size = .5}, ]]
+                {id = "console", size = 1},
             },
             size = 0.25, -- 25% of total lines
             position = "bottom",

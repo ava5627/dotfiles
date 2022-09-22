@@ -28,6 +28,13 @@ export NUGET_PACKAGES=$XDG_CACHE_HOME/NuGetPackages
 export KERAS_HOME=$XDG_STATE_HOME/keras
 export WINEPREFIX="$XDG_DATA_HOME"/wine
 export XINITRC="$XDG_CONFIG_HOME"/X11/xinitrc
+export GOPATH="$XDG_CONFIG_HOME"/go
+export ANDROID_HOME="$XDG_DATA_HOME"/android
+export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
+export MYSQL_HISTFILE="$XDG_DATA_HOME"/mysql_history
+export ZDOTDIR="$HOME"/.config/zsh
+export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
+alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
 
 if not status --is-interactive
   exit
@@ -81,7 +88,7 @@ alias pacqs='pacman -Qs'
 alias pacar='sudo pacman -Rns (pacman -Qtdq)'
 
 # yay
-alias ys='yay -Syu'
+alias ys='yay -Sua'
 alias yss='yay -Ss'
 
 # ls
@@ -96,10 +103,12 @@ alias ip='ip --color=auto'
 alias q=exit
 
 alias vim='nvim'
+alias v='nvim .'
 
 alias qlog='watch -n 0.5 tail ~/.local/share/qtile/qtile.log -n 30'
 
 alias ranger='ranger --choosedir=/tmp/ranger_dir; set LASTDIR (cat /tmp/ranger_dir); cd $LASTDIR; rm /tmp/ranger_dir'
+
 
 # python
 alias vc='python -m venv .venv'

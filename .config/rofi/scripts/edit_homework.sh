@@ -1,11 +1,11 @@
-#! /usr/bin/env sh
+#! /usr/bin/env bash
 
 hw_dir="$HOME/Insync/Homework"
 class_file="$hw_dir/Current Classes.txt"
 recent_file="$hw_dir/Recent.txt"
 
 if test -f "$class_file"; then
-    course=$((test -f $recent_file && cat $recent_file; cat "$class_file"; echo clear) | colorful_launcher -matching normal -dmenu -i -p 'Course:')
+    course=$((test -f $recent_file && perl -pe 's/^\s*$//g' $recent_file; cat "$class_file"; echo clear) | colorful_launcher -matching normal -dmenu -i -p 'Course:')
 else
     ls $hw_dir | colorful_launcher -matching normal rofi -dmenu -multi-select -kb-accept-alt "space" -i -p 'Course:' > "$class_file"
     course=$(cat "$class_file" | colorful_launcher -matching normal -dmenu -i -p 'Course:')

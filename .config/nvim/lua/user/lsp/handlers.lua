@@ -82,6 +82,11 @@ end
 M.on_attach = function(client, bufnr)
     if client.name == "tsserver" then
         client.resolved_capabilities.document_formatting = false
+    elseif client.name == "jdt.ls" then
+        if JAVA_DAP_ACTIVE then
+            require("jdtls").setup_dap { hotcodereplace = "auto" }
+            require("jdtls.dap").setup_dap_main_class_configs()
+        end
     end
 
     lsp_keymaps(bufnr)

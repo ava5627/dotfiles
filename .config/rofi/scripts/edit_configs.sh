@@ -9,6 +9,7 @@ config_list[logid]=/etc/logid.cfg
 config_list[rofi]=~/.config/rofi
 config_list[ranger]=~/.config/ranger
 config_list[userChrome]=~/.config/userChrome.css
+config_list[zathura]=~/.config/zathura
 
 
 choice=$(printf '%s\n' "${!config_list[@]}" | colorful_launcher -dmenu -p 'Edit config:')
