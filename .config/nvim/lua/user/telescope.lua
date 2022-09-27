@@ -4,7 +4,7 @@ if not status_ok then
     return
 end
 
-local actions = require "telescope.actions"
+local actions = require("telescope.actions")
 
 telescope.setup {
     defaults = {
@@ -12,6 +12,8 @@ telescope.setup {
         prompt_prefix = " ",
         selection_caret = " ",
         path_display = { "smart" },
+        theme = "dropdown",
+        preview = false,
         mappings = {
             i = {
                 ["<C-n>"] = actions.cycle_history_next,
@@ -46,6 +48,7 @@ telescope.setup {
 
             n = {
                 ["<esc>"] = actions.close,
+                ["dd"] = actions.delete_buffer,
                 ["<CR>"] = actions.select_default,
                 ["<S-CR>"] = actions.select_horizontal,
                 ["<C-CR>"] = actions.select_vertical,
@@ -85,6 +88,44 @@ telescope.setup {
         -- }
         -- Now the picker_config_key will be applied every time you call this
         -- builtin picker
+        live_grep = {
+            theme = "dropdown",
+        },
+        grep_string = {
+            theme = "dropdown",
+        },
+        find_files = {
+            theme = "dropdown",
+            previewer = false,
+        },
+        buffers = {
+            theme = "dropdown",
+            previewer = false,
+            initial_mode = "normal",
+        },
+        planets = {
+            show_pluto = true,
+            show_moon = true,
+        },
+        colorscheme = {
+            -- enable_preview = true,
+        },
+        lsp_references = {
+            theme = "dropdown",
+            initial_mode = "normal",
+        },
+        lsp_definitions = {
+            theme = "dropdown",
+            initial_mode = "normal",
+        },
+        lsp_declarations = {
+            theme = "dropdown",
+            initial_mode = "normal",
+        },
+        lsp_implementations = {
+            theme = "dropdown",
+            initial_mode = "normal",
+        },
     },
     extensions = {
         -- Your extension configuration goes here:
@@ -93,9 +134,14 @@ telescope.setup {
         -- }
         project = {
             hidden_files = false,
+        },
+        harpoon = {
+            theme = "dropdown",
         }
+
         -- please take a look at the readme of the extension you want to configure
     },
 }
 
-require'telescope'.load_extension('project')
+telescope.load_extension('project')
+telescope.load_extension('harpoon')

@@ -31,6 +31,14 @@ lualine.setup {
         lualine_y = {},
         lualine_z = {}
     },
+    --[[ winbar = { ]]
+    --[[     lualine_a = {}, ]]
+    --[[     lualine_b = {}, ]]
+    --[[     lualine_c = {'filename'}, ]]
+    --[[     lualine_x = {'location'}, ]]
+    --[[     lualine_y = {}, ]]
+    --[[     lualine_z = {} ]]
+    --[[ }, ]]
     extensions = {
         'nvim-tree',
         'quickfix',

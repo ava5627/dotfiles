@@ -30,9 +30,6 @@ kmap("n", "<C-q>", "<C-w>q", opts)
 kmap("n", "<A-l>", ":BufferLineCycleNext<CR>", opts)
 kmap("n", "<A-h>", ":BufferLineCyclePrev<CR>", opts)
 
--- Harpoon
-kmap("n", "<leader>h", require("harpoon.ui").toggle_quick_menu, opts)
-kmap("n", "<leader>j", require("harpoon.mark").add_file, opts)
 
 -- Quick fix list
 kmap("n", "<leader>co", ":copen<cr><C-w>p", opts)
@@ -59,8 +56,9 @@ kmap("i", "<A-l>", "<right>", opts)
 -- kmap("i", ":w", "<ESC>:w<cr>", opts)
 
 -- Delete backwards
-kmap("i", "<C-d>", "<DELETE>", opts)
-kmap("i", "<A-d>", "<C-o>dw", opts)
+kmap("i", "<A-d>", "<DELETE>", opts)
+kmap("i", "<C-d>", "<C-o>dw", opts)
+kmap("i", "<A-w>", "<BACKSPACE>", opts)
 
 -- Paste in insert mode
 kmap("i", "<C-p>", "<left><C-o>p", opts)
@@ -100,9 +98,25 @@ kmap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 -- Telescope
 kmap("n", "<leader>pp", "<cmd>Telescope find_files<cr>", opts)
 kmap("n", "<leader>pg", "<cmd>Telescope live_grep<cr>", opts)
-kmap("n", "<leader>pb", "<cmd>Telescope buffers<cr>", opts)
 kmap("n", "<leader>pv", "<cmd>Telescope lsp_document_symbols<cr>", opts)
 kmap("n", "<leader>po", "<cmd>Telescope project project<cr>", opts)
+kmap("n", "<A-tab>", "<cmd>Telescope buffers<cr>", opts)
+
+-- Harpoon
+kmap("n", "<tab>", function()
+    require('telescope').extensions.harpoon.marks(require('telescope.themes').get_dropdown{
+        previewer = false, initial_mode='normal', prompt_title='Harpoon'
+    })
+end, opts)
+kmap("n", "mm", require("harpoon.mark").add_file, opts)
+kmap("n", "<A-q>", function() require("harpoon.ui").nav_file(1) end, opts)
+kmap("n", "<A-w>", function() require("harpoon.ui").nav_file(2) end, opts)
+kmap("n", "<A-e>", function() require("harpoon.ui").nav_file(3) end, opts)
+kmap("n", "<A-r>", function() require("harpoon.ui").nav_file(4) end, opts)
+--[[ kmap("n", "<A-l>", require("harpoon.ui").nav_next, opts) ]]
+--[[ kmap("n", "<A-h>", require("harpoon.ui").nav_next, opts) ]]
+kmap("n", "<A-h>", "<plug>(CybuPrev)", opts)
+kmap("n", "<A-l>", "<plug>(CybuNext)", opts)
 
 -- Git
 kmap("n", "<leader>gs", ":G<cr>", opts)
@@ -126,6 +140,12 @@ kmap({ "n", "v" }, "<C-a>", require("dial.map").inc_normal(), { noremap = true }
 kmap({ "n", "v" }, "<C-x>", require("dial.map").dec_normal(), { noremap = true })
 kmap("v", "g<C-a>", require("dial.map").inc_gvisual(), { noremap = true })
 kmap("v", "g<C-x>", require("dial.map").dec_gvisual(), { noremap = false })
+
+-- Run
+kmap("n", "<leader>t", require("user.run").ACRAuto, opts)
+kmap("n", "<F1>",      require("user.run").ACRAuto, opts)
+kmap("n", "<leader>r", require("user.run").ACR, opts)
+kmap("n", "<F2>",      require("user.run").ACR, opts)
 
 -- Debugging
 kmap("n", "<leader>db", require("dap").toggle_breakpoint, opts)

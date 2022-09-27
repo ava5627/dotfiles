@@ -19,5 +19,6 @@ kdeconnect-indicator &
 morgen --hidden &
 insync start &
 flameshot &
+xmodmap ~/.config/qtile/scripts/xmodmap
 # setxkbmap -option ctrl:swapcaps &
 # xcape -e "Control_L=Escape" &

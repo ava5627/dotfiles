@@ -9,25 +9,30 @@ end
 
 
 -- local color = "gruvbox"
-local color = "sonokai"
+-- local color = "sonokai"
 -- local color = "darkplus"
+local color = "tokyonight"
 
-vim.g.sonokai_enable_italic = 1
-vim.g.sonokai_current_word = 'bold'
+if color == "sonokai" then
+    vim.g.sonokai_enable_italic = 1
+    vim.g.sonokai_current_word = 'bold'
+elseif color == "tokyonight" then
+    require("user.tokyo")
+end
 local status, _ = pcall(vim.cmd, "colorscheme " .. color)
 if not status then
-    vim.notify("colorcheme" .. color .. " not found")
+    vim.notify("colorcheme " .. color .. " not found")
     return
   -- else
   --   vim.cmd [[hi Normal guibg=NONE ctermbg=NONE]]
 end
 
 -- vim.api.nvim_set_hl(0, "NormalNC", {bg = "#1E1E1E"})
-set_hl(0, "NvimTreeGitDirty", {fg = get_fg("NvimTreeFolderIcon")})
-local normal_bg = get_bg('Normal')
-set_hl(0, "EndOfBuffer", {bg=normal_bg, fg=normal_bg})
 
 if color == "sonokai" then
+    set_hl(0, "NvimTreeGitDirty", {fg = get_fg("NvimTreeFolderIcon")})
+    local normal_bg = get_bg('Normal')
+    set_hl(0, "EndOfBuffer", {bg=normal_bg, fg=normal_bg})
     vim.cmd[[
         highlight! link TSParameter OrangeItalic
         highlight! link TSParameterReference OrangeItalic

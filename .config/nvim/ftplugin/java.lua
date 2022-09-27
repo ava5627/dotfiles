@@ -12,11 +12,11 @@ local data = vim.fn.stdpath("data")
 if vim.fn.has("mac") == 1 then
     WORKSPACE_PATH = home .. "/workspace/"
     CONFIG = "mac"
-elseif vim.fn.has "unix" == 1 then
+elseif vim.fn.has("unix") == 1 then
     WORKSPACE_PATH = home .. "/.local/share/jdtls/workspace/"
     CONFIG = "linux"
 else
-    print("Unsupported system")
+    vim.notify("Unsupported system")
 end
 
 
@@ -38,8 +38,8 @@ JAVA_DAP_ACTIVE = true
 
 local bundles
 if JAVA_DAP_ACTIVE then
-    if vim.fn.empty(vim.fn.glob(data.."/java-debug")) > 0 then
-        print("No java-debug found. Install it for debugging")
+    if vim.fn.empty(vim.fn.glob(data .. "/java-debug")) > 0 then
+        vim.notify("No java-debug found. Install it for debugging")
         JAVA_DAP_ACTIVE = false
     end
     bundles = {
@@ -47,7 +47,7 @@ if JAVA_DAP_ACTIVE then
             data .. "/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar"
         ),
     }
-    if vim.fn.empty(vim.fn.glob(data.."/vscode-java-test")) == 0 then
+    if vim.fn.empty(vim.fn.glob(data .. "/vscode-java-test")) == 0 then
         vim.list_extend(bundles, vim.split(vim.fn.glob(data .. "/vscode-java-test/server/*.jar"), "\n"))
     end
 end

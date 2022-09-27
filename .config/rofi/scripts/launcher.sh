@@ -12,6 +12,8 @@
 # style_7     style_8     style_9     style_10    style_11    style_12
 
 dir="$HOME/.config/rofi/styles/launcher"
+# theme="style_8"
+theme="tokyo"
 
 # dark
 ALPHA="#00000000"
@@ -44,5 +46,4 @@ cat > $dir/colors.rasi <<- EOF
 EOF
 
 # comment these lines to disable random style
-theme="style_8"
 rofi -no-lazy-grab -theme $dir/"$theme" $@

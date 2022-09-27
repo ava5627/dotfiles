@@ -20,7 +20,6 @@ nvim_tree.setup {
     update_cwd = true,
     view = {
         width = 30,
-        height = 30,
         hide_root_folder = false,
         side = "left",
         preserve_window_proportions = false,
@@ -33,6 +32,7 @@ nvim_tree.setup {
                 { key = { "l", "<CR>", "o" }, action = "edit" },
                 { key = "h", action = "close_node" },
                 { key = "v", action = "vsplit" },
+                { key = "<tab>", actions = ""}
             },
         },
     },
@@ -121,7 +121,7 @@ nvim_tree.setup {
     },
     filesystem_watchers = {
         enable = true,
-        interval = 150,
+        debounce_delay = 150,
     },
     actions = {
         change_dir = {
@@ -142,7 +142,7 @@ nvim_tree.setup {
         },
     },
     trash = {
-        cmd = "trash",
+        cmd = "gio trash",
         require_confirm = true,
     },
     log = {

@@ -14,7 +14,7 @@ fi
 if [[ -z $course ]]; then
     exit
 elif [[ $course =~ ^Recent:.* ]]; then
-    alacritty -e $EDITOR "$hw_dir/${course:8}"
+    kitty -e $EDITOR "$hw_dir/${course:8}"
     selected=$course
     course=$(echo $course | perl -pe "s|Recent: (.*)/.*|\1|g")
     echo -e "$selected\n$(perl -pe s/"Recent:.*$course.*\n"//g "$recent_file")" > "$recent_file"
@@ -33,9 +33,9 @@ if [ -z "$folder" ]; then
 elif [[ "$folder" == "new" ]]; then
     folder=$(rofi -dmenu -p "New Directory Name")
     mkdir "$hw_dir/$course/$folder"
-    alacritty -e $EDITOR "$hw_dir/$course/$folder" &
+    kitty -e $EDITOR "$hw_dir/$course/$folder" &
 else
-    alacritty -e $EDITOR "$hw_dir/$course/$folder" &
+    kitty -e $EDITOR "$hw_dir/$course/$folder" &
 fi
 
 if test -f "$recent_file"; then

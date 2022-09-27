@@ -75,14 +75,14 @@ local function lsp_keymaps(bufnr)
     -- vim.keymap.set("n", "gs", vim.diagnostic.show, opts)
     -- vim.keymap.set("n", "gh", vim.diagnostic.hide, opts)
     vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next({ border = "rounded" }) end, opts)
-    vim.keymap.set("n", "<leader>c", vim.diagnostic.setloclist, opts)
+    vim.keymap.set("n", "<leader>c", vim.diagnostic.setqflist, opts)
     vim.keymap.set("n", "<leader>m", vim.lsp.buf.formatting, opts)
 end
 
 M.on_attach = function(client, bufnr)
     if client.name == "tsserver" then
         client.resolved_capabilities.document_formatting = false
-    elseif client.name == "jdt.ls" then
+    elseif client.name == "jdtls" then
         if JAVA_DAP_ACTIVE then
             require("jdtls").setup_dap { hotcodereplace = "auto" }
             require("jdtls.dap").setup_dap_main_class_configs()

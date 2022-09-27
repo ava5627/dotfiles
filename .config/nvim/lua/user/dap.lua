@@ -25,7 +25,7 @@ end
 dap_install.setup {}
 
 dap_install.config("python", {})
-dap_install.config("go", {})
+dap_install.config("go_delve", {})
 
 dapui.setup({
     icons = { expanded = "▾", collapsed = "▸" },
@@ -86,21 +86,21 @@ dapui.setup({
 vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "DiagnosticSignError", linehl = "", numhl = "" })
 vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "DiagnosticSignWarn", linehl = "", numhl = "" })
 
-dap_virt_text.setup()
+dap_virt_text.setup({})
 
 dap.listeners.after.event_initialized["dapui_config"] = function()
     vim.cmd("NvimTreeClose")
-    dapui.open()
+    dapui.open({})
 end
 
-dap.listeners.before.event_terminated["dapui_config"] = function()
-    dapui.close()
+dap.listeners.after.event_terminated["dapui_config"] = function()
+    dapui.close({})
     vim.cmd("NvimTreeOpen")
     vim.cmd("wincmd p")
 end
 
-dap.listeners.before.event_exited["dapui_config"] = function()
-    dapui.close()
+dap.listeners.after.event_exited["dapui_config"] = function()
+    dapui.close({})
     vim.cmd("NvimTreeOpen")
     vim.cmd("wincmd p")
 end

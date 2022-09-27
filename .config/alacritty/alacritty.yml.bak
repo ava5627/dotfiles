@@ -8,8 +8,8 @@
 #
 # All imports must either be absolute paths starting with `/`, or paths relative
 # to the user's home directory starting with `~/`.
-import:
- - ~/.config/alacritty/tokyonight.yml
+#import:
+#  - /path/to/alacritty.yml
 
 
 # Any items in the `env` entry below will be added as
@@ -79,6 +79,7 @@ window:
   title: Alacritty
 
   # Allow terminal applications to change Alacritty's window title.
+  # dynamic_title: true
   dynamic_title: true
 
   # Window class (Linux/BSD only):
@@ -178,6 +179,167 @@ font:
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: true
 
+scheme:
+  dracula: &dracula
+    primary:
+      background: '#282a36'
+      foreground: '#f8f8f2'
+      bright_foreground: '#ffffff'
+    cursor:
+      text: CellBackground
+      cursor: CellForeground
+    vi_mode_cursor:
+      text: CellBackground
+      cursor: CellForeground
+    search:
+      matches:
+        foreground: '#44475a'
+        background: '#50fa7b'
+      focused_match:
+        foreground: '#44475a'
+        background: '#ffb86c'
+      bar:
+        background: '#282a36'
+        foreground: '#f8f8f2'
+    hints:
+      start:
+        foreground: '#282a36'
+        background: '#f1fa8c'
+      end:
+        foreground: '#f1fa8c'
+        background: '#282a36'
+    line_indicator:
+      foreground: None
+      background: None
+    selection:
+      text: CellForeground
+      background: '#44475a'
+    normal:
+      black: '#21222c'
+      red: '#ff5555'
+      green: '#50fa7b'
+      yellow: '#f1fa8c'
+      blue: '#bd93f9'
+      magenta: '#ff79c6'
+      cyan: '#8be9fd'
+      white: '#f8f8f2'
+    bright:
+      black: '#6272a4'
+      red: '#ff6e6e'
+      green: '#69ff94'
+      yellow: '#ffffa5'
+      blue: '#d6acff'
+      magenta: '#ff92df'
+      cyan: '#a4ffff'
+      white: '#ffffff'
+  ashes: &ashes
+    # Default colors
+    primary:
+      background: '#1c2023'
+      foreground: '#c7ccd1'
+
+    # Normal colors
+    normal:
+      black:   '#1c2023'
+      red:     '#c7ae95'
+      green:   '#95c7ae'
+      yellow:  '#aec795'
+      blue:    '#ae95c7'
+      magenta: '#c795ae'
+      cyan:    '#95aec7'
+      white:   '#c7ccd1'
+
+    # Bright colors
+    bright:
+      black:   '#747c84'
+      red:     '#c7ae95'
+      green:   '#95c7ae'
+      yellow:  '#aec795'
+      blue:    '#ae95c7'
+      magenta: '#c795ae'
+      cyan:    '#95aec7'
+      white:   '#f3f4f5'
+  arc-dark: &arc-dark
+    primary:
+      background: '#222222'
+      foreground: '#F9F9F9'
+    normal:
+      black:   '#3f3f3f'
+      red:     '#cc0000'
+      green:   '#4e9a06'
+      yellow:  '#c4a000'
+      blue:    '#3465a4'
+      magenta: '#85678f'
+      cyan:    '#06989a'
+      white:   '#dcdccc'
+
+    # Bright colors
+    bright:
+      black:   '#545454'
+      red:     '#fc5454'
+      green:   '#8ae234'
+      yellow:  '#fce94f'
+      blue:    '#94bff3'
+      magenta: '#b294bb'
+      cyan:    '#93e0e3'
+      white:   '#ffffff'
+  gruvbox: &gruvbox
+    primary:
+      background: '#1d2021'
+      foreground: '#d5c4a1'
+
+    # Colors the cursor will use if `custom_cursor_colors` is true
+    cursor:
+      text:   '#1d2021'
+      cursor: '#d5c4a1'
+
+    # Normal colors
+    normal:
+      black:   '#1d2021'
+      red:     '#fb4934'
+      green:   '#b8bb26'
+      yellow:  '#fabd2f'
+      blue:    '#83a598'
+      magenta: '#d3869b'
+      cyan:    '#8ec07c'
+      white:   '#d5c4a1'
+
+    # Bright colors
+    bright:
+      black:   '#665c54'
+      red:     '#fe8019'
+      green:   '#98971a'
+      yellow:  '#d79921'
+      blue:    '#458588'
+      magenta: '#b16286'
+      cyan:    '#689d6a'
+      white:   '#fbf1c7'
+  sonokai: &sonokai
+    primary:
+      background: "#2c2e34"
+      foreground: "#e2e2e3"
+
+    normal:
+      black: "#181819"
+      red: "#fc5d7c"
+      green: "#9ed072"
+      yellow: "#e7c664"
+      blue: "#76cce0"
+      magenta: "#b39df3"
+      cyan: "#f39660"
+      white: "#e2e2e3"
+
+    bright:
+      black: "#7f8490"
+      red: "#fc5d7c"
+      green: "#9ed072"
+      yellow: "#e7c664"
+      blue: "#76cce0"
+      magenta: "#b39df3"
+      cyan: "#f39660"
+      white: "#e2e2e3"
+
+colors: *sonokai
 
 # Bell
 #

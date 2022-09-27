@@ -8,4 +8,5 @@ configuration {
 	kb-remove-word-back: "Control+w,Control+BackSpace";
 	kb-clear-line: "Control+q";
 }
-@theme "styles/launcher/style_8.rasi"
+// @theme "styles/launcher/style_8.rasi"
+@theme "styles/launcher/tokyo.rasi"

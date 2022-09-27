@@ -1,3 +1,4 @@
+---@diagnostic disable: missing-parameter
 local fn = vim.fn
 
 -- Automatically install packer
@@ -11,7 +12,7 @@ if fn.empty(fn.glob(install_path)) > 0 then
         "https://github.com/wbthomason/packer.nvim",
         install_path,
     }
-    print "Installing packer close and reopen Neovim..."
+    vim.notify("Installing packer close and reopen Neovim...")
     vim.cmd [[packadd packer.nvim]]
 end
 
@@ -91,7 +92,7 @@ return packer.startup(function(use)
     use("williamboman/mason.nvim")
     use("williamboman/mason-lspconfig.nvim")
     use("ray-x/lsp_signature.nvim")
-    use "jose-elias-alvarez/null-ls.nvim" -- for formatters and linters
+    use("jose-elias-alvarez/null-ls.nvim") -- for formatters and linters
     use({
         'j-hui/fidget.nvim',
         config = function() require('fidget').setup() end,
@@ -108,6 +109,7 @@ return packer.startup(function(use)
     use("ellisonleao/gruvbox.nvim")
     use("lunarvim/darkplus.nvim")
     use("sainnhe/sonokai")
+    use("folke/tokyonight.nvim")
 
     -- utility
     use("windwp/nvim-autopairs")
@@ -116,11 +118,18 @@ return packer.startup(function(use)
     use("nvim-lualine/lualine.nvim")
     use("akinsho/bufferline.nvim")
     use("moll/vim-bbye")
+    use({
+        "ghillb/cybu.nvim",
+    })
     use("antoinemadec/FixCursorHold.nvim")
     use("lukas-reineke/indent-blankline.nvim")
-    use("tpope/vim-sleuth")
-    use("ThePrimeagen/harpoon")
+    --[[ use("tpope/vim-sleuth") ]]
+    use("ChristianChiarulli/harpoon")
     use("stevearc/dressing.nvim")
+    use({
+        "rcarriga/nvim-notify",
+        config = function() vim.notify = require("notify") end,
+    })
 
     -- movement
     use("tpope/vim-surround")
@@ -155,7 +164,6 @@ return packer.startup(function(use)
     use("rcarriga/nvim-dap-ui")
     use("ravenxrz/DAPInstall.nvim")
     use("theHamsta/nvim-dap-virtual-text")
-    use("is0n/jaq-nvim")
 
     -- Toggle Term
     use({ "akinsho/toggleterm.nvim", branch = "main" })

@@ -16,6 +16,7 @@ set fish_color_cwd magenta #$fish_color_param
 set -g fish_prompt_pwd_dir_length 0
 
 export EDITOR=nvim
+export QT_STYLE_OVERRIDE=kvantum
 
 # clean home dir
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
@@ -33,12 +34,12 @@ export ANDROID_HOME="$XDG_DATA_HOME"/android
 export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 export MYSQL_HISTFILE="$XDG_DATA_HOME"/mysql_history
 export ZDOTDIR="$HOME"/.config/zsh
-export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
 alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
 
 if not status --is-interactive
   exit
 end
+
 
 function fish_user_key_bindings
     # fish_vi_key_bindings
