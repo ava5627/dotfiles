@@ -27,6 +27,9 @@ local function format_sql()
             local indent = string.rep(" ", range[2] + 2)
             local raw_sql = vim.treesitter.get_node_text(node, bufnr)
             local formatted_string = vim.fn.system("python ~/repos/test/sqlformat.py", raw_sql)
+            if formatted_string == "ERROR" then
+                return
+            end
             local formatted_sql = vim.split(formatted_string, "\n")
             if #vim.split(raw_sql, "\n") == 1 then
                 local original_line = vim.api.nvim_buf_get_lines(bufnr, range[1], range[1] + 1, false)[1]

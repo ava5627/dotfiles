@@ -96,23 +96,30 @@ kmap("v", "p", '"_dP', opts)
 kmap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 
 -- Telescope
-kmap("n", "<leader>pp", "<cmd>Telescope find_files<cr>", opts)
-kmap("n", "<leader>pg", "<cmd>Telescope live_grep<cr>", opts)
-kmap("n", "<leader>pv", "<cmd>Telescope lsp_document_symbols<cr>", opts)
-kmap("n", "<leader>po", "<cmd>Telescope project project<cr>", opts)
-kmap("n", "<A-tab>", "<cmd>Telescope buffers<cr>", opts)
+local ts, telescope = pcall(require, "telescope")
+if ts then
+    kmap("n", "<leader>pp", "<cmd>Telescope find_files<cr>", opts)
+    kmap("n", "<leader>pg", "<cmd>Telescope live_grep<cr>", opts)
+    kmap("n", "<leader>pv", "<cmd>Telescope lsp_document_symbols<cr>", opts)
+    kmap("n", "<leader>po", "<cmd>Telescope project project<cr>", opts)
+    kmap("n", "<A-tab>", "<cmd>Telescope buffers<cr>", opts)
 
--- Harpoon
-kmap("n", "<tab>", function()
-    require('telescope').extensions.harpoon.marks(require('telescope.themes').get_dropdown{
-        previewer = false, initial_mode='normal', prompt_title='Harpoon'
-    })
-end, opts)
-kmap("n", "mm", require("harpoon.mark").add_file, opts)
-kmap("n", "<A-q>", function() require("harpoon.ui").nav_file(1) end, opts)
-kmap("n", "<A-w>", function() require("harpoon.ui").nav_file(2) end, opts)
-kmap("n", "<A-e>", function() require("harpoon.ui").nav_file(3) end, opts)
-kmap("n", "<A-r>", function() require("harpoon.ui").nav_file(4) end, opts)
+    -- Harpoon
+    local hp, harpoon = pcall(require, "harpoon.ui")
+    if hp then
+        kmap("n", "<tab>", function()
+            telescope.extensions.harpoon.marks(require('telescope.themes').get_dropdown{
+                previewer = false, initial_mode='normal', prompt_title='Harpoon'
+            })
+        end, opts)
+        kmap("n", "mm", require("harpoon.mark").add_file, opts)
+        kmap("n", "<A-q>", function() harpoon.nav_file(1) end, opts)
+        kmap("n", "<A-w>", function() harpoon.nav_file(2) end, opts)
+        kmap("n", "<A-e>", function() harpoon.nav_file(3) end, opts)
+        kmap("n", "<A-r>", function() harpoon.nav_file(4) end, opts)
+    end
+end
+
 --[[ kmap("n", "<A-l>", require("harpoon.ui").nav_next, opts) ]]
 --[[ kmap("n", "<A-h>", require("harpoon.ui").nav_next, opts) ]]
 kmap("n", "<A-h>", "<plug>(CybuPrev)", opts)
@@ -136,33 +143,44 @@ kmap("i", "<C-q><C-e>", "<C-o>:Copilot enable<cr>", opts)
 vim.g.copilot_no_tab_map = true
 
 -- Dial
-kmap({ "n", "v" }, "<C-a>", require("dial.map").inc_normal(), { noremap = true })
-kmap({ "n", "v" }, "<C-x>", require("dial.map").dec_normal(), { noremap = true })
-kmap("v", "g<C-a>", require("dial.map").inc_gvisual(), { noremap = true })
-kmap("v", "g<C-x>", require("dial.map").dec_gvisual(), { noremap = false })
+local ds, dial = pcall(require, "dial.map")
+if ds then
+    kmap({ "n", "v" }, "<C-a>", dial.inc_normal(), { noremap = true })
+    kmap({ "n", "v" }, "<C-x>", dial.dec_normal(), { noremap = true })
+    kmap("v", "g<C-a>", dial.inc_gvisual(), { noremap = true })
+    kmap("v", "g<C-x>", dial.dec_gvisual(), { noremap = false })
+end
+
 
 -- Run
-kmap("n", "<leader>t", require("user.run").ACRAuto, opts)
-kmap("n", "<F1>",      require("user.run").ACRAuto, opts)
-kmap("n", "<leader>r", require("user.run").ACR, opts)
-kmap("n", "<F2>",      require("user.run").ACR, opts)
+local ac, acr = pcall(require, "acr")
+if ac then
+    kmap("n", "<leader>t", acr.ACRAuto, opts)
+    kmap("n", "<F1>",      acr.ACRAuto, opts)
+    kmap("n", "<leader>r", acr.ACR, opts)
+    kmap("n", "<F2>",      acr.ACR, opts)
+end
 
 -- Debugging
-kmap("n", "<leader>db", require("dap").toggle_breakpoint, opts)
-kmap("n", "<F9>", require("dap").toggle_breakpoint, opts)
-kmap("n", "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input("Breakpoint Condition: ")) end, opts)
-kmap("n", "<leader>dc", require("dap").continue, opts)
-kmap("n", "<F5>", require("dap").continue, opts)
-kmap("n", "<leader>do", require("dap").step_over, opts)
-kmap("n", "<F6>", require("dap").step_over, opts)
-kmap("n", "<leader>di", require("dap").step_into, opts)
-kmap("n", "<F7>", require("dap").step_into, opts)
-kmap("n", "<leader>dO", require("dap").step_out, opts)
-kmap("n", "<F19>", require("dap").step_out, opts)
-kmap("n", "<leader>dr", require("dap").repl.toggle, opts)
-kmap("n", "<leader>dl", require("dap").run_last, opts)
-kmap("n", "<leader>du", require("dapui").toggle, opts)
-kmap("n", "<leader>dt", require("dap").terminate, opts)
-kmap("n", "<F8>", require("dap").terminate, opts)
-kmap("n", "<leader>de", require("dapui").eval, opts)
-kmap("n", "<leader>dj", function() require("dap.ext.vscode").load_launchjs(vim.fn.getcwd() .. "/launch.json") end, opts)
+local d, dap = pcall(require, "dap")
+local dui, dapui = pcall(require, "dapui")
+if d and dui then
+    kmap("n", "<leader>db", dap.toggle_breakpoint, opts)
+    kmap("n", "<F9>", dap.toggle_breakpoint, opts)
+    kmap("n", "<leader>dB", function() dap.set_breakpoint(vim.fn.input("Breakpoint Condition: ")) end, opts)
+    kmap("n", "<leader>dc", dap.continue, opts)
+    kmap("n", "<F5>", dap.continue, opts)
+    kmap("n", "<leader>do", dap.step_over, opts)
+    kmap("n", "<F6>", dap.step_over, opts)
+    kmap("n", "<leader>di", dap.step_into, opts)
+    kmap("n", "<F7>", dap.step_into, opts)
+    kmap("n", "<leader>dO", dap.step_out, opts)
+    kmap("n", "<F19>", dap.step_out, opts)
+    kmap("n", "<leader>dr", dap.repl.toggle, opts)
+    kmap("n", "<leader>dl", dap.run_last, opts)
+    kmap("n", "<leader>du", dapui.toggle, opts)
+    kmap("n", "<leader>dt", dap.terminate, opts)
+    kmap("n", "<F8>", dap.terminate, opts)
+    kmap("n", "<leader>de", dapui.eval, opts)
+    kmap("n", "<leader>dj", function() require("dap.ext.vscode").load_launchjs(vim.fn.getcwd() .. "/launch.json") end, opts)
+end

@@ -1,6 +1,5 @@
 # EXPORT
 set fish_greeting                                 # Supresses fish's intro message
-export TERM="xterm-256color"                         # Sets the terminal type
 
 fish_add_path "$HOME/.local/bin"
 fish_add_path "$HOME/.config/rofi/bin"
@@ -17,6 +16,7 @@ set -g fish_prompt_pwd_dir_length 0
 
 export EDITOR=nvim
 export QT_STYLE_OVERRIDE=kvantum
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 # clean home dir
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc

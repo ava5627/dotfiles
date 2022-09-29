@@ -4,7 +4,9 @@
 - "#f8f8f2" # 2 font color for group names
 - "#fba922" # 3 Current Window Background
 - "#ff00ff" # 4 border line color for 'other tabs'
-- "#ff0000" # 5 color for 'odd widgets'
-- "#0000ff" # 6 color for the 'even widgets'
-- "#ffff00" # 7 Current Workspace
-- "#00ffff" # 8 background for inactive screens
+- "#ffff00" # 5 Current Workspace
+- "#00ffff" # 6 background for inactive screens
+- "#ff0000" # 7 color for 'odd widgets'
+- "#aaffaa" # 8 font color for'odd widgets'
+- "#0000ff" # 9 color for the 'even widgets'
+- "#f8f8f2" # 10 font color for  'even widgets'

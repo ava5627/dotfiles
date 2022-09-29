@@ -14,7 +14,7 @@ configuration {
 	sidebar-mode: 					false;
 }
 
-@import "dark.rasi"
+@import "tokyo.rasi"
 
 * {
     background-color:               @background;

@@ -77,7 +77,7 @@ theme = os.path.expanduser("~") + "/.config/qtile/themes/tokyonight.yml"
 with open(theme) as theme_file:
     colors = yaml.load(theme_file, yaml.Loader)
 
-powerline_colors = [colors[6], colors[5]]
+powerline_colors = [[colors[9], colors[10]], [colors[7], colors[8]]]
 
 
 EzKey.modifier_keys = {
@@ -111,6 +111,7 @@ my_keys = [
     ["M-C-l", lazy.layout.grow_right(), "Grow window right"],
     ["M-C-j", lazy.layout.grow_down(), "Grow window down"],
     ["M-C-k", lazy.layout.grow_up(), "Grow window up"],
+    ["M-i", lazy.layout.normalize(), "Normalize"],
     # Layout keys
     ["M-<Tab>", lazy.next_layout(), "Toggle between layouts"],
     ["M-f", lazy.window.toggle_floating(), "toggle floating"],
@@ -183,8 +184,8 @@ layout_theme = {
     "border_normal": colors[1],
     "single_border_width": 0,
     "single_margin": 0,
-    "border_on_single": 0,
-    "margin_on_single": 0,
+    "border_on_single": 2,
+    "margin_on_single": 4,
 }
 
 layouts = [
@@ -217,8 +218,11 @@ extension_defaults = widget_defaults.copy()
 def make_powerline(widgets):
     powerline = []
     for i, w in enumerate(widgets):
-        bg = powerline_colors[(len(widgets) - i) % len(powerline_colors)]
-        fg = powerline_colors[(len(widgets) - i - 1) % len(powerline_colors)]
+        index = i % len(powerline_colors)
+        next_index = (i - 1) % len(powerline_colors)
+        bg = powerline_colors[index][0]
+        fg = powerline_colors[next_index][0]
+        text_fg = powerline_colors[index][1]
         if i == 0:
             fg = colors[0]
         powerline.append(
@@ -234,9 +238,13 @@ def make_powerline(widgets):
         if type(w) == list:
             for w2 in w:
                 w2.background = bg
+                w2.foreground = text_fg
                 powerline.append(w2)
         else:
             w.background = bg
+            w.foreground = text_fg
+            w.colour_have_updates = text_fg
+            w.colour_no_updates = text_fg
             powerline.append(w)
     return powerline
 
@@ -251,13 +259,13 @@ def make_widgets(screen):
             padding_y=5,
             padding_x=3,
             borderwidth=3,
-            active=colors[8],
+            active=colors[6],
             inactive=colors[2],
             rounded=False,
             highlight_method="block",
-            this_current_screen_border=colors[7],
+            this_current_screen_border=colors[5],
             this_screen_border=colors[4],
-            other_current_screen_border=colors[7],
+            other_current_screen_border=colors[5],
             other_screen_border=colors[4],
             use_mouse_wheel=False,
             # visible_groups=[g.name for g in groups if group_screen(g) == screen]
@@ -317,11 +325,9 @@ def make_widgets(screen):
             update_interval=3600,
             distro="Arch_checkupdates",
             display_format="{updates} Updates",
-            foreground=colors[2],
             mouse_callbacks={
                 "Button1": lambda: qtile.cmd_spawn(terminal + " -e sudo pacman -Syu")
             },
-            background=colors[5],
             no_update_string="0 Updates",
             padding=5,
         ),

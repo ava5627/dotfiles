@@ -1,19 +1,18 @@
 * {
     background-color: #1a1b26;
-    border-color: #1a1b26;
     text-color: #c0caf5;
     spacing: 5;
-    width: 20%;
+    width:  20%;
+    // height: 50%;
+    border-color: #bb9af7;
 }
 
 window {
     border: 1px 1px 1px 1px;
-    border-color: #bb9af7;
 }
 
 inputbar {
     border: 0 0 1px 0;
-    border-color: #bb9af7;
     children: [prompt,entry];
 }
 
@@ -25,7 +24,6 @@ prompt {
 textbox {
     background-color: #bb9af7;
     border: 0 0 1px 0;
-    border-color: #bb9af7;
     padding: 8px 16px;
 }
 
@@ -37,19 +35,18 @@ listview {
     cycle: false;
     padding: 1% 0.5% 1% 0.75%;
     background-color: #15161e;
-    lines: 9;
+    lines: 10;
     cycle: false;
     dynamic: true;
     layout: vertical;
 }
 
 element {
-    border: 0 0 1px 0;
     padding: 8px;
 }
 
 element selected {
     border: 1px 1px 1px 1px;
-    border-color: #bb9af7;
     text-color: #15161E;
 }
+

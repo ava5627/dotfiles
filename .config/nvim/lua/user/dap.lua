@@ -62,7 +62,7 @@ dapui.setup({
         },
         {
             elements = {
-                --[[ {id = "repl", size = .5}, ]]
+                {id = "repl", size = .5},
                 {id = "console", size = 1},
             },
             size = 0.25, -- 25% of total lines
