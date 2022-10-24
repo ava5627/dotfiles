@@ -443,8 +443,8 @@ floating_layout = layout.Floating(
         Match(wm_class="Arandr"),
         Match(wm_class="feh"),
     ],
-    border_focus=colors[7],
-    border_normal=colors[4],
+    border_focus=colors[3],
+    border_normal=colors[1],
     border_width=2,
 )
 auto_fullscreen = True
