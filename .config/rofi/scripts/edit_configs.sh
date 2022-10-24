@@ -35,6 +35,9 @@ cfg=${cfg::-2}
 theme="$HOME/.config/rofi/styles/launcher/tokyothin"
 choice=$(echo -e $cfg | rofi -theme "$theme" -dmenu -p 'Edit config:')
 
+export GIT_DIR=$HOME/dotfiles
+export GIT_WORK_TREE=$HOME
+
 if [ "$choice" ]; then
     cfg=$(printf '%s\n' "${config_list["${choice}"]}")
     kitty -e $EDITOR $cfg
