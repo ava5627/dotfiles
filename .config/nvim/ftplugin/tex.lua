@@ -1,7 +1,7 @@
 -- vim.wo["spell"] = true
 local kmap = vim.api.nvim_set_keymap
 
-kmap("i", "<c-f>", "<Esc>[dga`]a", {noremap = false, silent = true})
+kmap("i", "<c-f>", "<Esc>[dga`]i", {noremap = false, silent = true})
 
 
 if vim.g.vim_window_id == nil then

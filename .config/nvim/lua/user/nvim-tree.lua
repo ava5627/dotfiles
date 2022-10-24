@@ -13,7 +13,7 @@ nvim_tree.setup {
     hijack_netrw = true,
     hijack_unnamed_buffer_when_opening = false,
     ignore_buffer_on_setup = false,
-    open_on_setup = false,
+    open_on_setup = true,
     open_on_setup_file = true,
     open_on_tab = false,
     sort_by = "name",
@@ -154,6 +154,7 @@ nvim_tree.setup {
             copy_paste = false,
             git = false,
             profile = false,
+            watcher = false,
         },
     },
 } -- END_DEFAULT_OPTS

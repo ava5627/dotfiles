@@ -8,7 +8,7 @@ vim.g.maplocalleader = " "
 
 -- Misc
 kmap("n", "<leader>ww", ":w<cr>", opts)
-kmap("n", "<leader>wq", ":wq<cr>", opts)
+kmap("n", "<leader>wq", ":bdelete<cr>", opts)
 kmap("n", "<leader>q", ":Bdelete<cr>", opts)
 kmap("n", "<leader>fq", ":Bdelete!<cr>", opts)
 
@@ -57,7 +57,6 @@ kmap("i", "<A-l>", "<right>", opts)
 
 -- Delete backwards
 kmap("i", "<A-d>", "<DELETE>", opts)
-kmap("i", "<C-d>", "<C-o>dw", opts)
 kmap("i", "<A-w>", "<BACKSPACE>", opts)
 
 -- Paste in insert mode
@@ -100,14 +99,14 @@ local ts, telescope = pcall(require, "telescope")
 if ts then
     kmap("n", "<leader>pp", "<cmd>Telescope find_files<cr>", opts)
     kmap("n", "<leader>pg", "<cmd>Telescope live_grep<cr>", opts)
-    kmap("n", "<leader>pv", "<cmd>Telescope lsp_document_symbols<cr>", opts)
+    kmap("n", "<leader>ps", "<cmd>Telescope lsp_document_symbols<cr>", opts)
     kmap("n", "<leader>po", "<cmd>Telescope project project<cr>", opts)
     kmap("n", "<A-tab>", "<cmd>Telescope buffers<cr>", opts)
 
     -- Harpoon
     local hp, harpoon = pcall(require, "harpoon.ui")
     if hp then
-        kmap("n", "<tab>", function()
+        kmap("n", "<leader>h", function()
             telescope.extensions.harpoon.marks(require('telescope.themes').get_dropdown{
                 previewer = false, initial_mode='normal', prompt_title='Harpoon'
             })
@@ -127,8 +126,8 @@ kmap("n", "<A-l>", "<plug>(CybuNext)", opts)
 
 -- Git
 kmap("n", "<leader>gs", ":G<cr>", opts)
-kmap("n", "<leader>gf", ":diffget //2<cr>", opts)
-kmap("n", "<leader>gj", ":diffget //3<cr>", opts)
+kmap("n", "<leader>gf", ":diffget //2 | diffupdate<cr>", opts)
+kmap("n", "<leader>gj", ":diffget //3 | diffupdate<cr>", opts)
 
 -- Undo tree
 kmap("n", "<leader>u", ":UndotreeShow<cr>", opts)
@@ -137,9 +136,9 @@ kmap("n", "<leader>u", ":UndotreeShow<cr>", opts)
 kmap({ "n", "t" }, "<C-t>p", "<cmd>lua _PYTHON_TOGGLE()<cr>", opts)
 
 -- Copilot
-kmap("i", "<C-a>", "copilot#Accept(\"\\<CR>\")", { noremap = false, silent = true, script = true, expr = true })
 kmap("i", "<C-q><C-q>", "<C-o>:Copilot disable<cr>", opts)
 kmap("i", "<C-q><C-e>", "<C-o>:Copilot enable<cr>", opts)
+kmap("i", "<Plug>(vimrc:copilot-dummy-map)", "copilot#Accept(\"\\<CR>\")", { noremap = false, silent = true, script = true, expr = true })
 vim.g.copilot_no_tab_map = true
 
 -- Dial

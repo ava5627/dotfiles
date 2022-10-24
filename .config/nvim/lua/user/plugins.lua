@@ -102,7 +102,7 @@ return packer.startup(function(use)
     use("mfussenegger/nvim-jdtls")
 
     -- Lua
-    use("folke/lua-dev.nvim")
+    use("folke/neodev.nvim")
 
 
     -- colorschemes
@@ -116,11 +116,10 @@ return packer.startup(function(use)
     use("mbbill/undotree")
     use("gpanders/editorconfig.nvim")
     use("nvim-lualine/lualine.nvim")
-    use("akinsho/bufferline.nvim")
+    use("SmiteshP/nvim-navic")
+    -- use("akinsho/bufferline.nvim")
     use("moll/vim-bbye")
-    use({
-        "ghillb/cybu.nvim",
-    })
+    use("ghillb/cybu.nvim")
     use("antoinemadec/FixCursorHold.nvim")
     use("lukas-reineke/indent-blankline.nvim")
     --[[ use("tpope/vim-sleuth") ]]
@@ -137,6 +136,8 @@ return packer.startup(function(use)
     use("karb94/neoscroll.nvim")
     use("monaqa/dial.nvim")
     use("tpope/vim-repeat")
+    use("dstein64/vim-startuptime")
+    use("lewis6991/impatient.nvim")
 
     -- highlighting
     use({
@@ -188,7 +189,7 @@ return packer.startup(function(use)
     use("JoosepAlviste/nvim-ts-context-commentstring")
     use("nvim-treesitter/nvim-treesitter-refactor")
     use("nvim-treesitter/playground")
-    use("p00f/nvim-ts-rainbow")
+    -- use("p00f/nvim-ts-rainbow")
 
     -- git
     use("lewis6991/gitsigns.nvim")

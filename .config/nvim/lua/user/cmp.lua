@@ -54,6 +54,9 @@ cmp.setup {
     },
 
     mapping = {
+        ['<C-a>'] = cmp.mapping(function(fallback)
+          vim.api.nvim_feedkeys(vim.fn['copilot#Accept'](vim.api.nvim_replace_termcodes('<Tab>', true, true, true)), 'n', true)
+        end),
         ["<C-k>"] = cmp.mapping({
             c = function()
                 if cmp.visible() then

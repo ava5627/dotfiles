@@ -68,7 +68,7 @@ endsnippet
 
 snippet dm "display math" w
 \[
-$1
+	$1
 \]
 endsnippet
 
@@ -104,7 +104,7 @@ snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
 endsnippet
 
 context "math()"
-snippet '([\^|_])(.)' "Super/sub script" wrA
+snippet '([\^_])(.)' "Super/sub script" wrA
 `!p snip.rv = match.group(1)`{`!p snip.rv = match.group(2)`$1}$0
 endsnippet
 
@@ -163,11 +163,11 @@ def clean_up(tab=0, lwidth=1, rwidth=1, clean_text=''):
 endglobal
 
 context "{'tab': -1}"
-post_jump "clean_up(0, 7, 1, '')"
+post_jump "clean_up(0, 1, 1, '')"
 snippet img "Add image"
 `!p advance_on_empty(2)
 `
-\includegraphics[scale=${2:.5}]{$1}$0
+\includegraphics[${2:width=\textwidth}]{$1}$0
 endsnippet
 
 context "math()"
@@ -186,7 +186,7 @@ snippet \lim "Limit" i
 endsnippet
 
 context "math()"
-snippet \sqrt "Square root" i
+snippet sq "Square root" i
 \sqrt{$1}$0
 endsnippet
 

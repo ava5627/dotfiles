@@ -5,6 +5,7 @@ if not status_ok then
 end
 
 lsp_signature.setup {
+    floating_window = false,
     hint_enable = true, -- virtual hint enable
     hint_prefix = " ",  -- Pencil for parameter
     hint_scheme = "String",
