@@ -105,9 +105,9 @@ end
 
 vim.api.nvim_create_user_command("FormatSql", format_sql, {})
 
-vim.api.nvim_create_augroup("FormatSql", {})
-vim.api.nvim_create_autocmd( "BufWritePre", {
-    group = "FormatSql",
-    pattern = "*.py",
-    callback = format_sql
-})
+-- vim.api.nvim_create_augroup("FormatSql", {})
+-- vim.api.nvim_create_autocmd( "BufWritePre", {
+--     group = "FormatSql",
+--     pattern = "*.py",
+--     callback = format_sql
+-- })
