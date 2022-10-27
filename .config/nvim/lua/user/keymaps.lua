@@ -56,7 +56,7 @@ kmap("i", "<A-l>", "<right>", opts)
 -- kmap("i", ":w", "<ESC>:w<cr>", opts)
 
 -- Delete backwards
-kmap("i", "<A-d>", "<DELETE>", opts)
+kmap("i", "<A-d>", "<C-o>dw", opts)
 kmap("i", "<A-w>", "<BACKSPACE>", opts)
 
 -- Paste in insert mode

@@ -75,9 +75,9 @@ return packer.startup(function(use)
     use({
         "SirVer/ultisnips",
         config = function()
-            vim.g.UltiSnipsExpandTrigger = '<C-l>'
-            vim.g.UltiSnipsJumpForwardTrigger = '<C-l>'
-            vim.g.UltiSnipsJumpBackwardTrigger = '<C-h>'
+            vim.g.UltiSnipsExpandTrigger = '<C-j>'
+            vim.g.UltiSnipsJumpForwardTrigger = '<C-j>'
+            vim.g.UltiSnipsJumpBackwardTrigger = '<C-k>'
             vim.g.UltiSnipsListSnippets = '<c-x><c-s>'
             vim.g.UltiSnipsRemoveSelectModeMappings = 0
             vim.g.UltiSnipsSnippetDirectories={vim.fn.expand("$XDG_CONFIG_HOME/nvim/UltiSnips/"), "UltiSnips"}
