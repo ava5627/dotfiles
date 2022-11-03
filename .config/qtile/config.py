@@ -35,7 +35,9 @@ from libqtile import bar, layout, widget, hook, qtile
 from libqtile.config import Click, Drag, Match, Screen, EzKey
 from libqtile.log_utils import logger
 from libqtile.lazy import lazy
+
 from group_config import groups_list, group_keys
+from scroll import omni_scroll
 
 groups = groups_list
 
@@ -120,6 +122,7 @@ my_keys = [
     ["M-S-<Left>", lazy.prev_screen(), "Move focus to prev monitor"],
     # Launch keys
     ["M-e", lazy.spawn(terminal), "Launch Terminal"],
+    ["M-C-e", lazy.spawn("rosterm"), "Launch Ros Terminal"],
     ["M-<Return>", lazy.spawn(terminal), "Launch Terminal alt"],
     ["M-b", lazy.spawn(terminal + " -e btop"), "Launch BTOP"],
     ["M-m", lazy.spawn(file_manager), "Launch File manager"],
@@ -152,6 +155,7 @@ my_keys = [
     ["M-C-q", lazy.spawn("xkill"), "Kill focused window"],
     ["M-<F1>", lazy.spawn("powermenu"), "Logout Menu"],
     ["M-<F2>", lazy.spawn("systemctl suspend"), "Suspend"],
+    # Media keys
     [
         "<XF86AudioRaiseVolume>",
         lazy.spawn("amixer -q -D pulse set Master 5%+"),
@@ -167,9 +171,17 @@ my_keys = [
         lazy.spawn("amixer -q -D pulse set Master toggle"),
         "Toggle Mute",
     ],
+    ["S-<XF86AudioPlay>", lazy.spawn("amixer -q -D pulse set Master toggle"), "Toggle Mute"],
     ["<XF86AudioPlay>", lazy.spawn("playerctl play-pause"), "Play/Pause"],
     ["M-p", lazy.spawn("playerctl play-pause"), "Play/Pause"],
     ["M-n", lazy.spawn("playerctl next"), "Next"],
+    # Mouse keys
+    ["M-<F3>", omni_scroll("left"), "Scroll left"],
+    ["M-<F4>", omni_scroll("right"), "Scroll right"],
+    ["M-S-<F3>", lazy.spawn("amixer -q -D pulse set Master 5%-"), "Lower volume"],
+    ["M-S-<F4>", lazy.spawn("amixer -q -D pulse set Master 5%+"), "Raise volume"],
+    ["M-C-<F3>", omni_scroll("left", "control"), "Scroll left control"],
+    ["M-C-<F4>", omni_scroll("right", "control"), "Scroll right control"],
 ]
 
 
@@ -231,8 +243,8 @@ def make_powerline(widgets):
                 foreground=bg,
                 background=fg,
                 text="",  # Icon: nf-oct-triangle_left
-                fontsize=18,
-                padding=0,
+                fontsize=22,
+                padding=0
             )
         )
         if type(w) == list:
