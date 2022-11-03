@@ -171,7 +171,11 @@ my_keys = [
         lazy.spawn("amixer -q -D pulse set Master toggle"),
         "Toggle Mute",
     ],
-    ["S-<XF86AudioPlay>", lazy.spawn("amixer -q -D pulse set Master toggle"), "Toggle Mute"],
+    [
+        "S-<XF86AudioPlay>",
+        lazy.spawn("amixer -q -D pulse set Master toggle"),
+        "Toggle Mute",
+    ],
     ["<XF86AudioPlay>", lazy.spawn("playerctl play-pause"), "Play/Pause"],
     ["M-p", lazy.spawn("playerctl play-pause"), "Play/Pause"],
     ["M-n", lazy.spawn("playerctl next"), "Next"],
@@ -244,7 +248,7 @@ def make_powerline(widgets):
                 background=fg,
                 text="",  # Icon: nf-oct-triangle_left
                 fontsize=22,
-                padding=0
+                padding=0,
             )
         )
         if type(w) == list:
@@ -280,7 +284,7 @@ def make_widgets(screen):
             other_current_screen_border=colors[5],
             other_screen_border=colors[4],
             use_mouse_wheel=False,
-            # visible_groups=[g.name for g in groups if group_screen(g) == screen]
+            visible_groups=[g.name for g in groups if g.name != "0"],
         ),
         widget.TaskList(
             rounded=False,
