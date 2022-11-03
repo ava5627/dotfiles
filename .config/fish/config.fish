@@ -85,7 +85,9 @@ alias pacs='sudo pacman -Syu'
 alias pacq='pacman -Q'
 alias pacr='sudo pacman -Rns'
 alias pacss='pacman -Ss'
+alias pacsi='pacman -Si'
 alias pacqs='pacman -Qs'
+alias pacqi='pacman -Qi'
 alias pacar='sudo pacman -Rns (pacman -Qtdq)'
 
 # yay

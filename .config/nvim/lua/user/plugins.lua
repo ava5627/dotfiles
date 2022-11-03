@@ -165,7 +165,7 @@ return packer.startup(function(use)
     use("rcarriga/nvim-dap-ui")
     use("ravenxrz/DAPInstall.nvim")
     use("theHamsta/nvim-dap-virtual-text")
-    use("~/repos/ACR")
+    use("austin5627/acr.nvim")
 
     -- Toggle Term
     use({ "akinsho/toggleterm.nvim", branch = "main" })
