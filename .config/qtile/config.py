@@ -122,7 +122,7 @@ my_keys = [
     ["M-S-<Left>", lazy.prev_screen(), "Move focus to prev monitor"],
     # Launch keys
     ["M-e", lazy.spawn(terminal), "Launch Terminal"],
-    ["M-C-e", lazy.spawn("rosterm"), "Launch Ros Terminal"],
+    ["M-C-e", lazy.spawn(terminal + " zsh"), "Launch Ros Terminal"],
     ["M-<Return>", lazy.spawn(terminal), "Launch Terminal alt"],
     ["M-b", lazy.spawn(terminal + " -e btop"), "Launch BTOP"],
     ["M-m", lazy.spawn(file_manager), "Launch File manager"],
