@@ -62,9 +62,6 @@ kmap("i", "<A-w>", "<BACKSPACE>", opts)
 -- Paste in insert mode
 kmap("i", "<C-p>", "<left><C-o>p", opts)
 
--- Leave insert mode
-kmap("i", "jj", "<ESC>", opts)
-
 -- Indent Jump
 kmap("", "[q", "<Plug>(IndentWisePreviousLesserIndent)", { silent = true })
 kmap("", "[w", "<Plug>(IndentWisePreviousEqualIndent)", { silent = true })
@@ -95,8 +92,8 @@ kmap("v", "p", '"_dP', opts)
 kmap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 
 -- Telescope
-local ts, telescope = pcall(require, "telescope")
-if ts then
+local telescope_ok, telescope = pcall(require, "telescope")
+if telescope_ok then
     kmap("n", "<leader>pp", "<cmd>Telescope find_files<cr>", opts)
     kmap("n", "<leader>pg", "<cmd>Telescope live_grep<cr>", opts)
     kmap("n", "<leader>ps", "<cmd>Telescope lsp_document_symbols<cr>", opts)
@@ -142,8 +139,8 @@ kmap("i", "<Plug>(vimrc:copilot-dummy-map)", "copilot#Accept(\"\\<CR>\")", { nor
 vim.g.copilot_no_tab_map = true
 
 -- Dial
-local ds, dial = pcall(require, "dial.map")
-if ds then
+local dial_ok, dial = pcall(require, "dial.map")
+if dial_ok then
     kmap({ "n", "v" }, "<C-a>", dial.inc_normal(), { noremap = true })
     kmap({ "n", "v" }, "<C-x>", dial.dec_normal(), { noremap = true })
     kmap("v", "g<C-a>", dial.inc_gvisual(), { noremap = true })
@@ -152,8 +149,8 @@ end
 
 
 -- Run
-local ac, acr = pcall(require, "acr")
-if ac then
+local acr_ok, acr = pcall(require, "acr")
+if acr_ok then
     kmap("n", "<leader>t", acr.ACRAuto, opts)
     kmap("n", "<F1>",      acr.ACRAuto, opts)
     kmap("n", "<leader>r", acr.ACR, opts)
@@ -161,9 +158,9 @@ if ac then
 end
 
 -- Debugging
-local d, dap = pcall(require, "dap")
-local dui, dapui = pcall(require, "dapui")
-if d and dui then
+local dap_ok, dap = pcall(require, "dap")
+local dui_ok, dapui = pcall(require, "dapui")
+if dap_ok and dui_ok then
     kmap("n", "<leader>db", dap.toggle_breakpoint, opts)
     kmap("n", "<F9>", dap.toggle_breakpoint, opts)
     kmap("n", "<leader>dB", function() dap.set_breakpoint(vim.fn.input("Breakpoint Condition: ")) end, opts)
@@ -182,4 +179,10 @@ if d and dui then
     kmap("n", "<F8>", dap.terminate, opts)
     kmap("n", "<leader>de", dapui.eval, opts)
     kmap("n", "<leader>dj", function() require("dap.ext.vscode").load_launchjs(vim.fn.getcwd() .. "/launch.json") end, opts)
+end
+
+local jdtls_ok, jdtls = pcall(require, "jdtls")
+if jdtls_ok and d then
+    kmap("n", "<leader>dl", jdtls.test_nearest_class, opts)
+    kmap("n", "<leader>dm", jdtls.test_nearest_method, opts)
 end

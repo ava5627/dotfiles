@@ -3,6 +3,7 @@ set fish_greeting                                 # Supresses fish's intro messa
 
 fish_add_path "$HOME/.local/bin"
 fish_add_path "$HOME/.config/rofi/bin"
+fish_add_path "/usr/lib/jvm/default/bin/"
 
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
@@ -34,7 +35,8 @@ export ANDROID_HOME="$XDG_DATA_HOME"/android
 export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 export MYSQL_HISTFILE="$XDG_DATA_HOME"/mysql_history
 export ZDOTDIR="$HOME"/.config/zsh
-alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
+export PARALLEL_HOME="$XDG_DATA_HOME"/parallel
+export JAVA_HOME="/usr/lib/jvm/default"
 
 if not status --is-interactive
   exit

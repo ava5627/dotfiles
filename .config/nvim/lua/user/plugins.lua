@@ -123,7 +123,7 @@ return packer.startup(function(use)
     use("antoinemadec/FixCursorHold.nvim")
     use("lukas-reineke/indent-blankline.nvim")
     --[[ use("tpope/vim-sleuth") ]]
-    use("ChristianChiarulli/harpoon")
+    use("ThePrimeagen/harpoon")
     use("stevearc/dressing.nvim")
     use({
         "rcarriga/nvim-notify",
@@ -165,7 +165,7 @@ return packer.startup(function(use)
     use("rcarriga/nvim-dap-ui")
     use("ravenxrz/DAPInstall.nvim")
     use("theHamsta/nvim-dap-virtual-text")
-    use("austin5627/acr.nvim")
+    use("~/repos/ACR")
 
     -- Toggle Term
     use({ "akinsho/toggleterm.nvim", branch = "main" })

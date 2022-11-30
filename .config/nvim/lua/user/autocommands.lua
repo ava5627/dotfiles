@@ -7,7 +7,6 @@ autocmd("FileType", {
     callback = function()
         vim.cmd [[
             nnoremap <silent> <buffer> q :close<CR>
-            set nobuflisted
         ]]
     end,
 })

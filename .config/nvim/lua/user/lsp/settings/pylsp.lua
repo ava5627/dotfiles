@@ -9,7 +9,11 @@ local opts = {
                 },
                 jedi_completion = {
                     eager = true,
-                }
+                },
+                rope_autoimport = {
+                    enabled = true,
+                    memory = false,
+                },
             }
         }
     }

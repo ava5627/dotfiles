@@ -7,11 +7,8 @@
     )
 )
 (assignment
-    left: (identifier) @_vnamee (#eq? @_vnamee "sql_query")
-    right: (string) @sql
-)
-(assignment
-    left: (identifier) @_vnamee2 (#eq? @_vnamee2 "query")
+    ; Check if the variable ends with "query"
+    left: (identifier) @_vnamee (#match? @_vnamee ".*query$")
     right: (string) @sql
 )
 

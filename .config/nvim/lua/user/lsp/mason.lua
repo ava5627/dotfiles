@@ -63,6 +63,7 @@ for _, server in pairs(servers) do
     if server == "sumneko_lua" then
         local nd_status_ok, neodev = pcall(require, "neodev")
         if not nd_status_ok then
+            vim.notify("neodev not found", vim.log.levels.ERROR)
             goto continue
         end
         -- local sumneko_opts = require "user.lsp.settings.sumneko_lua"
@@ -90,6 +91,3 @@ for _, server in pairs(servers) do
     lspconfig[server].setup(opts)
     ::continue::
 end
-
--- TODO: add something to installer later
--- require("lspconfig").motoko.setup {}

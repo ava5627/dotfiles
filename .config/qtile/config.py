@@ -26,18 +26,18 @@
 
 import os
 import subprocess
-import yaml
 
+import yaml
 from Xlib import display as xdisplay
+from libqtile import bar, hook, layout, qtile, widget
+from libqtile.config import Click, Drag, EzKey, Match, Screen
+from libqtile.lazy import lazy
+from libqtile.log_utils import logger
 from xcffib.xproto import StackMode
 
-from libqtile import bar, layout, widget, hook, qtile
-from libqtile.config import Click, Drag, Match, Screen, EzKey
-from libqtile.log_utils import logger
-from libqtile.lazy import lazy
-
-from group_config import groups_list, group_keys
+from group_config import go_to_group, group_keys, groups_list
 from scroll import omni_scroll
+
 
 groups = groups_list
 
@@ -59,7 +59,7 @@ def top_window(qtile):
 # https://old.reddit.com/r/i3wm/comments/9i81rf/close_steam_to_tray_instead_of_killing_the_process/
 @lazy.function
 def kill_or_steam(qtile):
-    if "Steam" in qtile.current_window.window.get_wm_class():
+    if qtile.current_window and "Steam" in qtile.current_window.window.get_wm_class():
         qtile.cmd_spawn("xdotool windowunmap $(xdotool getactivewindow)", shell=True)
     else:
         qtile.current_window.kill()
@@ -73,6 +73,14 @@ def print_debug(obj):
             continue
         ostr += f"{k}: {odict[k]}\n"
     logger.warning(ostr)
+
+
+@lazy.function
+def debug_function(qtile):
+    windows = list(qtile.windows_map.values())
+    for w in windows:
+        if w.urgent:
+            w.update_hints()
 
 
 theme = os.path.expanduser("~") + "/.config/qtile/themes/tokyonight.yml"
@@ -122,7 +130,6 @@ my_keys = [
     ["M-S-<Left>", lazy.prev_screen(), "Move focus to prev monitor"],
     # Launch keys
     ["M-e", lazy.spawn(terminal), "Launch Terminal"],
-    ["M-C-e", lazy.spawn(terminal + " zsh"), "Launch Ros Terminal"],
     ["M-<Return>", lazy.spawn(terminal), "Launch Terminal alt"],
     ["M-b", lazy.spawn(terminal + " -e btop"), "Launch BTOP"],
     ["M-m", lazy.spawn(file_manager), "Launch File manager"],
@@ -131,7 +138,7 @@ my_keys = [
         lazy.spawn(terminal + " -e " + term_file_manager),
         "Launch Terminal File manager",
     ],
-    ["M-u", lazy.spawn("steam steam://open/friends"), "Launch Steam Friends"],
+    ["M-y", lazy.spawn("steam steam://open/friends"), "Launch Steam Friends"],
     ["M-w", lazy.spawn("firefox"), "Launch Firefox"],
     ["M-S-w", lazy.spawn("firefox -private-window"), "Launch Private Firefox"],
     ["M-x", lazy.spawn("qalculate-gtk"), "Launch Calculator"],
@@ -143,7 +150,7 @@ my_keys = [
         "Application Launcher",
     ],
     ["M-c", lazy.spawn("edit_configs"), "Config Launcher"],
-    ["M-o", lazy.spawn("edit_homework"), "Homework Launcher"],
+    ["M-t", lazy.spawn("edit_homework"), "Homework Launcher"],
     ["M-z", lazy.spawn("zathura"), "Open PDF reader"],
     ["M-v", lazy.spawn(terminal + " -e nvim"), "Launch Neovim"],
     ["<Print>", lazy.spawn("flameshot gui"), "Take Screenshot"],
@@ -186,6 +193,8 @@ my_keys = [
     ["M-S-<F4>", lazy.spawn("amixer -q -D pulse set Master 5%+"), "Raise volume"],
     ["M-C-<F3>", omni_scroll("left", "control"), "Scroll left control"],
     ["M-C-<F4>", omni_scroll("right", "control"), "Scroll right control"],
+    # debug keys
+    ["M-S-g", debug_function, "Debug function"],
 ]
 
 
@@ -284,7 +293,7 @@ def make_widgets(screen):
             other_current_screen_border=colors[5],
             other_screen_border=colors[4],
             use_mouse_wheel=False,
-            visible_groups=[g.name for g in groups if g.name != "0"],
+            hide_unused=True,
         ),
         widget.TaskList(
             rounded=False,
@@ -464,7 +473,7 @@ floating_layout = layout.Floating(
     border_width=2,
 )
 auto_fullscreen = True
-focus_on_window_activation = "smart"
+focus_on_window_activation = "urgent"
 reconfigure_screens = True
 
 # If things like steam games want to auto-minimize themselves when losing
@@ -489,7 +498,7 @@ def set_floating(window):
 @hook.subscribe.client_focus
 def client_focus(window):
     # qtile 0.21 implemented _NET_WM_STATE_FOCUSED
-    # if fullscreen windows have this set tabbing out of them removes it
+    # if fullscreen windows have this set unfocusing them removes it
     # this re-sets the _NET_WM_STATE_FULLSCREEN state
     # setting the stackmode of the new window directly afterwards doesn't work so the focused state is removed early
     if window.fullscreen:
@@ -500,7 +509,25 @@ def client_focus(window):
             window.window.set_property("_NET_WM_STATE", state)
 
 
-# XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
+@hook.subscribe.client_urgent_hint_changed
+def urgent_hint_changed(window):
+    logger.warning(f"urgent hint changed for {window.name}")
+    if qtile.current_window:
+        logger.warning(f"current window: {qtile.current_window.name}")
+    # if window.urgent:
+    #     go_to_group(qtile, window.group.name)
+
+# https://google.com
+
+
+@hook.subscribe.client_name_updated
+def client_name_updated(window):
+    if window.urgent:
+        name = window.group.name
+        go_to_group(qtile, name)
+
+
+# Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the
 # mailing lists, GitHub issues, and other WM documentation that suggest setting
 # this string if your java app doesn't work correctly. We may as well just lie

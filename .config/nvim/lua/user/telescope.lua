@@ -97,22 +97,21 @@ telescope.setup {
         buffers = {
             theme = "dropdown",
             previewer = false,
-            initial_mode = "normal",
         },
         colorscheme = {
             -- enable_preview = true,
         },
         lsp_references = {
-            initial_mode = "normal",
+            -- initial_mode = "normal",
         },
         lsp_definitions = {
-            initial_mode = "normal",
+            -- initial_mode = "normal",
         },
         lsp_declarations = {
-            initial_mode = "normal",
+            -- initial_mode = "normal",
         },
         lsp_implementations = {
-            initial_mode = "normal",
+            -- initial_mode = "normal",
         },
     },
     extensions = {

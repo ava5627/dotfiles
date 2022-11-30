@@ -41,8 +41,8 @@ inoremap <A-k> <C-o>k
 inoremap <A-h> <C-o>h
 inoremap <A-l> <C-o>l
 
-vnoremap <S-j> :m '>+1<CR>gv=gv
-vnoremap <S-k> :m '<-2<CR>gv=gv
+vnoremap <S-j> :m '>+1<CR>gv=gv<cr>
+vnoremap <S-k> :m '<-2<CR>gv=gv<cr>
 
 vnoremap p "_dP
 
@@ -59,6 +59,12 @@ map Q gq
 
 "" Map \b to toggle the breakpoint on the current line
 "map \b <Action>(ToggleLineBreakpoint)
+"
+map grn <Action>(RenameElement)
+map grf <Action>(QuickImplementations)
+map grd <Action>(GotoDeclaration)
+map ]d <Action>(GotoNextError)
+map [d <Action>(GotoPreviousError)
 
 
 " Find more examples here: https://jb.gg/share-ideavimrc

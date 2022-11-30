@@ -35,9 +35,9 @@ def get_firefox_url(win_title):
 def firefox_scroll(qtile, direction, modifier=None):
     if modifier is None:
         if direction == "left":
-            qtile.cmd_spawn("xdotool key ctrl+Shift+Tab")
+            qtile.cmd_spawn("xdotool key --clearmodifiers ctrl+Shift+Tab")
         elif direction == "right":
-            qtile.cmd_spawn("xdotool key ctrl+Tab")
+            qtile.cmd_spawn("xdotool key --clearmodifiers ctrl+Tab")
     elif modifier == "control":
         url = get_firefox_url(qtile.current_window.name)
         if url and "reddit" in url:
