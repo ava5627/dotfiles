@@ -11,7 +11,7 @@ end
 
 local servers = {
 	"jsonls",
-	"sumneko_lua",
+	"lua_ls",
 	"pylsp",
 	"yamlls",
 	"bashls",
@@ -62,19 +62,16 @@ for _, server in pairs(servers) do
 		opts = vim.tbl_deep_extend("force", jsonls_opts, opts)
 	end
 
-	if server == "sumneko_lua" then
+	if server == "lua_ls" then
 		local nd_status_ok, neodev = pcall(require, "neodev")
 		if not nd_status_ok then
 			vim.notify("neodev not found", vim.log.levels.ERROR)
 			goto continue
 		end
-		-- local sumneko_opts = require "user.lsp.settings.sumneko_lua"
-		-- opts = vim.tbl_deep_extend("force", sumneko_opts, opts)
-		-- opts = vim.tbl_deep_extend("force", require("lua-dev").setup(), opts)
 		neodev.setup({
 			-- add any options here, or leave empty to use the default settings
 		})
-		lspconfig.sumneko_lua.setup({
+		lspconfig.lua_ls.setup({
 			on_attach = opts.on_attach,
 			capabilities = opts.capabilities,
 		})

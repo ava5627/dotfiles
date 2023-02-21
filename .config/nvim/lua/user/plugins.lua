@@ -90,7 +90,9 @@ return packer.startup(function(use)
     --lsp
     use("neovim/nvim-lspconfig")
     use("williamboman/mason.nvim")
-    use("williamboman/mason-lspconfig.nvim")
+    use({
+        "williamboman/mason-lspconfig.nvim",
+    })
     use("ray-x/lsp_signature.nvim")
     use("jose-elias-alvarez/null-ls.nvim") -- for formatters and linters
     use({
