@@ -332,20 +332,32 @@ def make_widgets(screen):
         ),
         widget.Net(
             format="{down} ↓↑ {up}",
-            # prefix='M',
+            # format='{down:.0f}{down_suffix} ↓↑ {up:.0f}{up_suffix}', SOOOON
             padding=5,
         ),
-        widget.PulseVolume(
-            fmt=" {}",
-            padding=5,
-            mouse_callbacks={
-                "Button1": lambda: qtile.cmd_spawn("pavucontrol"),
-                "Button3": lambda: qtile.cmd_spawn(
-                    "amixer -q -D pulse set Master toggle"
-                ),
-            },
-            step=5,
-        ),
+        [
+            # widget.Mpris2(
+            #     paused_text=" {track}",
+            #     playing_text=" {track}",
+            #     stopped_text="",
+            #     no_metadata_text="Unkown",
+            #     scroll=True,
+            #     scroll_interval=0.02,
+            #     scroll_step=1,
+            #     width=150,
+            # ),
+            widget.PulseVolume(
+                fmt=" {}",
+                padding=5,
+                mouse_callbacks={
+                    "Button1": lambda: qtile.cmd_spawn("pavucontrol"),
+                    "Button3": lambda: qtile.cmd_spawn(
+                            "amixer -q -D pulse set Master toggle"
+                        ),
+                },
+                step=5,
+            ),
+        ],
         widget.CheckUpdates(
             update_interval=3600,
             distro="Arch_checkupdates",
@@ -525,6 +537,7 @@ def client_name_updated(window):
     if window.urgent:
         name = window.group.name
         go_to_group(qtile, name)
+        window.focus(False)
 
 
 # Gasp! We're lying here. In fact, nobody really uses or cares about this

@@ -26,6 +26,20 @@ dap_install.setup {}
 
 dap_install.config("python", {})
 dap_install.config("go_delve", {})
+dap_install.config("ccppr_lldb", {})
+
+dap.configurations.rust = {
+    {
+        type = "rt_lldb",
+        request = "launch",
+        name = "Debug executable 'main'",
+        program = "${workspaceFolder}/target/debug/${workspaceFolderBasename}",
+        cwd = "${workspaceFolder}",
+        stopOnEntry = false,
+        args = {},
+        runInTerminal = false,
+    },
+}
 
 dapui.setup({
     icons = { expanded = "▾", collapsed = "▸" },
@@ -63,7 +77,7 @@ dapui.setup({
         {
             elements = {
                 {id = "repl", size = .5},
-                {id = "console", size = 1},
+                {id = "console", size = .5},
             },
             size = 0.25, -- 25% of total lines
             position = "bottom",
@@ -95,12 +109,12 @@ end
 
 dap.listeners.after.event_terminated["dapui_config"] = function()
     dapui.close({})
-    vim.cmd("NvimTreeOpen")
-    vim.cmd("wincmd p")
+    local tree_ok, tree = pcall(require, "nvim-tree.api")
+    if tree_ok then
+        tree.tree.toggle({ focus = false })
+    end
 end
 
 dap.listeners.after.event_exited["dapui_config"] = function()
     dapui.close({})
-    vim.cmd("NvimTreeOpen")
-    vim.cmd("wincmd p")
 end

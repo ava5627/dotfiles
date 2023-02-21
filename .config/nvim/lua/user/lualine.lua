@@ -30,7 +30,7 @@ lualine.setup({
 		section_separators = { left = "", right = "" },
 		-- section_separators = { left = '', right = ''},
 		disabled_filetypes = {
-            winbar = {"NvimTree"}
+            winbar = {"NvimTree", "dap-repl", "dapui_scopes", "dapui_watches", "dapui_stacks", "dapui_breakpoints", "dapui_expressions", "dapui_locals", "dapui_repl", "dapui_sessions", "dapui_stopped_threads", "dapui_widgets", "dapui_win"}
         },
 		always_divide_middle = true,
 		globalstatus = true,

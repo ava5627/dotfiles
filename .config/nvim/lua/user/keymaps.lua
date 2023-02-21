@@ -25,6 +25,7 @@ kmap("n", "<C-j>", "<C-w>j", opts)
 kmap("n", "<C-k>", "<C-w>k", opts)
 kmap("n", "<C-l>", "<C-w>l", opts)
 kmap("n", "<C-q>", "<C-w>q", opts)
+kmap("n", "<A-q>", ":bdelete<cr>", opts)
 
 -- Switch Buffers
 kmap("n", "<A-l>", ":BufferLineCycleNext<CR>", opts)
@@ -89,7 +90,12 @@ kmap("v", "<S-k>", ":m '<-2<CR>gv=gv", opts)
 kmap("v", "p", '"_dP', opts)
 
 -- Nvim tree
-kmap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
+local tree_ok, tree = pcall(require, "nvim-tree.api")
+if not tree_ok then
+    vim.notify("Nvim tree not found", vim.log.levels.ERROR)
+else
+    kmap("n", "<leader>e", function() tree.tree.toggle({ focus = false }) end, opts)
+end
 
 -- Telescope
 local telescope_ok, telescope = pcall(require, "telescope")
@@ -109,10 +115,10 @@ if telescope_ok then
             })
         end, opts)
         kmap("n", "mm", require("harpoon.mark").add_file, opts)
-        kmap("n", "<A-q>", function() harpoon.nav_file(1) end, opts)
-        kmap("n", "<A-w>", function() harpoon.nav_file(2) end, opts)
-        kmap("n", "<A-e>", function() harpoon.nav_file(3) end, opts)
-        kmap("n", "<A-r>", function() harpoon.nav_file(4) end, opts)
+        kmap("n", "<A-1>", function() harpoon.nav_file(1) end, opts)
+        kmap("n", "<A-2>", function() harpoon.nav_file(2) end, opts)
+        kmap("n", "<A-3>", function() harpoon.nav_file(3) end, opts)
+        kmap("n", "<A-4>", function() harpoon.nav_file(4) end, opts)
     end
 end
 
@@ -135,7 +141,8 @@ kmap({ "n", "t" }, "<C-t>p", "<cmd>lua _PYTHON_TOGGLE()<cr>", opts)
 -- Copilot
 kmap("i", "<C-q><C-q>", "<C-o>:Copilot disable<cr>", opts)
 kmap("i", "<C-q><C-e>", "<C-o>:Copilot enable<cr>", opts)
-kmap("i", "<Plug>(vimrc:copilot-dummy-map)", "copilot#Accept(\"\\<CR>\")", { noremap = false, silent = true, script = true, expr = true })
+-- kmap("i", "<Plug>(vimrc:copilot-dummy-map)", "copilot#Accept(\"\\<CR>\")", { noremap = false, silent = true, script = true, expr = true })
+kmap("i", "<C-a>", "copilot#Accept(\"\\<CR>\")", { noremap = false, silent = true, script = true, expr = true, replace_keycodes = false})
 vim.g.copilot_no_tab_map = true
 
 -- Dial

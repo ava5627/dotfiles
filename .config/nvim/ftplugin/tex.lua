@@ -3,7 +3,6 @@ local kmap = vim.api.nvim_set_keymap
 
 kmap("i", "<c-f>", "<Esc>[dga`]i", {noremap = false, silent = true})
 
-
 if vim.g.vim_window_id == nil then
     local openPop = assert(io.popen('xdotool getactivewindow', 'r'))
     local output = openPop:read('*all')

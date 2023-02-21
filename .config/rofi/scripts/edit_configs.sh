@@ -11,6 +11,7 @@ config_list[rofi]=~/.config/rofi
 config_list[ranger]=~/.config/ranger
 config_list[userChrome]=~/.config/userChrome.css
 config_list[zathura]=~/.config/zathura
+config_list[ideavim]=~/.config/ideavim/ideavimrc
 
 declare -A icons_list
 icons_list[qtile]=desktop
@@ -23,6 +24,7 @@ icons_list[rofi]=view-list-details
 icons_list[ranger]=folder
 icons_list[userChrome]=firefox
 icons_list[zathura]=zathura
+icons_list[ideavim]=~/.local/share/JetBrains/Toolbox/toolbox.svg
 
 cfg=""
 for c in ${!config_list[@]}
@@ -35,8 +37,8 @@ cfg=${cfg::-2}
 theme="$HOME/.config/rofi/styles/launcher/tokyothin"
 choice=$(echo -e $cfg | rofi -theme "$theme" -dmenu -p 'Edit config:')
 
-export GIT_DIR=$HOME/dotfiles
 export GIT_WORK_TREE=$HOME
+export GIT_DIR=$HOME/dotfiles
 
 if [ "$choice" ]; then
     cfg=$(printf '%s\n' "${config_list["${choice}"]}")

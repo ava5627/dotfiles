@@ -29,6 +29,8 @@ def group_screen(group):
         screen = 0
     elif group.name in "asduio":
         screen = 1
+    # elif group.name in "uio":
+    #     screen = 2
     return screen % len(qtile.screens)
 
 

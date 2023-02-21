@@ -12,9 +12,6 @@ nvim_tree.setup {
     hijack_cursor = true,
     hijack_netrw = true,
     hijack_unnamed_buffer_when_opening = false,
-    ignore_buffer_on_setup = false,
-    open_on_setup = true,
-    open_on_setup_file = true,
     open_on_tab = false,
     sort_by = "name",
     sync_root_with_cwd = true,
@@ -94,7 +91,6 @@ nvim_tree.setup {
         update_root = false,
         ignore_list = {},
     },
-    ignore_ft_on_setup = {},
     system_open = {
         cmd = nil,
         args = {},
@@ -122,6 +118,9 @@ nvim_tree.setup {
     filesystem_watchers = {
         enable = true,
         debounce_delay = 150,
+        ignore_dirs = {
+            "/home/ava/.git",
+        }
     },
     actions = {
         change_dir = {

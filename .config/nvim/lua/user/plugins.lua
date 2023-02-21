@@ -104,6 +104,9 @@ return packer.startup(function(use)
     -- Lua
     use("folke/neodev.nvim")
 
+    -- Rust
+    use("simrat39/rust-tools.nvim")
+
 
     -- colorschemes
     use("ellisonleao/gruvbox.nvim")

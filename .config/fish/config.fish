@@ -37,6 +37,10 @@ export MYSQL_HISTFILE="$XDG_DATA_HOME"/mysql_history
 export ZDOTDIR="$HOME"/.config/zsh
 export PARALLEL_HOME="$XDG_DATA_HOME"/parallel
 export JAVA_HOME="/usr/lib/jvm/default"
+export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
+
+fish_add_path "$XDG_DATA_HOME/cargo/bin"
 
 if not status --is-interactive
   exit

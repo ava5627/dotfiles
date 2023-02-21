@@ -9,46 +9,82 @@ set scrolloff=5
 " Do incremental searching.
 set incsearch
 set hlsearch
+
+" use the system clipboard
 set clipboard=unnamedplus
+
+" line numbers
 set relativenumber
 set number
+
 set scrolloff=8
 set ignorecase
 set smartcase
 set smartindent
 
+" leader key
 let g:mapleader = " "
 let g:maplocalleader = " "
-
 noremap <space> <nop>
 
 noremap <A-a> :nohl<cr>
 noremap <leader>ww :w<cr>
 noremap <leader>wq :wq<cr>
+noremap <C-q> :q<cr>
 
 noremap <A-o> moO<Esc>`o"
 noremap <A-i> moo<Esc>`o"
 
+
 inoremap <C-p><left><C-o>p
 inoremap <A-d> <DELETE>
 inoremap <C-d> <C-o>dw
-inoreamap <A-w> <BACKSPACE>
+inoremap <A-w> <BACKSPACE>
 
-inoremap <C-p> <left><C-o>
+" paset in insert mode
+inoremap <C-p> <left><C-o>p
 
+" move in insert mode
 inoremap <A-j> <C-o>j
 inoremap <A-k> <C-o>k
 inoremap <A-h> <C-o>h
 inoremap <A-l> <C-o>l
 
+map <leader>pp <Action>(GotoFile)
+
+noremap <leader>e :NERDTreeToggle<cr>
+
+imap <C-j> <Action>(EditorDown)
+imap <C-k> <Action>(EditorUp)
+map <C-j> <Action>(EditorDown)
+map <C-k> <Action>(EditorUp)
+
+" move between tabs
+map <A-h> <Action>(PreviousTab)
+map <A-l> <Action>(NextTab)
+
+" use alt + arrow keys to resize windows
+
+" move between windows
+noremap <C-h> <C-w>h
+" noremap <C-j> <C-w>j
+" noremap <C-k> <C-w>k
+noremap <C-l> <C-w>l
+
+" move lines
 vnoremap <S-j> :m '>+1<CR>gv=gv<cr>
 vnoremap <S-k> :m '<-2<CR>gv=gv<cr>
 
+
+" paste in visual mode without changing the clipboard
 vnoremap p "_dP
 
 " Don't use Ex mode, use Q for formatting.
 map Q gq
 
+" Copilot"
+imap <C-q> <Action>(copilot.disposeInlays)
+imap <C-a> <Action>(copilot.applyInlays)
 
 "" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
 "" Map \r to the Reformat Code action
@@ -67,8 +103,10 @@ map ]d <Action>(GotoNextError)
 map [d <Action>(GotoPreviousError)
 
 
+
 " Find more examples here: https://jb.gg/share-ideavimrc
 Plug 'machakann/vim-highlightedyank'
 let g:highlightedyank_highlight_duration = "40"
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
+Plug 'preservim/nerdtree'

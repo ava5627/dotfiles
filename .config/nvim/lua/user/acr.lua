@@ -5,6 +5,11 @@ if not status_ok then
 end
 
 acr.setup({
+    cmds = {
+        python = "python %",
+        rust = "cargo run",
+        java = "java %",
+    },
     term_opts = {
         direction = "horizontal",
         on_open = function()
