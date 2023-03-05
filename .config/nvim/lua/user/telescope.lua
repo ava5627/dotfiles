@@ -21,6 +21,7 @@ telescope.setup {
                 ["<C-k>"] = actions.move_selection_previous,
 
                 ["<C-c>"] = actions.close,
+                ["<C-d>"] = actions.delete_buffer,
 
                 ["<Down>"] = actions.move_selection_next,
                 ["<Up>"] = actions.move_selection_previous,
@@ -30,8 +31,8 @@ telescope.setup {
                 ["<C-CR>"] = actions.select_vertical,
                 ["<C-t>"] = actions.select_tab,
 
-                ["<C-u>"] = actions.preview_scrolling_up,
-                ["<C-d>"] = actions.preview_scrolling_down,
+                ["<C-y>"] = actions.preview_scrolling_up,
+                ["<C-e>"] = actions.preview_scrolling_down,
 
                 ["<PageUp>"] = actions.results_scrolling_up,
                 ["<PageDown>"] = actions.results_scrolling_down,
@@ -58,7 +59,9 @@ telescope.setup {
                 ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
 
                 ["j"] = actions.move_selection_next,
+                ["<C-j>"] = actions.move_selection_next,
                 ["k"] = actions.move_selection_previous,
+                ["<C-k>"] = actions.move_selection_previous,
                 ["H"] = actions.move_to_top,
                 ["M"] = actions.move_to_middle,
                 ["L"] = actions.move_to_bottom,
@@ -99,19 +102,14 @@ telescope.setup {
             previewer = false,
         },
         colorscheme = {
-            -- enable_preview = true,
         },
         lsp_references = {
-            -- initial_mode = "normal",
         },
         lsp_definitions = {
-            -- initial_mode = "normal",
         },
         lsp_declarations = {
-            -- initial_mode = "normal",
         },
         lsp_implementations = {
-            -- initial_mode = "normal",
         },
     },
     extensions = {

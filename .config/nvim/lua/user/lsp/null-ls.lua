@@ -20,9 +20,9 @@ null_ls.setup {
         formatting.black.with { extra_args = { "--fast" } },
         formatting.stylua,
         formatting.shfmt,
-        formatting.clang_format.with {
-            extra_args = { "--style", "{IndentWidth: " .. vim.bo.tabstop  .. "}" },
-        },
+        -- formatting.clang_format.with {
+        --     extra_args = { "--style", "{IndentWidth: " .. vim.bo.tabstop  .. "}" },
+        -- },
         -- formatting.google_java_format,
         -- diagnostics.flake8,
         -- diagnostics.shellcheck,

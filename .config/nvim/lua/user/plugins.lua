@@ -132,7 +132,16 @@ return packer.startup(function(use)
     use("stevearc/dressing.nvim")
     use({
         "rcarriga/nvim-notify",
-        config = function() vim.notify = require("notify") end,
+        config = function()
+            local n = require("notify")
+            n.setup({
+                render = "compact",
+                max_height = 10,
+                max_width = 100,
+                timeout = 500,
+            })
+            vim.notify = n
+        end,
     })
 
     -- movement
