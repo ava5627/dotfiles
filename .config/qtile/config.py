@@ -521,15 +521,13 @@ def client_focus(window):
             window.window.set_property("_NET_WM_STATE", state)
 
 
-@hook.subscribe.client_urgent_hint_changed
-def urgent_hint_changed(window):
-    logger.warning(f"urgent hint changed for {window.name}")
-    if qtile.current_window:
-        logger.warning(f"current window: {qtile.current_window.name}")
-    # if window.urgent:
-    #     go_to_group(qtile, window.group.name)
-
-# https://google.com
+# @hook.subscribe.client_urgent_hint_changed
+# def urgent_hint_changed(window):
+#     logger.warning(f"urgent hint changed for {window.name}")
+#     if qtile.current_window:
+#         logger.warning(f"current window: {qtile.current_window.name}")
+#     # if window.urgent:
+#     #     go_to_group(qtile, window.group.name)
 
 
 @hook.subscribe.client_name_updated
