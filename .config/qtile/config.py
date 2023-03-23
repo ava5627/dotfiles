@@ -28,16 +28,15 @@ import os
 import subprocess
 
 import yaml
-from Xlib import display as xdisplay
 from libqtile import bar, hook, layout, qtile, widget
 from libqtile.config import Click, Drag, EzKey, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.log_utils import logger
 from xcffib.xproto import StackMode
+from Xlib import display as xdisplay
 
 from group_config import go_to_group, group_keys, groups_list
 from scroll import omni_scroll
-
 
 groups = groups_list
 
@@ -195,6 +194,8 @@ my_keys = [
     ["M-C-<F4>", omni_scroll("right", "control"), "Scroll right control"],
     # debug keys
     ["M-S-g", debug_function, "Debug function"],
+    # autoclicker
+    ["M-S-p", lazy.spawn("xdotool click --repeat 1000 --delay 1 1"), "Autoclick"],
 ]
 
 
@@ -352,8 +353,8 @@ def make_widgets(screen):
                 mouse_callbacks={
                     "Button1": lambda: qtile.cmd_spawn("pavucontrol"),
                     "Button3": lambda: qtile.cmd_spawn(
-                            "amixer -q -D pulse set Master toggle"
-                        ),
+                        "amixer -q -D pulse set Master toggle"
+                    ),
                 },
                 step=5,
             ),

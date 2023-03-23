@@ -8,6 +8,11 @@ return {
                 lens = {
                     enable = true,
                 },
+                hover = {
+                    links = {
+                        enable = false,
+                    }
+                }
             },
         },
 

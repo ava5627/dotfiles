@@ -88,13 +88,12 @@ for _, server in pairs(servers) do
 	end
 
 	if server == "rust_analyzer" then
-		local rust_tools_opts = require("user.lsp.settings.rust")
 		local rust_ok, rust_tools = pcall(require, "rust-tools")
 		if not rust_ok then
             vim.notify("rust-tools not found", vim.log.levels.ERROR)
 			goto continue
 		end
-
+        local rust_tools_opts = require("user.lsp.settings.rust")
 		rust_tools.setup(rust_tools_opts)
 		goto continue
 	end
