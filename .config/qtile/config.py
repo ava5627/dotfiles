@@ -1,3 +1,18 @@
+import os
+import subprocess
+
+import yaml
+from libqtile import bar, hook, layout, qtile, widget
+from libqtile.config import Click, Drag, EzKey, Match, Screen
+from libqtile.lazy import lazy
+from libqtile.log_utils import logger
+from wrapt.wrappers import function_wrapper
+from xcffib.xproto import StackMode
+from Xlib import display as xdisplay
+
+from group_config import go_to_group, group_keys, groups_list
+from scroll import omni_scroll
+
 # 0 Copyright (c) 2010 Aldo Cortesi
 # Copyright (c) 2010, 2014 dequis
 # Copyright (c) 2012 Randall Ma
@@ -24,19 +39,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
-import subprocess
-
-import yaml
-from libqtile import bar, hook, layout, qtile, widget
-from libqtile.config import Click, Drag, EzKey, Match, Screen
-from libqtile.lazy import lazy
-from libqtile.log_utils import logger
-from xcffib.xproto import StackMode
-from Xlib import display as xdisplay
-
-from group_config import go_to_group, group_keys, groups_list
-from scroll import omni_scroll
 
 groups = groups_list
 
@@ -60,7 +62,7 @@ def top_window(qtile):
 def kill_or_steam(qtile):
     if qtile.current_window and "Steam" in qtile.current_window.window.get_wm_class():
         qtile.cmd_spawn("xdotool windowunmap $(xdotool getactivewindow)", shell=True)
-    else:
+    elif qtile.current_window:
         qtile.current_window.kill()
 
 
@@ -106,12 +108,46 @@ browser = "firefox"
 calendar = "morgen"
 rofi_cmd = "colorful_launcher"
 
+
+def side(direction):
+    @lazy.function
+    def _side(qtile):
+        layout = qtile.current_layout
+        if layout.name != "columns":
+            return
+
+        current_window = qtile.current_window
+        current_top = current_window.cmd_get_position()[1]
+        current_bottom = current_top + current_window.cmd_get_size()[1]
+        current_middle = (current_top + current_bottom) / 2
+
+        if layout.wrap_focus_columns:
+            if len(layout.columns) >= 1:
+                layout.current = (layout.current + direction) % len(layout.columns)
+        else:
+            if layout.current > 0:
+                layout.current += direction
+        next_top = layout.cc.cw.cmd_get_position()[1]
+        next_bottom = next_top + layout.cc.cw.cmd_get_size()[1]
+        if current_top <= next_top <= current_bottom or current_top <= next_bottom <= current_bottom:
+            qtile.current_group.focus(layout.cc.cw, True)
+            return
+        for i, win in enumerate(layout.cc.clients):
+            next_top = win.cmd_get_position()[1] - (layout.margin + layout.border_width) * 2
+            next_bottom = next_top + win.cmd_get_size()[1] + (layout.margin + layout.border_width) * 2
+            if next_top <= current_middle <= next_bottom:
+                layout.cc.current_index = i
+                qtile.current_group.focus(win, True)
+                return
+    return _side
+
+
 my_keys = [
     # Window keys
     ["M-j", lazy.group.next_window(), top_window, "Move focus next"],
     ["M-k", lazy.group.prev_window(), top_window, "Move focus prev"],
-    ["M-h", lazy.layout.left(), "Grow main window"],
-    ["M-l", lazy.layout.right(), "Shrink main window"],
+    ["M-h", side(direction=-1), "Move focus left"],
+    ["M-l", side(direction=1), "Move focus right"],
     ["M-S-h", lazy.layout.shuffle_left(), "Move window left"],
     ["M-S-l", lazy.layout.shuffle_right(), "Move window right"],
     ["M-S-j", lazy.layout.shuffle_down(), "Move window down"],
@@ -216,7 +252,8 @@ layout_theme = {
 
 layouts = [
     # layout.MonadTall(**layout_theme),
-    layout.Columns(**layout_theme, insert_position=1),
+    layout.Columns(**layout_theme, insert_position=1, fair=True, num_columns=2),
+    layout.Columns(**layout_theme, insert_position=1, fair=True, num_columns=4, name="4 columns"),
     layout.Max(**(layout_theme | {"border_width": 0, "margin": 0})),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(**layout_theme, num_stacks=2),
