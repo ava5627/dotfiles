@@ -129,8 +129,9 @@ kmap("n", "<A-l>", "<plug>(CybuNext)", opts)
 
 -- Git
 kmap("n", "<leader>gs", ":G<cr>", opts)
-kmap("n", "<leader>gf", ":diffget //2 | diffupdate<cr>", opts)
-kmap("n", "<leader>gj", ":diffget //3 | diffupdate<cr>", opts)
+kmap("n", "<leader>gp", ":Git push<cr>", opts)
+kmap("n", "<leader>gj", ":diffget //2 | diffupdate<cr>", opts)
+kmap("n", "<leader>gk", ":diffget //3 | diffupdate<cr>", opts)
 
 -- Undo tree
 kmap("n", "<leader>u", ":UndotreeShow<cr>", opts)

@@ -2,7 +2,7 @@ local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
 autocmd("FileType", {
-	pattern = { "qf", "help", "man", "lspinfo", "spectre_panel", "lir", "fugitive", "gitcommit" },
+	pattern = { "qf", "help", "man", "lspinfo", "spectre_panel", "lir", "fugitive", "gitcommit", "git" },
 	callback = function()
 		vim.api.nvim_buf_set_keymap(0, "n", "q", ":close<CR>", { silent = true, noremap = true })
 	end,
