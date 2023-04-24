@@ -211,15 +211,17 @@ vim.cmd "command! -buffer JdtBytecode lua require('jdtls').javap()"
 -- Shorten function name
 local keymap = vim.keymap.set
 -- Silent keymap option
-local opts = { silent = true }
+local function opts(desc)
+    return {silent = true, desc = desc}
+end
 
-keymap("n", "<leader>jo", "<Cmd>lua require'jdtls'.organize_imports()<CR>", opts)
-keymap("n", "<leader>jv", "<Cmd>lua require('jdtls').extract_variable()<CR>", opts)
-keymap("n", "<leader>jc", "<Cmd>lua require('jdtls').extract_constant()<CR>", opts)
-keymap("n", "<leader>jt", "<Cmd>lua require'jdtls'.test_nearest_method()<CR>", opts)
-keymap("n", "<leader>jT", "<Cmd>lua require'jdtls'.test_class()<CR>", opts)
-keymap("n", "<leader>ju", "<Cmd>JdtUpdateConfig<CR>", opts)
+keymap("n", "<leader>jo", require'jdtls'.organize_imports, opts("Organize Imports"))
+keymap("n", "<leader>jv", require('jdtls').extract_variable, opts("Extract Variable"))
+keymap("n", "<leader>jc", require('jdtls').extract_constant, opts("Extract Constant"))
+keymap("n", "<leader>jt", require'jdtls'.test_nearest_method, opts("Test Nearest Method"))
+keymap("n", "<leader>jT", require'jdtls'.test_class, opts("Test Class"))
+keymap("n", "<leader>ju", "<Cmd>JdtUpdateConfig<CR>", opts("Update Project Config"))
 
-keymap("v", "<leader>jv", "<Esc><Cmd>lua require('jdtls').extract_variable(true)<CR>", opts)
-keymap("v", "<leader>jc", "<Esc><Cmd>lua require('jdtls').extract_constant(true)<CR>", opts)
-keymap("v", "<leader>jm", "<Esc><Cmd>lua require('jdtls').extract_method(true)<CR>", opts)
+keymap("v", "<leader>jv", function() require('jdtls').extract_variable(true) end, opts("Extract Variable"))
+keymap("v", "<leader>jc", function() require('jdtls').extract_constant(true) end, opts("Extract Constant"))
+keymap("v", "<leader>jm", function() require('jdtls').extract_method(true)   end, opts("Extract Method"))

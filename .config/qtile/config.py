@@ -6,7 +6,6 @@ from libqtile import bar, hook, layout, qtile, widget
 from libqtile.config import Click, Drag, EzKey, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.log_utils import logger
-from wrapt.wrappers import function_wrapper
 from xcffib.xproto import StackMode
 from Xlib import display as xdisplay
 
@@ -48,6 +47,8 @@ laptop = "MSI" in hostname
 
 @lazy.function
 def top_window(qtile):
+    if not qtile.current_window:
+        return
     qtile.current_window.window.configure(stackmode=StackMode.Above)
 
 
@@ -106,7 +107,6 @@ file_manager = "pcmanfm"
 term_file_manager = "ranger"
 browser = "firefox"
 calendar = "morgen"
-rofi_cmd = "colorful_launcher"
 
 
 def side(direction):
@@ -127,19 +127,50 @@ def side(direction):
         else:
             if layout.current > 0:
                 layout.current += direction
+            else:
+                return
+
         next_top = layout.cc.cw.cmd_get_position()[1]
         next_bottom = next_top + layout.cc.cw.cmd_get_size()[1]
-        if current_top <= next_top <= current_bottom or current_top <= next_bottom <= current_bottom:
+        if (
+            current_top <= next_top <= current_bottom
+            or current_top <= next_bottom <= current_bottom
+        ):
             qtile.current_group.focus(layout.cc.cw, True)
             return
+
         for i, win in enumerate(layout.cc.clients):
-            next_top = win.cmd_get_position()[1] - (layout.margin + layout.border_width) * 2
-            next_bottom = next_top + win.cmd_get_size()[1] + (layout.margin + layout.border_width) * 2
+            next_top = (
+                win.cmd_get_position()[1] - (layout.margin + layout.border_width) * 2
+            )
+            next_bottom = (
+                next_top
+                + win.cmd_get_size()[1]
+                + (layout.margin + layout.border_width) * 2
+            )
             if next_top <= current_middle <= next_bottom:
                 layout.cc.current_index = i
                 qtile.current_group.focus(win, True)
                 return
+
     return _side
+
+
+@lazy.function
+def add_column(qtile):
+    layout = qtile.current_layout
+    if layout.name != "columns":
+        return
+    layout.num_columns += 1
+    qtile.current_group.layout_all()
+
+
+@lazy.function
+def remove_column(qtile):
+    layout = qtile.current_layout
+    if layout.name != "columns" or layout.num_columns <= 1:
+        return
+    layout.num_columns -= 1
 
 
 my_keys = [
@@ -156,13 +187,12 @@ my_keys = [
     ["M-C-l", lazy.layout.grow_right(), "Grow window right"],
     ["M-C-j", lazy.layout.grow_down(), "Grow window down"],
     ["M-C-k", lazy.layout.grow_up(), "Grow window up"],
-    ["M-i", lazy.layout.normalize(), "Normalize"],
+    ["M-<bracketright>", add_column, "Add column"],
+    ["M-<bracketleft>", remove_column, "Remove column"],
     # Layout keys
     ["M-<Tab>", lazy.next_layout(), "Toggle between layouts"],
     ["M-f", lazy.window.toggle_floating(), "toggle floating"],
     ["M-S-f", lazy.window.toggle_fullscreen(), "toggle fullscreen"],
-    ["M-S-<Right>", lazy.next_screen(), "Move focus to next monitor"],
-    ["M-S-<Left>", lazy.prev_screen(), "Move focus to prev monitor"],
     # Launch keys
     ["M-e", lazy.spawn(terminal), "Launch Terminal"],
     ["M-<Return>", lazy.spawn(terminal), "Launch Terminal alt"],
@@ -178,16 +208,15 @@ my_keys = [
     ["M-S-w", lazy.spawn("firefox -private-window"), "Launch Private Firefox"],
     ["M-x", lazy.spawn("qalculate-gtk"), "Launch Calculator"],
     ["M-S-e", lazy.spawn("copyq show"), "Show Copyq"],
-    ["M-r", lazy.spawn(rofi_cmd + " -show run -i", shell=True), "Run Launcher"],
+    ["M-r", lazy.spawn("rofi -show run -i", shell=True), "Run Launcher"],
     [
         "M-S-r",
-        lazy.spawn(rofi_cmd + " -show drun -i", shell=True),
+        lazy.spawn("rofi -show drun -i", shell=True),
         "Application Launcher",
     ],
     ["M-c", lazy.spawn("edit_configs"), "Config Launcher"],
     ["M-t", lazy.spawn("edit_homework"), "Homework Launcher"],
     ["M-z", lazy.spawn("zathura"), "Open PDF reader"],
-    ["M-v", lazy.spawn(terminal + " -e nvim"), "Launch Neovim"],
     ["<Print>", lazy.spawn("flameshot gui"), "Take Screenshot"],
     # Command keys
     ["M-C-r", lazy.reload_config(), "Reload Qtile config"],
@@ -253,7 +282,6 @@ layout_theme = {
 layouts = [
     # layout.MonadTall(**layout_theme),
     layout.Columns(**layout_theme, insert_position=1, fair=True, num_columns=2),
-    layout.Columns(**layout_theme, insert_position=1, fair=True, num_columns=4, name="4 columns"),
     layout.Max(**(layout_theme | {"border_width": 0, "margin": 0})),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(**layout_theme, num_stacks=2),
@@ -266,7 +294,6 @@ layouts = [
     # layout.VerticalTile(**layout_theme),
     # layout.Zoomy(**layout_theme),
 ]
-
 
 widget_defaults = dict(
     font="Source Code Pro",

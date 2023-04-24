@@ -75,7 +75,7 @@ original_groups = {}
 groups_list = [
     Group("1", layout="max", matches=[]),
     Group("2", matches=[]),
-    Group("3", layout="4 columns", matches=[]),
+    Group("3", matches=[]),
     Group("4", matches=[]),
     Group("5", matches=[]),
     Group("6", matches=[]),

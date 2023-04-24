@@ -32,8 +32,8 @@ noremap <leader>ww :w<cr>
 noremap <leader>wq :wq<cr>
 noremap <C-q> :q<cr>
 
-noremap <A-o> moO<Esc>`o"
-noremap <A-i> moo<Esc>`o"
+noremap <A-i> moO<Esc>`o
+noremap <A-o> moo<Esc>`o
 
 
 inoremap <C-p><left><C-o>p

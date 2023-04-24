@@ -57,42 +57,52 @@ local function lsp_highlight_document(client)
 end
 
 local function lsp_keymaps(bufnr)
-	local opts = { buffer = bufnr, noremap = true, silent = true }
+	local function opts(desc)
+		return { desc = desc, buffer = bufnr, noremap = true, silent = true }
+	end
 	local ts_status, telescope = pcall(require, "telescope.builtin")
 	if ts_status then
-		vim.keymap.set("n", "gd", telescope.lsp_definitions, opts)
-		vim.keymap.set("n", "gi", telescope.lsp_implementations, opts)
-		vim.keymap.set("n", "grf", telescope.lsp_references, opts)
-		vim.keymap.set("n", "<leader>gc", telescope.diagnostics, opts)
+		vim.keymap.set("n", "gd", telescope.lsp_definitions, opts("Go to definition"))
+		vim.keymap.set("n", "gi", telescope.lsp_implementations, opts("Go to implementation"))
+		vim.keymap.set("n", "grf", telescope.lsp_references, opts("Go to references"))
+		vim.keymap.set("n", "<leader>gc", telescope.diagnostics, opts("Go to diagnostics"))
 	else
-		vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-		vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-		vim.keymap.set("n", "grf", vim.lsp.buf.references, opts)
-		vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, opts)
-		vim.keymap.set("n", "<leader>gc", vim.diagnostic.setqflist, opts)
+		vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts("Go to definition"))
+		vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts("Go to implementation"))
+		vim.keymap.set("n", "grf", vim.lsp.buf.references, opts("Go to references"))
+		vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, opts("Go to type definition"))
+		vim.keymap.set("n", "<leader>gc", vim.diagnostic.setqflist, opts("Go to diagnostics"))
 	end
-	vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-	vim.keymap.set("n", "gh", vim.lsp.buf.hover, opts)
+	vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts("Go to declaration"))
+	vim.keymap.set("n", "gh", vim.lsp.buf.hover, opts("Hover"))
+	if vim.bo.filetype == "rust" then
+		vim.keymap.set("n", "gh", "<cmd>RustHoverActions<CR>", opts("Hover"))
+		vim.keymap.set("v", "gh", "<cmd>RustHoverRange<CR>", opts("Hover"))
+	end
 	if vim.bo.filetype ~= "tex" then
-		vim.keymap.set("n", "gk", vim.lsp.buf.signature_help, opts)
+		vim.keymap.set("n", "gk", vim.lsp.buf.signature_help, opts("Signature help"))
 	end
-	vim.keymap.set("i", "<C-g><C-k>", vim.lsp.buf.signature_help, opts)
-	vim.keymap.set("n", "grn", vim.lsp.buf.rename, opts)
-	vim.keymap.set({ "n", "v" }, "ga", vim.lsp.buf.code_action, opts)
-	vim.keymap.set({ "i", "n", "v" }, "<A-return>", vim.lsp.buf.code_action, opts)
+	vim.keymap.set("i", "<C-g><C-k>", vim.lsp.buf.signature_help, opts("Signature help"))
+	vim.keymap.set("n", "grn", vim.lsp.buf.rename, opts("Rename"))
+	vim.keymap.set({ "n", "v" }, "ga", vim.lsp.buf.code_action, opts("Code actions"))
+	vim.keymap.set({ "i", "n", "v" }, "<A-return>", vim.lsp.buf.code_action, opts("Code actions"))
 	-- vim.keymap.set("n", "<leader>f", vim.diagnostic.open_float, opts)
 	vim.keymap.set("n", "[d", function()
 		vim.diagnostic.goto_prev({ border = "rounded" })
-	end, opts)
+	end, opts("Go to previous diagnostic"))
 	vim.keymap.set("n", "gl", function()
 		vim.diagnostic.open_float({ border = "rounded" })
-	end, opts)
+	end, opts("Open diagnostic window"))
 	-- vim.keymap.set("n", "gs", vim.diagnostic.show, opts)
 	-- vim.keymap.set("n", "gh", vim.diagnostic.hide, opts)
 	vim.keymap.set("n", "]d", function()
 		vim.diagnostic.goto_next({ border = "rounded" })
-	end, opts)
-	vim.keymap.set("n", "<A-f>", vim.lsp.buf.format, opts)
+	end, opts("Go to next diagnostic"))
+	vim.keymap.set("n", "<A-f>", vim.lsp.buf.format, opts("Format"))
+	vim.keymap.set("n", "gv", function()
+		local vt = vim.diagnostic.config()["virtual_text"]
+		vim.diagnostic.config({ virtual_text = not vt })
+	end, opts("Toggle virtual text"))
 end
 
 M.on_attach = function(client, bufnr)

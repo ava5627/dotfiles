@@ -29,40 +29,35 @@ autocmd("BufWritePre", {
 	command = "%s/\\s\\+$//e",
 })
 
--- Fix alacritty -e bug
 -- disable copilot
 augroup("vim_enter", {})
-autocmd("VimEnter", {
-	group = "vim_enter",
-	pattern = "*",
-	command = "silent! exec '!kill -s SIGWINCH' getpid()",
-})
 autocmd("VimEnter", {
 	group = "vim_enter",
 	pattern = "*",
 	command = "silent! Copilot disable",
 })
 
-local function open_nvim_tree(data)
-    local ok, nvt_api = pcall(require, "nvim-tree.api")
-    if not ok then
-        vim.notify("Nvim Tree not found")
-        return
-    end
+-- local function open_nvim_tree(data)
+--     local ok, nvt_api = pcall(require, "nvim-tree.api")
+--     if not ok then
+--         vim.notify("Nvim Tree not found")
+--         return
+--     end
+--
+-- 	local is_dir = vim.fn.isdirectory(data.file) == 1
+--     print(is_dir, data.file)
+-- 	if is_dir then
+-- 		vim.cmd.cd(data.file)
+--         nvt_api.tree.open()
+--     else
+--         local parent_dir = vim.fn.fnamemodify(data.file, ":h")
+--         vim.cmd.cd(parent_dir)
+--         -- nvt_api.tree.toggle({ focus = false })
+--     end
+-- end
 
-	local is_dir = vim.fn.isdirectory(data.file) == 1
-	if is_dir then
-		vim.cmd.cd(data.file)
-        nvt_api.tree.open()
-    else
-        local parent_dir = vim.fn.fnamemodify(data.file, ":h")
-        vim.cmd.cd(parent_dir)
-        nvt_api.tree.toggle({ focus = false })
-    end
-end
-
-autocmd("VimEnter", {
-	group = "vim_enter",
-	pattern = "*",
-	callback = open_nvim_tree,
-})
+-- autocmd("VimEnter", {
+-- 	group = "vim_enter",
+-- 	pattern = "*",
+-- 	callback = open_nvim_tree,
+-- })

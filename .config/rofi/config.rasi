@@ -1,12 +1,23 @@
 /** Basic config file **/
-
+// -kb-row-down "Control+j" -kb-row-up "Control+k" -kb-row-left "Control+h" -kb-row-right "Control+l" -kb-mode-complete "" -kb-remove-char-back "" -kb-accept-entry "Return,KP_Enter" -kb-remove-to-eol ""
 configuration {
     show-icons:         true;
     matching:           "fuzzy";
     modi:               [window, run, drun, ssh];
     pid:                "/run/user/1000/rofi.pid";
 	kb-remove-word-back: "Control+w,Control+BackSpace";
+    kb-remove-word-forward: "Alt+d";
 	kb-clear-line: "Control+q";
+	kb-row-up: "Up,Control+k";
+	kb-row-down: "Down,Control+j";
+    kb-row-left: "Control+h";
+    kb-row-right: "Control+l";
+    kb-mode-complete: "";
+    kb-remove-char-back: "BackSpace,Shift+BackSpace";
+    kb-accept-entry: "Return,KP_Enter";
+    kb-remove-to-eol: "";
+
+
 }
 // @theme "styles/launcher/style_8.rasi"
 @theme "styles/launcher/tokyo.rasi"

@@ -2,9 +2,6 @@ pcall(require, "impatient")
 require("user.options")
 require("user.plugins")
 require("user.keymaps")
-if vim.g.vscode then
-    return
-end
 require("user.autocommands")
 require("user.cmp")
 require("user.lsp")
@@ -27,3 +24,4 @@ require("user.dressing")
 require("user.acr")
 require("user.navic")
 require("user.colorscheme")
+require("user.whichkey")

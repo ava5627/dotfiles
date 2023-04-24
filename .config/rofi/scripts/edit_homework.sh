@@ -5,10 +5,10 @@ class_file="$hw_dir/Current Classes.txt"
 recent_file="$hw_dir/Recent.txt"
 
 if test -f "$class_file"; then
-    course=$((test -f $recent_file && perl -pe 's/^\s*$//g' $recent_file; cat "$class_file"; echo clear) | colorful_launcher -matching normal -dmenu -i -p 'Course:')
+    course=$((test -f $recent_file && perl -pe 's/^\s*$//g' $recent_file; cat "$class_file"; echo clear) | rofi -matching normal -dmenu -i -p 'Course:')
 else
-    ls $hw_dir | colorful_launcher -matching normal rofi -dmenu -multi-select -kb-accept-alt "space" -i -p 'Course:' > "$class_file"
-    course=$(cat "$class_file" | colorful_launcher -matching normal -dmenu -i -p 'Course:')
+    ls $hw_dir | rofi -matching normal rofi -dmenu -multi-select -kb-accept-alt "space" -i -p 'Course:' > "$class_file"
+    course=$(cat "$class_file" | rofi -matching normal -dmenu -i -p 'Course:')
 fi
 
 if [[ -z $course ]]; then
@@ -26,7 +26,7 @@ elif [[ $course == "clear" ]]; then
 fi
 
 
-folder=$((ls "$hw_dir/$course"; echo new) | colorful_launcher -dmenu -i)
+folder=$((ls "$hw_dir/$course"; echo new) | rofi -dmenu -i)
 
 if [ -z "$folder" ]; then
     exit

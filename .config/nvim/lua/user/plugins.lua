@@ -143,6 +143,7 @@ return packer.startup(function(use)
             vim.notify = n
         end,
     })
+    use("folke/which-key.nvim")
 
     -- movement
     use("tpope/vim-surround")
