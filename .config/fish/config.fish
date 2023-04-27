@@ -56,24 +56,37 @@ end
 
 function fish_prompt --description 'Write out the prompt'
 
-#   # User
-#   set_color $fish_color_user --bold
-#   echo -n $USER
-#   set_color normal --bold
+    echo
 
-#   echo -n '@'
-
-#   # Host
-#   set_color $fish_color_host --bold
-#   echo -n (prompt_hostname)
-#   set_color normal --bold
-
-#   echo -n ':'
-
-#   # PWD
+    if test (string length (string join ' ' (prompt_pwd) (fish_git_prompt))) -ge 10
+        # PWD
+        set_color $fish_color_cwd --bold
+        echo -n (prompt_pwd)
+        set_color normal --bold
+        # if fish_git_prompt
+            echo -n (fish_git_prompt)
+        # end
+        echo
+    end
+    # User
     set_color $fish_color_user --bold
-    echo -n (prompt_pwd)
+    echo -n $USER
     set_color normal --bold
+
+    echo -n '@'
+
+    # Host
+    set_color $fish_color_host --bold
+    echo -n (prompt_hostname)
+    set_color normal --bold
+    if test (string length (string join ' ' (prompt_pwd) (fish_git_prompt))) -lt 10
+        # PWD
+        echo -n ': '
+        set_color $fish_color_cwd --bold
+        echo -n (prompt_pwd)
+        set_color normal --bold
+        echo -n (fish_git_prompt)
+    end
 
     echo -n ' $ '
 
