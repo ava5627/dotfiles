@@ -6,11 +6,12 @@ end
 
 local function rust_debug()
     if dap.status() == "" then
-        vim.cmd[[RustDebuggables]]
+        vim.cmd([[RustDebuggables]])
     else
         dap.continue()
     end
 end
 
+local buffnr = vim.api.nvim_get_current_buf()
 vim.keymap.set("n", "<F5>", rust_debug, { noremap = true, silent = true })
-vim.keymap.set("n", "J", "<cmd>RustJoinLines<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "J", "<cmd>RustJoinLines<CR>", { noremap = true, silent = true, buffer = buffnr })

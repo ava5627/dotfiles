@@ -62,7 +62,7 @@ kmap("i", "<A-l>", "<right>", opts("Move cursor right"))
 
 -- Delete backwards
 kmap("i", "<A-d>", "<C-o>dw", opts("Delete word"))
-kmap("i", "<A-w>", "<delete>", opts("Delete character"))
+kmap("i", "<C-d>", "<delete>", opts("Delete character"))
 
 -- Paste in insert mode
 kmap("i", "<C-p>", "<left><C-o>p", opts("Paste"))
