@@ -97,6 +97,7 @@ return packer.startup(function(use)
     use("jose-elias-alvarez/null-ls.nvim") -- for formatters and linters
     use({
         'j-hui/fidget.nvim',
+        tag = 'legacy',
         config = function() require('fidget').setup() end,
     })
 
