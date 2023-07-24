@@ -71,11 +71,8 @@ for _, server in pairs(servers) do
 		neodev.setup({
 			-- add any options here, or leave empty to use the default settings
 		})
-		lspconfig.lua_ls.setup({
-			on_attach = opts.on_attach,
-			capabilities = opts.capabilities,
-		})
-		goto continue
+        local lua_ls_opts = require("user.lsp.settings.sumneko_lua")
+        opts = vim.tbl_deep_extend("force", lua_ls_opts, opts)
 	end
 
 	if server == "pylsp" then
