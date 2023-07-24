@@ -59,12 +59,12 @@ def top_window(qtile):
 
 # https://github.com/ValveSoftware/steam-for-linux/issues/2685
 # https://old.reddit.com/r/i3wm/comments/9i81rf/close_steam_to_tray_instead_of_killing_the_process/
-@lazy.function
-def kill_or_steam(qtile):
-    if qtile.current_window and "Steam" in qtile.current_window.window.get_wm_class():
-        qtile.cmd_spawn("xdotool windowunmap $(xdotool getactivewindow)", shell=True)
-    elif qtile.current_window:
-        qtile.current_window.kill()
+# @lazy.function
+# def kill_or_steam(qtile):
+#     # if qtile.current_window and "Steam" in qtile.current_window.window.get_wm_class():
+#     #     qtile.cmd_spawn("xdotool windowunmap $(xdotool getactivewindow)", shell=True)
+#     # elif qtile.current_window:
+#     qtile.current_window.kill()
 
 
 def print_debug(obj):
@@ -222,7 +222,7 @@ my_keys = [
     ["M-C-r", lazy.reload_config(), "Reload Qtile config"],
     ["M-A-r", lazy.restart(), "Restart Qtile"],
     ["M-C-q", lazy.shutdown(), "Shutdown Qtile"],
-    ["M-q", kill_or_steam, "Kill focused window"],
+    ["M-q", lazy.window.kill(), "Kill focused window"],
     ["M-C-q", lazy.spawn("xkill"), "Kill focused window"],
     ["M-<F1>", lazy.spawn("powermenu"), "Logout Menu"],
     ["M-<F2>", lazy.spawn("systemctl suspend"), "Suspend"],
@@ -534,7 +534,7 @@ floating_layout = layout.Floating(
         *layout.Floating.default_float_rules,
         Match(wm_class="copyq"),
         Match(wm_class="qalculate-gtk"),
-        Match(title="Friends List", wm_class="Steam"),
+        Match(title="Friends List", wm_class="steam"),
         Match(wm_class="pavucontrol"),
         Match(wm_class="confirmreset"),  # gitk
         Match(wm_class="makebranch"),  # gitk

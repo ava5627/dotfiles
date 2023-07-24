@@ -94,7 +94,7 @@ return packer.startup(function(use)
         "williamboman/mason-lspconfig.nvim",
     })
     use("ray-x/lsp_signature.nvim")
-    use("jose-elias-alvarez/null-ls.nvim") -- for formatters and linters
+    -- use("jose-elias-alvarez/null-ls.nvim") -- for formatters and linters
     use({
         'j-hui/fidget.nvim',
         config = function() require('fidget').setup() end,
@@ -119,7 +119,6 @@ return packer.startup(function(use)
     -- utility
     use("windwp/nvim-autopairs")
     use("mbbill/undotree")
-    use("gpanders/editorconfig.nvim")
     use("nvim-lualine/lualine.nvim")
     use("SmiteshP/nvim-navic")
     -- use("akinsho/bufferline.nvim")

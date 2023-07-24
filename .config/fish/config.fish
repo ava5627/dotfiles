@@ -39,6 +39,8 @@ export PARALLEL_HOME="$XDG_DATA_HOME"/parallel
 export JAVA_HOME="/usr/lib/jvm/default"
 export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
+export WGETRC="$XDG_CONFIG_HOME"/wgetrc
+export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 fish_add_path "$XDG_DATA_HOME/cargo/bin"
 
@@ -54,18 +56,27 @@ function fish_user_key_bindings
     bind \cq kill-whole-line
 end
 
+function line_one
+    echo -n (prompt_pwd) # (fish_git_prompt)
+end
+
 function fish_prompt --description 'Write out the prompt'
 
     echo
+    if test $VIRTUAL_ENV
+        and set -q VIRTUAL_ENV_DISABLE_PROMPT
+        set_color 4B8BBE
+        echo -n \((basename $VIRTUAL_ENV)\)
+        echo -n ' '
+        set_color normal
+    end
 
-    if test (string length (string join ' ' (prompt_pwd) (fish_git_prompt))) -ge 10
+    if test (string length (line_one)) -ge 10
         # PWD
         set_color $fish_color_cwd --bold
         echo -n (prompt_pwd)
-        set_color normal --bold
-        # if fish_git_prompt
-            echo -n (fish_git_prompt)
-        # end
+        set_color normal
+        # echo -n (fish_git_prompt)
         echo
     end
     # User
@@ -79,13 +90,13 @@ function fish_prompt --description 'Write out the prompt'
     set_color $fish_color_host --bold
     echo -n (prompt_hostname)
     set_color normal --bold
-    if test (string length (string join ' ' (prompt_pwd) (fish_git_prompt))) -lt 10
+    if test (string length (line_one)) -lt 10
         # PWD
         echo -n ': '
         set_color $fish_color_cwd --bold
         echo -n (prompt_pwd)
-        set_color normal --bold
-        echo -n (fish_git_prompt)
+        set_color normal
+        # echo -n (fish_git_prompt)
     end
 
     echo -n ' $ '
