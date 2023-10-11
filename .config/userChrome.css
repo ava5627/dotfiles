@@ -22,7 +22,6 @@ their contents - like the close button icon and the tab title */
     min-height: 0px !important;
     padding: 0px !important;
     padding-top: 2px !important;
-
 }
 /* Tabs have a separate "background" element and this is where the
 pill-like shadow is set. THis just removes those. The margin stuff
@@ -32,8 +31,8 @@ double edges */
     border-radius: 0px 0px 0px 0px !important;
     box-shadow: 0px 0px !important;
     margin-block: 0px !important;
-    margin-left: -2px !important;
-    margin-right: 1px !important;
+    /* margin-left: -2px !important; */
+    /* margin-right: 1px !important; */
 }
 /* A separate style for when a tab is selected either by itself
 (selected=true) or as part of a multiselection (ctrl+clicking tabs) */

@@ -9,6 +9,12 @@ if not snip_status_ok then
 	vim.notify("LuaSnip Not Found")
 	return
 end
+
+local compare_ok, compare = pcall(require, 'cmp.config.compare')
+if not compare_ok then
+    vim.notify("Compare Not Found")
+    return
+end
 require("luasnip/loaders/from_vscode").lazy_load()
 
 local t = function(str)
@@ -17,6 +23,7 @@ end
 --   פּ ﯟ   some other good icons
 local kind_icons = {
 	Text = "",
+    TabNine = "",
 	Method = "m",
 	Function = "",
 	Constructor = "",
@@ -195,6 +202,19 @@ cmp.setup({
 	experimental = {
 		ghost_text = false,
 	},
+    sorting = {
+        priority_weight = 2,
+        comparators = {
+            require("cmp_tabnine.compare"),
+            compare.offset,
+            compare.exact,
+            compare.score,
+            compare.kind,
+            compare.sort_text,
+            compare.length,
+            compare.order,
+        },
+    },
 })
 
 cmp.setup.cmdline("/", {

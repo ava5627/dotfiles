@@ -21,7 +21,7 @@ local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
 augroup('packer_user_config', {})
-autocmd('BufWritePost',{
+autocmd('BufWritePost', {
     group = 'packer_user_config',
     pattern = 'plugins.lua',
     command = 'source <afile> | PackerSync'
@@ -61,12 +61,12 @@ return packer.startup(function(use)
     use("hrsh7th/cmp-nvim-lua")
     use({
         "tzachar/cmp-tabnine",
-        run="./install.sh",
+        run = "./install.sh",
         requires = "hrsh7th/nvim-cmp"
     })
     use({
         "github/copilot.vim",
-        config = function() vim.g.copilot_filetypes = {["dap-repl"]=false} end,
+        config = function() vim.g.copilot_filetypes = { ["dap-repl"] = false } end,
     })
     use("f3fora/cmp-spell")
 
@@ -80,7 +80,7 @@ return packer.startup(function(use)
             vim.g.UltiSnipsJumpBackwardTrigger = '<C-h>'
             vim.g.UltiSnipsListSnippets = '<c-x><c-s>'
             vim.g.UltiSnipsRemoveSelectModeMappings = 0
-            vim.g.UltiSnipsSnippetDirectories={vim.fn.expand("$XDG_CONFIG_HOME/nvim/UltiSnips/"), "UltiSnips"}
+            vim.g.UltiSnipsSnippetDirectories = { vim.fn.expand("$XDG_CONFIG_HOME/nvim/UltiSnips/"), "UltiSnips" }
         end
     })
     use("rafamadriz/friendly-snippets")
@@ -100,9 +100,6 @@ return packer.startup(function(use)
         tag = 'legacy',
         config = function() require('fidget').setup() end,
     })
-
-    -- Java
-    use("mfussenegger/nvim-jdtls")
 
     -- Lua
     use("folke/neodev.nvim")
@@ -125,8 +122,13 @@ return packer.startup(function(use)
     -- use("akinsho/bufferline.nvim")
     use("moll/vim-bbye")
     use("ghillb/cybu.nvim")
-    use("antoinemadec/FixCursorHold.nvim")
-    use("lukas-reineke/indent-blankline.nvim")
+    use({
+        "lukas-reineke/indent-blankline.nvim",
+        config = function()
+            local ibl = require("ibl")
+            ibl.setup({ scope = { enabled = false } })
+        end,
+    })
     --[[ use("tpope/vim-sleuth") ]]
     use("ThePrimeagen/harpoon")
     use("stevearc/dressing.nvim")
@@ -157,18 +159,13 @@ return packer.startup(function(use)
     -- highlighting
     use({
         "norcalli/nvim-colorizer.lua",
-        config = function() require'colorizer'.setup() end,
+        config = function() require 'colorizer'.setup() end,
     })
-    use({ "Fymyte/rasi.vim", ft = "rasi" })
 
     use({
         "lervag/vimtex",
-        config = function () vim.g.vimtex_view_method = "zathura" end,
+        config = function() vim.g.vimtex_view_method = "zathura" end,
     })
-    -- use({
-    --     "neomake/neomake",
-    --     -- ft = "tex"
-    -- })
 
     -- Comments
     use("numToStr/Comment.nvim")
@@ -187,10 +184,6 @@ return packer.startup(function(use)
 
     -- nvim-tree
     use("kyazdani42/nvim-tree.lua")
-    -- use({
-    --   "yamatsum/nvim-nonicons",
-    --   requires = {"kyazdani42/nvim-web-devicons"}
-    -- })
 
     --Telescope
     use("nvim-telescope/telescope.nvim")

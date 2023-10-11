@@ -15,7 +15,7 @@ def go_to_group(qtile, name):
     old = qtile.current_screen
     group = qtile.groups_map[name]
     screen = group_screen(group)
-    group.cmd_toscreen(screen)
+    group.toscreen(screen)
     qtile.focus_screen(screen, warp=True)
     if qtile.current_screen != old:
         qtile.warp_to_screen()
@@ -43,33 +43,12 @@ def switch_group(direction):
         while screen != group_screen(cg):
             next = next._get_group(direction, False, False)
             screen = group_screen(next)
-        next.cmd_toscreen()
+        next.toscreen()
 
     return _switch_group
 
 
 original_groups = {}
-
-
-# @lazy.function
-# def hide_workspace(qtile):
-#     for w in qtile.cmd_windows():
-#         window = qtile.windows_map[w["id"]]
-#         if window.group.name != "-":
-#             original_groups[window.name] = window.group.name
-#             window.togroup("0")
-#
-#
-# @lazy.function
-# def restore_workspace(qtile):
-#     for w in qtile.cmd_windows():
-#         window = qtile.windows_map[w["id"]]
-#         if window.group.name == "-":
-#             if window.name in original_groups:
-#                 window.togroup(original_groups[window.name])
-#             else:
-#                 window.togroup("1")
-#     original_groups.clear()
 
 
 groups_list = [

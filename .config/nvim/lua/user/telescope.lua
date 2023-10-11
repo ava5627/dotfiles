@@ -3,6 +3,11 @@ if not status_ok then
     vim.notify("Telescope Not Found")
     return
 end
+local status_ok, harpoon = pcall(require, "harpoon")
+if not status_ok then
+    vim.notify("Harpoon Not Found")
+    return
+end
 
 local actions = require("telescope.actions")
 

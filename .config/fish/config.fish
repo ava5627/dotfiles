@@ -18,6 +18,7 @@ set -g fish_prompt_pwd_dir_length 0
 export EDITOR=nvim
 export QT_STYLE_OVERRIDE=kvantum
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export MANROFFOPT="-c"
 
 # clean home dir
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
@@ -41,6 +42,7 @@ export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export WGETRC="$XDG_CONFIG_HOME"/wgetrc
 export VIRTUAL_ENV_DISABLE_PROMPT=1
+export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 
 fish_add_path "$XDG_DATA_HOME/cargo/bin"
 

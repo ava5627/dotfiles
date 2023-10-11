@@ -13,13 +13,11 @@ local servers = {
 	"jsonls",
 	"lua_ls",
 	"pylsp",
-	"yamlls",
 	"bashls",
 	"rust_analyzer",
 	"clangd",
 	"texlab",
 	"ltex",
-	"jdtls",
 	"gopls",
 }
 
@@ -38,7 +36,7 @@ local settings = {
 
 mason.setup(settings)
 mason_lspconfig.setup({
-	ensure_installed = servers,
+	-- ensure_installed = servers,
 	automatic_installation = true,
 })
 
@@ -78,10 +76,6 @@ for _, server in pairs(servers) do
 	if server == "pylsp" then
 		local pylsp_opts = require("user.lsp.settings.pylsp")
 		opts = vim.tbl_deep_extend("force", pylsp_opts, opts)
-	end
-
-	if server == "jdtls" then
-		goto continue
 	end
 
 	if server == "rust_analyzer" then

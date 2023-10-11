@@ -164,10 +164,11 @@ end
 -- Run
 local acr_ok, acr = pcall(require, "acr")
 if acr_ok then
-    kmap("n", "<leader>t", acr.ACRAuto, opts("Run default"))
-    kmap("n", "<F1>",      acr.ACRAuto, opts("Run default"))
-    kmap("n", "<leader>r", acr.ACR, opts("Run Choose"))
+    -- kmap("n", "<leader>t", acr.ACRAuto, opts("Run default"))
+    -- kmap("n", "<leader>r", acr.ACR, opts("Run Choose"))
+    kmap("n", "<F1>", acr.ACRLast, opts("Run Last"))
     kmap("n", "<F2>",      acr.ACR, opts("Run Choose"))
+    kmap("n", "<F3>",      acr.ACRAuto, opts("Run default"))
 end
 
 -- Debugging

@@ -6,11 +6,9 @@ from libqtile import bar, hook, layout, qtile, widget
 from libqtile.config import Click, Drag, EzKey, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.log_utils import logger
-from xcffib.xproto import StackMode
 from Xlib import display as xdisplay
 
 from group_config import go_to_group, group_keys, groups_list
-from scroll import omni_scroll
 
 # 0 Copyright (c) 2010 Aldo Cortesi
 # Copyright (c) 2010, 2014 dequis
@@ -43,28 +41,6 @@ groups = groups_list
 
 hostname = os.uname().nodename
 laptop = "MSI" in hostname
-
-
-@lazy.function
-def top_window(qtile):
-    if not qtile.current_window:
-        return
-    qtile.current_window.window.configure(stackmode=StackMode.Above)
-
-
-# @lazy.function
-# def test(qtile):
-#     pass
-
-
-# https://github.com/ValveSoftware/steam-for-linux/issues/2685
-# https://old.reddit.com/r/i3wm/comments/9i81rf/close_steam_to_tray_instead_of_killing_the_process/
-# @lazy.function
-# def kill_or_steam(qtile):
-#     # if qtile.current_window and "Steam" in qtile.current_window.window.get_wm_class():
-#     #     qtile.cmd_spawn("xdotool windowunmap $(xdotool getactivewindow)", shell=True)
-#     # elif qtile.current_window:
-#     qtile.current_window.kill()
 
 
 def print_debug(obj):
@@ -117,8 +93,8 @@ def side(direction):
             return
 
         current_window = qtile.current_window
-        current_top = current_window.cmd_get_position()[1]
-        current_bottom = current_top + current_window.cmd_get_size()[1]
+        current_top = current_window.get_position()[1]
+        current_bottom = current_top + current_window.get_size()[1]
         current_middle = (current_top + current_bottom) / 2
 
         if layout.wrap_focus_columns:
@@ -130,8 +106,8 @@ def side(direction):
             else:
                 return
 
-        next_top = layout.cc.cw.cmd_get_position()[1]
-        next_bottom = next_top + layout.cc.cw.cmd_get_size()[1]
+        next_top = layout.cc.cw.get_position()[1]
+        next_bottom = next_top + layout.cc.cw.get_size()[1]
         if (
             current_top <= next_top <= current_bottom
             or current_top <= next_bottom <= current_bottom
@@ -141,11 +117,11 @@ def side(direction):
 
         for i, win in enumerate(layout.cc.clients):
             next_top = (
-                win.cmd_get_position()[1] - (layout.margin + layout.border_width) * 2
+                win.get_position()[1] - (layout.margin + layout.border_width) * 2
             )
             next_bottom = (
                 next_top
-                + win.cmd_get_size()[1]
+                + win.get_size()[1]
                 + (layout.margin + layout.border_width) * 2
             )
             if next_top <= current_middle <= next_bottom:
@@ -175,8 +151,8 @@ def remove_column(qtile):
 
 my_keys = [
     # Window keys
-    ["M-j", lazy.group.next_window(), top_window, "Move focus next"],
-    ["M-k", lazy.group.prev_window(), top_window, "Move focus prev"],
+    ["M-j", lazy.group.next_window(), lazy.window.move_to_top(), "Move focus next"],
+    ["M-k", lazy.group.prev_window(), lazy.window.move_to_top(), "Move focus prev"],
     ["M-h", side(direction=-1), "Move focus left"],
     ["M-l", side(direction=1), "Move focus right"],
     ["M-S-h", lazy.layout.shuffle_left(), "Move window left"],
@@ -215,13 +191,12 @@ my_keys = [
         "Application Launcher",
     ],
     ["M-c", lazy.spawn("edit_configs"), "Config Launcher"],
-    ["M-t", lazy.spawn("edit_homework"), "Homework Launcher"],
     ["M-z", lazy.spawn("zathura"), "Open PDF reader"],
     ["<Print>", lazy.spawn("flameshot gui"), "Take Screenshot"],
     # Command keys
     ["M-C-r", lazy.reload_config(), "Reload Qtile config"],
     ["M-A-r", lazy.restart(), "Restart Qtile"],
-    ["M-C-q", lazy.shutdown(), "Shutdown Qtile"],
+    ["M-S-q", lazy.shutdown(), "Shutdown Qtile"],
     ["M-q", lazy.window.kill(), "Kill focused window"],
     ["M-C-q", lazy.spawn("xkill"), "Kill focused window"],
     ["M-<F1>", lazy.spawn("powermenu"), "Logout Menu"],
@@ -247,17 +222,11 @@ my_keys = [
         lazy.spawn("amixer -q -D pulse set Master toggle"),
         "Toggle Mute",
     ],
-    ["<XF86AudioPlay>", lazy.spawn("playerctl play-pause"), "Play/Pause"],
-    ["M-p", lazy.spawn("playerctl play-pause"), "Play/Pause"],
-    ["M-n", lazy.spawn("playerctl next"), "Next"],
-    # Mouse keys
-    ["M-<F3>", omni_scroll("left"), "Scroll left"],
-    ["M-<F4>", omni_scroll("right"), "Scroll right"],
-    ["M-S-<F3>", lazy.spawn("amixer -q -D pulse set Master 5%-"), "Lower volume"],
-    ["M-S-<F4>", lazy.spawn("amixer -q -D pulse set Master 5%+"), "Raise volume"],
-    ["M-C-<F3>", omni_scroll("left", "control"), "Scroll left control"],
-    ["M-C-<F4>", omni_scroll("right", "control"), "Scroll right control"],
+    ["<XF86AudioPlay>", lazy.spawn("playerctl --player playerctld play-pause"), "Play/Pause"],
+    ["M-p", lazy.spawn("playerctl --player playerctld play-pause"), "Play/Pause"],
+    ["M-n", lazy.spawn("playerctl --player playerctld next"), "Next"],
     # debug keys
+    # ["M-S-g", debug_function, "Debug function"],
     ["M-S-g", debug_function, "Debug function"],
     # autoclicker
     ["M-S-p", lazy.spawn("xdotool click --repeat 1000 --delay 1 1"), "Autoclick"],
@@ -273,16 +242,14 @@ layout_theme = {
     "margin": 2,
     "border_focus": colors[3],
     "border_normal": colors[1],
-    "single_border_width": 0,
-    "single_margin": 0,
-    "border_on_single": 2,
+    "border_on_single": True,
     "margin_on_single": 4,
 }
 
 layouts = [
     # layout.MonadTall(**layout_theme),
     layout.Columns(**layout_theme, insert_position=1, fair=True, num_columns=2),
-    layout.Max(**(layout_theme | {"border_width": 0, "margin": 0})),
+    layout.Max(),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(**layout_theme, num_stacks=2),
     # layout.Bsp(**layout_theme),
@@ -325,7 +292,7 @@ def make_powerline(widgets):
                 padding=0,
             )
         )
-        if type(w) == list:
+        if type(w) is list:
             for w2 in w:
                 w2.background = bg
                 w2.foreground = text_fg
@@ -392,12 +359,12 @@ def make_widgets(screen):
         ),
         widget.Memory(
             format="{MemUsed: .0f}{mm} /{MemTotal: .0f}{mm}",
-            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(terminal + " -e btop")},
+            mouse_callbacks={"Button1": lambda: qtile.spawn(terminal + " -e btop")},
             padding=5,
         ),
         widget.Net(
-            format="{down} ↓↑ {up}",
-            # format='{down:.0f}{down_suffix} ↓↑ {up:.0f}{up_suffix}', SOOOON
+            format="{down:.2f}{down_suffix} ↓↑ {up:.2f}{up_suffix}",
+            prefix='M',
             padding=5,
         ),
         [
@@ -411,12 +378,13 @@ def make_widgets(screen):
             #     scroll_step=1,
             #     width=150,
             # ),
-            widget.PulseVolume(
+            # TODO: Set back to pulse volume
+            widget.Volume(
                 fmt=" {}",
                 padding=5,
                 mouse_callbacks={
-                    "Button1": lambda: qtile.cmd_spawn("pavucontrol"),
-                    "Button3": lambda: qtile.cmd_spawn(
+                    "Button1": lambda: qtile.spawn("pavucontrol"),
+                    "Button3": lambda: qtile.spawn(
                         "amixer -q -D pulse set Master toggle"
                     ),
                 },
@@ -428,7 +396,7 @@ def make_widgets(screen):
             distro="Arch_checkupdates",
             display_format="{updates} Updates",
             mouse_callbacks={
-                "Button1": lambda: qtile.cmd_spawn(terminal + " -e sudo pacman -Syu")
+                "Button1": lambda: qtile.spawn(terminal + " -e sudo pacman -Syu")
             },
             no_update_string="0 Updates",
             padding=5,
@@ -437,7 +405,7 @@ def make_widgets(screen):
             font="Source Code Pro Bold",
             padding=5,
             format="%A, %B %d - %H:%M ",
-            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn('xdotool key "alt+c"')},
+            mouse_callbacks={"Button1": lambda: qtile.spawn('xdotool key "alt+c"')},
         ),
     ]
 
@@ -528,6 +496,7 @@ dgroups_app_rules = []
 follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
+floats_kept_above = False
 floating_layout = layout.Floating(
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
@@ -561,8 +530,8 @@ auto_minimize = False
 @hook.subscribe.startup_once
 def start_once():
     if len(qtile.screens) > 1:
-        qtile.groups_map["a"].cmd_toscreen(1)
-        qtile.groups_map["1"].cmd_toscreen(0)
+        qtile.groups_map["a"].toscreen(1)
+        qtile.groups_map["1"].toscreen(0)
     subprocess.call([home + "/.config/qtile/scripts/autostart.sh"])
 
 
@@ -570,20 +539,6 @@ def start_once():
 def set_floating(window):
     if window.window.get_wm_transient_for():
         window.floating = True
-
-
-@hook.subscribe.client_focus
-def client_focus(window):
-    # qtile 0.21 implemented _NET_WM_STATE_FOCUSED
-    # if fullscreen windows have this set unfocusing them removes it
-    # this re-sets the _NET_WM_STATE_FULLSCREEN state
-    # setting the stackmode of the new window directly afterwards doesn't work so the focused state is removed early
-    if window.fullscreen:
-        focused = window.qtile.core.conn.atoms["_NET_WM_STATE_FOCUSED"]
-        state = list(window.window.get_property("_NET_WM_STATE", "ATOM", unpack=int))
-        if focused in state:
-            state.remove(focused)
-            window.window.set_property("_NET_WM_STATE", state)
 
 
 # @hook.subscribe.client_urgent_hint_changed
