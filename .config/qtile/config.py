@@ -43,24 +43,6 @@ hostname = os.uname().nodename
 laptop = "MSI" in hostname
 
 
-def print_debug(obj):
-    odict = obj.__dict__
-    ostr = "\n"
-    for k in odict:
-        if k == "icons":
-            continue
-        ostr += f"{k}: {odict[k]}\n"
-    logger.warning(ostr)
-
-
-@lazy.function
-def debug_function(qtile):
-    windows = list(qtile.windows_map.values())
-    for w in windows:
-        if w.urgent:
-            w.update_hints()
-
-
 theme = os.path.expanduser("~") + "/.config/qtile/themes/tokyonight.yml"
 with open(theme) as theme_file:
     colors = yaml.load(theme_file, yaml.Loader)
@@ -85,27 +67,46 @@ browser = "firefox"
 calendar = "morgen"
 
 
+def print_debug(obj):
+    odict = obj.__dict__
+    ostr = "\n"
+    for k in odict:
+        if k == "icons":
+            continue
+        ostr += f"{k}: {odict[k]}\n"
+    logger.warning(ostr)
+
+
 def side(direction):
     @lazy.function
     def _side(qtile):
         layout = qtile.current_layout
+        # if not columns layout, just do normal left/right focus
         if layout.name != "columns":
+            if direction == -1:
+                layout.left()
+            elif direction == 1:
+                layout.right()
             return
 
+        # get current window position
         current_window = qtile.current_window
         current_top = current_window.get_position()[1]
         current_bottom = current_top + current_window.get_size()[1]
         current_middle = (current_top + current_bottom) / 2
 
+        # focus next column
         if layout.wrap_focus_columns:
             if len(layout.columns) >= 1:
                 layout.current = (layout.current + direction) % len(layout.columns)
         else:
-            if layout.current > 0:
+            if 0 <= layout.current + direction < len(layout.columns):
                 layout.current += direction
             else:
                 return
 
+        # get position of previously focused window in next column
+        # if there is overlap between the two windows, focus the next window
         next_top = layout.cc.cw.get_position()[1]
         next_bottom = next_top + layout.cc.cw.get_size()[1]
         if (
@@ -115,6 +116,9 @@ def side(direction):
             qtile.current_group.focus(layout.cc.cw, True)
             return
 
+        # if the previously focused window is not next to the current window,
+        # loop through all windows in next column
+        # and focus the one that is next to the middle of the current window
         for i, win in enumerate(layout.cc.clients):
             next_top = (
                 win.get_position()[1] - (layout.margin + layout.border_width) * 2
@@ -149,10 +153,60 @@ def remove_column(qtile):
     layout.num_columns -= 1
 
 
+@lazy.function
+def debug_function(qtile):
+    windows = list(qtile.windows_map.values())
+    for w in windows:
+        if w.urgent:
+            w.update_hints()
+
+
+@lazy.function
+def next_window(qtile):
+    group = qtile.current_group
+    if not group.windows:
+        return
+    if qtile.current_window.floating and not qtile.current_window.fullscreen:
+        next = (
+            group.floating_layout.focus_next(qtile.current_window)
+            or group.layout.focus_first()
+            or group.floating_layout.focus_first(group=group)
+        )
+    else:
+        next = (
+            group.layout.focus_next(qtile.current_window)
+            or group.floating_layout.focus_first(group=group)
+            or group.layout.focus_first()
+        )
+    if next:
+        group.focus(next, True)
+
+
+@lazy.function
+def prev_window(qtile):
+    group = qtile.current_group
+    if not group.windows:
+        return
+    if qtile.current_window.floating and not qtile.current_window.fullscreen:
+        prev = (
+            group.floating_layout.focus_previous(qtile.current_window)
+            or group.layout.focus_last()
+            or group.floating_layout.focus_last(group=group)
+        )
+    else:
+        prev = (
+            group.layout.focus_previous(qtile.current_window)
+            or group.floating_layout.focus_last(group=group)
+            or group.layout.focus_last()
+        )
+    if prev:
+        group.focus(prev, True)
+
+
 my_keys = [
     # Window keys
-    ["M-j", lazy.group.next_window(), lazy.window.move_to_top(), "Move focus next"],
-    ["M-k", lazy.group.prev_window(), lazy.window.move_to_top(), "Move focus prev"],
+    ["M-j", next_window, lazy.window.move_to_top(), "Move focus next"],
+    ["M-k", prev_window, lazy.window.move_to_top(), "Move focus prev"],
     ["M-h", side(direction=-1), "Move focus left"],
     ["M-l", side(direction=1), "Move focus right"],
     ["M-S-h", lazy.layout.shuffle_left(), "Move window left"],
