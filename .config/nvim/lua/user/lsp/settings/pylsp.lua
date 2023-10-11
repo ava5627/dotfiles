@@ -11,7 +11,7 @@ local opts = {
                     eager = true,
                 },
                 rope_autoimport = {
-                    enabled = true,
+                    enabled = false,
                     memory = false,
                 },
             }
