@@ -46,6 +46,7 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 
 fish_add_path "$XDG_DATA_HOME/cargo/bin"
 
+# If not running interactively, don't continue
 if not status --is-interactive
   exit
 end
@@ -59,10 +60,14 @@ function fish_user_key_bindings
 end
 
 function line_one
-    echo -n (prompt_pwd) # (fish_git_prompt)
+    # PWD
+    set_color $fish_color_cwd --bold
+    echo -n (prompt_pwd)
+    set_color normal
+    # echo -n (fish_git_prompt)
 end
 
-function fish_prompt --description 'Write out the prompt'
+function fish_prompt --description 'Print the prompt'
 
     echo
     if test $VIRTUAL_ENV
@@ -73,12 +78,8 @@ function fish_prompt --description 'Write out the prompt'
         set_color normal
     end
 
-    if test (string length (line_one)) -ge 10
-        # PWD
-        set_color $fish_color_cwd --bold
-        echo -n (prompt_pwd)
-        set_color normal
-        # echo -n (fish_git_prompt)
+    if test (string length -V (line_one)) -ge 10
+        line_one
         echo
     end
     # User
@@ -92,13 +93,9 @@ function fish_prompt --description 'Write out the prompt'
     set_color $fish_color_host --bold
     echo -n (prompt_hostname)
     set_color normal --bold
-    if test (string length (line_one)) -lt 10
-        # PWD
+    if test (string length -V (line_one)) -lt 10
         echo -n ': '
-        set_color $fish_color_cwd --bold
-        echo -n (prompt_pwd)
-        set_color normal
-        # echo -n (fish_git_prompt)
+        line_one
     end
 
     echo -n ' $ '
