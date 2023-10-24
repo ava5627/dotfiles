@@ -9,6 +9,7 @@ from libqtile.log_utils import logger
 from Xlib import display as xdisplay
 
 from group_config import go_to_group, group_keys, groups_list
+from do_not_disturb_widget import DoNotDisturb
 
 # 0 Copyright (c) 2010 Aldo Cortesi
 # Copyright (c) 2010, 2014 dequis
@@ -47,8 +48,7 @@ theme = os.path.expanduser("~") + "/.config/qtile/themes/tokyonight.yml"
 with open(theme) as theme_file:
     colors = yaml.load(theme_file, yaml.Loader)
 
-powerline_colors = [[colors[9], colors[10]], [colors[7], colors[8]]]
-
+powerline_colors = [[colors[7], colors[8]], [colors[9], colors[10]]]
 
 EzKey.modifier_keys = {
     "M": "mod4",
@@ -284,6 +284,9 @@ my_keys = [
     ["M-S-g", debug_function, "Debug function"],
     # autoclicker
     ["M-S-p", lazy.spawn("xdotool click --repeat 1000 --delay 1 1"), "Autoclick"],
+    ["M-C-n", lazy.spawn("dunstctl close"), "Close notification"],
+    ["M-C-m", lazy.spawn("dunstctl history-pop"), "Open last notification"],
+    ["M-C-b", lazy.spawn("dunstctl set-paused toggle"), "Toggle notifications"],
 ]
 
 
@@ -354,6 +357,8 @@ def make_powerline(widgets):
         else:
             w.background = bg
             w.foreground = text_fg
+            w.off_background = bg
+            w.off_foreground = text_fg
             w.colour_have_updates = text_fg
             w.colour_no_updates = text_fg
             powerline.append(w)
@@ -420,6 +425,10 @@ def make_widgets(screen):
             format="{down:.2f}{down_suffix} ↓↑ {up:.2f}{up_suffix}",
             prefix='M',
             padding=5,
+        ),
+        DoNotDisturb(
+            padding=5,
+            update_interval=5,
         ),
         [
             # widget.Mpris2(
@@ -593,6 +602,11 @@ def start_once():
 def set_floating(window):
     if window.window.get_wm_transient_for():
         window.floating = True
+    if "copyq" in window.get_wm_class():
+        group = qtile.current_group
+        if window.group != group:
+            logger.warning(f"copyq window {window.name} not opened in current group")
+            window.togroup(group.name)
 
 
 # @hook.subscribe.client_urgent_hint_changed

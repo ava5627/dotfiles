@@ -46,6 +46,11 @@ local options = {
 }
 
 vim.opt.shortmess:append "c"
+vim.filetype.add({
+    extension = {
+        rasi = "rasi"
+    }
+})
 
 for k, v in pairs(options) do
     vim.opt[k] = v

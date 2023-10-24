@@ -21,6 +21,17 @@ snip.rv = (match.group(1) + ' in enumerate('
 `$0
 endsnippet
 
+# auto len
+snippet "\w+\.len" "Auto len" irA
+len(`!p snip.rv = match.group(0).split('.')[0]`)
+endsnippet
+
+# auto reversed
+snippet "\w+\.reversed" "Auto reversed" irA
+reversed(`!p snip.rv = match.group(0).split('.')[0]`)
+endsnippet
+
+
 # ++ to += 1
 snippet ++ "Fix ++" iA
  += 1
