@@ -12,6 +12,7 @@ config_list[ranger]=~/.config/ranger
 config_list[userChrome]=~/.config/userChrome.css
 config_list[zathura]=~/.config/zathura
 config_list[ideavim]=~/.config/ideavim/ideavimrc
+config_list[dunst]=~/.config/dunst/dunstrc
 
 declare -A icons_list
 icons_list[qtile]=desktop
@@ -25,6 +26,7 @@ icons_list[ranger]=folder
 icons_list[userChrome]=firefox
 icons_list[zathura]=zathura
 icons_list[ideavim]=~/.local/share/JetBrains/Toolbox/toolbox.svg
+icons_list[dunst]=notification
 
 cfg=""
 for c in ${!config_list[@]}
