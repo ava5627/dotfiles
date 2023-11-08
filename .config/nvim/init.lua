@@ -1,4 +1,4 @@
-pcall(require, "impatient")
+vim.loader.enable()
 require("user.options")
 require("user.plugins")
 require("user.keymaps")
@@ -15,7 +15,6 @@ require("user.gitsigns")
 require("user.nvim-tree")
 require("user.toggleterm")
 require("user.dial")
---[[ require("user.bufferline") ]]
 require("user.cybu")
 require("user.dap")
 require("user.neoscroll")

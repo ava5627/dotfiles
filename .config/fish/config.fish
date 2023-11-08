@@ -147,15 +147,14 @@ alias vc='python -m venv .venv'
 alias va='source ./.venv/bin/activate.fish'
 alias vv='source ./.venv/bin/activate.fish & nvim .'
 
+alias cam='mpv av://v4l2:/dev/video0 --profile=low-latency --untimed'
 
 # Directory cd
-
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
 # Dotfiles
-
 alias gconfig='git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 
 # Startup

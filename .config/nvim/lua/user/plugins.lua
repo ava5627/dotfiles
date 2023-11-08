@@ -154,7 +154,6 @@ return packer.startup(function(use)
     use("monaqa/dial.nvim")
     use("tpope/vim-repeat")
     use("dstein64/vim-startuptime")
-    use("lewis6991/impatient.nvim")
 
     -- highlighting
     use({
@@ -186,7 +185,7 @@ return packer.startup(function(use)
     use("kyazdani42/nvim-tree.lua")
 
     --Telescope
-    use("nvim-telescope/telescope.nvim")
+    use({ "nvim-telescope/telescope.nvim", branch = "0.1.x" })
     use("nvim-telescope/telescope-project.nvim")
 
     --Treesitter
