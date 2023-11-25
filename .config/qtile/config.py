@@ -204,6 +204,8 @@ def prev_window(qtile):
 
 
 my_keys = [
+    # free keys: t,g,v,z
+    # semi-free: e
     # Window keys
     ["M-j", next_window, lazy.window.move_to_top(), "Move focus next"],
     ["M-k", prev_window, lazy.window.move_to_top(), "Move focus prev"],
@@ -245,7 +247,6 @@ my_keys = [
         "Application Launcher",
     ],
     ["M-c", lazy.spawn("edit_configs"), "Config Launcher"],
-    ["M-z", lazy.spawn("zathura"), "Open PDF reader"],
     ["<Print>", lazy.spawn("flameshot gui"), "Take Screenshot"],
     # Command keys
     ["M-C-r", lazy.reload_config(), "Reload Qtile config"],
@@ -605,7 +606,6 @@ def set_floating(window):
     if "copyq" in window.get_wm_class():
         group = qtile.current_group
         if window.group != group:
-            logger.warning(f"copyq window {window.name} not opened in current group")
             window.togroup(group.name)
 
 

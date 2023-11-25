@@ -19,6 +19,7 @@ require("tokyonight").setup({
         highlights.Operator = { fg = colors.red }
         highlights.TSOperator = { fg = colors.red }
         highlights.DiagnosticUnnecessary = { fg = colors.fg_dark, undercurl=true, sp=colors.warning }
+        highlights.CybuFocus = { bg = highlights.Visual.bg }
     end
 
 })

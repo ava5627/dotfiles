@@ -13,6 +13,15 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+vim.api.nvim_create_augroup("sync_lazy_config", {})
+vim.api.nvim_create_autocmd(
+    "BufWritePost", {
+        group = "sync_lazy_config",
+        pattern = "plugins.lua",
+        command = "source <afile> | Lazy sync"
+    }
+)
+
 local status_ok, lazy = pcall(require, "lazy")
 if not status_ok then
     vim.notify("Missing lazy.nvim", vim.log.levels.ERROR)
@@ -22,7 +31,6 @@ end
 -- Install your plugins here
 lazy.setup({
     -- Dependencies
-    "wbthomason/packer.nvim",
     "nvim-lua/plenary.nvim",
     "nvim-lua/popup.nvim",
     {
@@ -79,17 +87,21 @@ lazy.setup({
     },
 
     -- Lua
-    { "folke/neodev.nvim", lazy = true },
+    "folke/neodev.nvim",
 
     -- Rust
     { "simrat39/rust-tools.nvim", lazy = true },
 
 
     -- colorschemes
-    { "ellisonleao/gruvbox.nvim", lazy = true },
-    { "lunarvim/darkplus.nvim",   lazy = true },
-    { "sainnhe/sonokai",          lazy = true },
-    { "folke/tokyonight.nvim",    priority = 1000 },
+    "ellisonleao/gruvbox.nvim",
+    "lunarvim/darkplus.nvim",
+    "sainnhe/sonokai",
+    {
+        "folke/tokyonight.nvim",
+        lazy = false,
+        priority = 1000
+    },
 
     -- utility
     "windwp/nvim-autopairs",
@@ -159,7 +171,7 @@ lazy.setup({
     },
 
     -- Toggle Term
-    { "akinsho/toggleterm.nvim",       branch = "main" },
+    { "akinsho/toggleterm.nvim",  branch = "main" },
 
     -- nvim-tree
     "kyazdani42/nvim-tree.lua",
