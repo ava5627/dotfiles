@@ -20,6 +20,7 @@ class DoNotDisturb(base.ThreadPoolText):
         self.off_foreground = config.get("off_foreground", self.foreground)
         self.dnd_text = config.get("dnd_text", " ")
         self.off_text = config.get("off_text", " ")
+        self.right_arrow = None
 
     def _configure(self, qtile, bar):
         base.ThreadPoolText._configure(self, qtile, bar)
@@ -38,8 +39,16 @@ class DoNotDisturb(base.ThreadPoolText):
             output = self.off_text
             self.background = self.off_background
             self.foreground = self.off_foreground
+            if hasattr(self, 'left_arrow') and self.left_arrow:
+                self.left_arrow.foreground = self.off_background
+            if hasattr(self, 'right_arrow') and self.right_arrow:
+                self.right_arrow.background = self.off_background
         else:
             output = self.dnd_text
             self.background = self.dnd_background
             self.foreground = self.dnd_foreground
+            if hasattr(self, 'left_arrow') and self.left_arrow:
+                self.left_arrow.foreground = self.dnd_background
+            if hasattr(self, 'right_arrow') and self.right_arrow:
+                self.right_arrow.background = self.dnd_background
         return output

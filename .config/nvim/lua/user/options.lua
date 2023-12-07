@@ -45,10 +45,11 @@ local options = {
     -- guifont = "monospace:h17",               -- the font used in graphical neovim applications
 }
 
-vim.opt.shortmess:append "c"
+vim.opt.shortmess:append("c")
 vim.filetype.add({
     extension = {
-        rasi = "rasi"
+        rasi = "rasi",
+        keymap = "c"
     }
 })
 

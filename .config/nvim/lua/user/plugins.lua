@@ -13,15 +13,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-vim.api.nvim_create_augroup("sync_lazy_config", {})
-vim.api.nvim_create_autocmd(
-    "BufWritePost", {
-        group = "sync_lazy_config",
-        pattern = "plugins.lua",
-        command = "source <afile> | Lazy sync"
-    }
-)
-
 local status_ok, lazy = pcall(require, "lazy")
 if not status_ok then
     vim.notify("Missing lazy.nvim", vim.log.levels.ERROR)
@@ -49,7 +40,7 @@ lazy.setup({
     {
         "tzachar/cmp-tabnine",
         build = "./install.sh",
-        requires = "hrsh7th/nvim-cmp"
+        dependencies = "hrsh7th/nvim-cmp"
     },
     {
         "github/copilot.vim",
@@ -58,20 +49,11 @@ lazy.setup({
     "f3fora/cmp-spell",
 
     -- snippets
-    "L3MON4D3/LuaSnip",
     {
-        "SirVer/ultisnips",
-        config = function()
-            vim.g.UltiSnipsExpandTrigger = '<C-l>'
-            vim.g.UltiSnipsJumpForwardTrigger = '<C-l>'
-            vim.g.UltiSnipsJumpBackwardTrigger = '<C-h>'
-            vim.g.UltiSnipsListSnippets = '<c-x><c-s>'
-            vim.g.UltiSnipsRemoveSelectModeMappings = 0
-            vim.g.UltiSnipsSnippetDirectories = { vim.fn.expand("$XDG_CONFIG_HOME/nvim/UltiSnips/"), "UltiSnips" }
-        end
+        "L3MON4D3/LuaSnip",
+        build = "make install_jsregexp"
     },
     "rafamadriz/friendly-snippets",
-    "quangnguyen30192/cmp-nvim-ultisnips",
 
 
     --lsp
@@ -82,7 +64,6 @@ lazy.setup({
     -- "jose-elias-alvarez/null-ls.nvim" -- for formatters and linters,
     {
         'j-hui/fidget.nvim',
-        tag = 'legacy',
         config = function() require('fidget').setup() end,
     },
 
@@ -90,7 +71,10 @@ lazy.setup({
     "folke/neodev.nvim",
 
     -- Rust
-    { "simrat39/rust-tools.nvim", lazy = true },
+    {
+        "simrat39/rust-tools.nvim",
+        lazy = true
+    },
 
 
     -- colorschemes
@@ -138,7 +122,6 @@ lazy.setup({
 
     -- movement
     "tpope/vim-surround",
-    "jeetsukumaran/vim-indentwise",
     "karb94/neoscroll.nvim",
     "monaqa/dial.nvim",
     "tpope/vim-repeat",
@@ -171,7 +154,7 @@ lazy.setup({
     },
 
     -- Toggle Term
-    { "akinsho/toggleterm.nvim",  branch = "main" },
+    "akinsho/toggleterm.nvim",
 
     -- nvim-tree
     "kyazdani42/nvim-tree.lua",

@@ -1,5 +1,6 @@
 import os
 import subprocess
+from datetime import timedelta, datetime
 
 import yaml
 from libqtile import bar, hook, layout, qtile, widget
@@ -7,8 +8,9 @@ from libqtile.config import Click, Drag, EzKey, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.log_utils import logger
 from Xlib import display as xdisplay
+# from qtile_extras.widget import StatusNotifier
 
-from group_config import go_to_group, group_keys, groups_list
+from group_config import go_to_group, group_keys, groups_list, group_screen
 from do_not_disturb_widget import DoNotDisturb
 
 # 0 Copyright (c) 2010 Aldo Cortesi
@@ -205,7 +207,6 @@ def prev_window(qtile):
 
 my_keys = [
     # free keys: t,g,v,z
-    # semi-free: e
     # Window keys
     ["M-j", next_window, lazy.window.move_to_top(), "Move focus next"],
     ["M-k", prev_window, lazy.window.move_to_top(), "Move focus prev"],
@@ -332,9 +333,10 @@ extension_defaults = widget_defaults.copy()
 
 def make_powerline(widgets):
     powerline = []
+    odd = len(widgets) % 2
     for i, w in enumerate(widgets):
-        index = i % len(powerline_colors)
-        next_index = (i - 1) % len(powerline_colors)
+        index = (i + 1 - odd) % len(powerline_colors)
+        next_index = (i - odd) % len(powerline_colors)
         bg = powerline_colors[index][0]
         fg = powerline_colors[next_index][0]
         text_fg = powerline_colors[index][1]
@@ -350,6 +352,8 @@ def make_powerline(widgets):
                 padding=0,
             )
         )
+        if i - 1 > 0 and type(widgets[i - 1]) is DoNotDisturb:
+            widgets[i - 1].right_arrow = powerline[-1]
         if type(w) is list:
             for w2 in w:
                 w2.background = bg
@@ -358,10 +362,13 @@ def make_powerline(widgets):
         else:
             w.background = bg
             w.foreground = text_fg
-            w.off_background = bg
-            w.off_foreground = text_fg
-            w.colour_have_updates = text_fg
-            w.colour_no_updates = text_fg
+            if type(w) is widget.CheckUpdates:
+                w.colour_have_updates = text_fg
+                w.colour_no_updates = text_fg
+            if type(w) is DoNotDisturb:
+                w.off_background = bg
+                w.off_foreground = text_fg
+                w.left_arrow = powerline[-1]
             powerline.append(w)
     return powerline
 
@@ -386,6 +393,9 @@ def make_widgets(screen):
             other_screen_border=colors[4],
             use_mouse_wheel=False,
             hide_unused=True,
+            disable_drag=True,
+            toggle=False,
+            visible_groups=[group.name for group in groups_list if group_screen(group) == screen],
         ),
         widget.TaskList(
             rounded=False,
@@ -405,12 +415,6 @@ def make_widgets(screen):
         ),
         # widget.Prompt(),
         # widget.WindowName(),
-        widget.Chord(
-            chords_colors={
-                "launch": ("#ff0000", "#ffffff"),
-            },
-            name_transform=lambda name: name.upper(),
-        ),
     ]
     pl_list = [
         widget.CPU(
@@ -427,34 +431,29 @@ def make_widgets(screen):
             prefix='M',
             padding=5,
         ),
+        widget.GenPollUrl(
+            url='http://localhost:1337/api/v1/entries/sgv?count=1',
+            headers={'accept': 'application/json'},
+            parse=parse_nightscout,
+            update_interval=150,
+            json=True
+        ),
         DoNotDisturb(
             padding=5,
             update_interval=5,
         ),
-        [
-            # widget.Mpris2(
-            #     paused_text=" {track}",
-            #     playing_text=" {track}",
-            #     stopped_text="",
-            #     no_metadata_text="Unkown",
-            #     scroll=True,
-            #     scroll_interval=0.02,
-            #     scroll_step=1,
-            #     width=150,
-            # ),
-            # TODO: Set back to pulse volume
-            widget.Volume(
-                fmt=" {}",
-                padding=5,
-                mouse_callbacks={
-                    "Button1": lambda: qtile.spawn("pavucontrol"),
-                    "Button3": lambda: qtile.spawn(
-                        "amixer -q -D pulse set Master toggle"
-                    ),
-                },
-                step=5,
-            ),
-        ],
+        # TODO: Set back to pulse volue
+        widget.Volume(
+            fmt=" {}",
+            padding=5,
+            mouse_callbacks={
+                "Button1": lambda: qtile.spawn("pavucontrol"),
+                "Button3": lambda: qtile.spawn(
+                    "amixer -q -D pulse set Master toggle"
+                ),
+            },
+            step=5,
+        ),
         widget.CheckUpdates(
             update_interval=3600,
             distro="Arch_checkupdates",
@@ -508,6 +507,37 @@ def make_widgets(screen):
 
     widget_list += make_powerline(pl_list)
     return widget_list
+
+
+def parse_nightscout(data):
+    if datetime.now() - datetime.fromtimestamp(data[0]["date"] / 1000) > timedelta(minutes=6):
+        return "-- No data"
+    glucose = data[0]["sgv"]
+    direction = data[0]["direction"]
+    delta = data[0]["delta"]
+    if direction == "Flat":
+        arrow = "󰁕"
+    elif direction == "FortyFiveUp":
+        arrow = "󰧆"
+    elif direction == "SingleUp":
+        arrow = "󰁞"
+    elif direction == "FortyFiveDown":
+        arrow = "󰦺"
+    elif direction == "SingleDown":
+        arrow = "󰁆"
+    elif direction == "DoubleUp":
+        arrow = "󰁞󰁞"
+    elif direction == "DoubleDown":
+        arrow = "󰁆󰁆"
+
+    if delta > 0:
+        delta_s = f"+{delta:.0f}"
+    elif delta < 0:
+        delta_s = f"{delta:.0f}"
+    else:
+        delta_s = ""
+
+    return f"{arrow} {glucose} {delta_s}mg/dL "
 
 
 def get_num_monitors():
@@ -635,3 +665,6 @@ def client_name_updated(window):
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
 wmname = "LG3D"
+# java that happens to be on java's whitelist.
+wmname = "LG3D"
+# java that happens to be on java's whitelist.

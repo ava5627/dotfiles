@@ -15,7 +15,6 @@ local servers = {
 	"pylsp",
 	"bashls",
 	"rust_analyzer",
-	"clangd",
 	"texlab",
 	"ltex",
 	"gopls",
@@ -37,7 +36,7 @@ local settings = {
 mason.setup(settings)
 mason_lspconfig.setup({
 	-- ensure_installed = servers,
-	automatic_installation = true,
+	automatic_installation = false,
 })
 
 local lspconfig_status_ok, lspconfig = pcall(require, "lspconfig")

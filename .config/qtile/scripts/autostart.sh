@@ -9,7 +9,6 @@ blueberry-tray &
 picom --config $HOME/.config/qtile/scripts/picom.conf &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 dunst &
-xmodmap ~/.config/qtile/scripts/xmodmap &
 playerctld &
 
 #starting user applications at boot time

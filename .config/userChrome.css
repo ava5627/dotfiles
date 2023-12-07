@@ -31,12 +31,13 @@ double edges */
     border-radius: 0px 0px 0px 0px !important;
     box-shadow: 0px 0px !important;
     margin-block: 0px !important;
+    border-bottom: 0px !important;
     /* margin-left: -2px !important; */
     /* margin-right: 1px !important; */
 }
 /* A separate style for when a tab is selected either by itself
 (selected=true) or as part of a multiselection (ctrl+clicking tabs) */
-.tab-background[selected="true"], .tab-background[multiselected="true"] {
+.tabbrowser-tab[selected="true"] .tab-background, .tabbrowser-tab[multiselected="true"] .tab-background {
     outline: none !important;
     border: 1px solid var(--lwt-tab-line-color, var(--lwt-tabs-border-color, currentColor)) !important;
     border-bottom: 0px !important;

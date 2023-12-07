@@ -1,4 +1,3 @@
-from libqtile import qtile
 from libqtile.config import Group, Match
 from libqtile.lazy import lazy
 
@@ -25,13 +24,13 @@ def go_to_group(qtile, name):
 
 def group_screen(group):
     screen = 0
-    if group.name in "1234567890":
+    if group.name in "123456":
         screen = 0
-    elif group.name in "asduio":
+    elif group.name in "asd":
         screen = 1
-    # elif group.name in "uio":
-    #     screen = 2
-    return screen % len(qtile.screens)
+    elif group.name in "uio7890":
+        screen = 2
+    return screen
 
 
 def switch_group(direction):

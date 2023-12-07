@@ -1,5 +1,3 @@
-
-
 local function opts(desc)
     return {desc = desc, noremap = true, silent = true }
 end
@@ -67,21 +65,6 @@ kmap("i", "<C-d>", "<delete>", opts("Delete character"))
 -- Paste in insert mode
 kmap("i", "<C-p>", "<left><C-o>p", opts("Paste"))
 
--- Indent Jump
-kmap("", "[q", "<Plug>(IndentWisePreviousLesserIndent)", { silent = true, desc = "Indent jump" })
-kmap("", "[w", "<Plug>(IndentWisePreviousEqualIndent)", { silent = true, desc = "Indent jump" })
-kmap("", "[e", "<Plug>(IndentWisePreviousGreaterIndent)", { silent = true, desc = "Indent jump" })
-
-kmap("", "]q", "<Plug>(IndentWiseNextLesserIndent)", { silent = true, desc = "Indent jump" })
-kmap("", "]w", "<Plug>(IndentWiseNextEqualIndent)", { silent = true, desc = "Indent jump" })
-kmap("", "]e", "<Plug>(IndentWiseNextGreaterIndent)", { silent = true, desc = "Indent jump" })
-
-kmap("", "[_", "<Plug>(IndentWisePreviousAbsoluteIndent)", { silent = true, desc = "Indent jump" })
-kmap("", "]_", "<Plug>(IndentWiseNextAbsoluteIndent)", { silent = true, desc = "Indent jump" })
-
-kmap("", "[%", "<Plug>(IndentWiseBlockScopeBoundaryBegin)", { silent = true, desc = "Indent jump" })
-kmap("", "]%", "<Plug>(IndentWiseBlockScopeBoundaryEnd)", { silent = true, desc = "Indent jump" })
-
 -- Visual
 kmap("v", "<", "<gv", opts("Shift left"))
 kmap("v", ">", ">gv", opts("Shift right"))
@@ -104,10 +87,10 @@ end
 -- Telescope
 local telescope_ok, telescope = pcall(require, "telescope")
 if telescope_ok then
-    kmap("n", "<leader>pp", "<cmd>Telescope find_files<cr>", opts("Find files"))
-    kmap("n", "<leader>pg", "<cmd>Telescope live_grep<cr>", opts("Grep"))
-    kmap("n", "<leader>ps", "<cmd>Telescope lsp_document_symbols<cr>", opts("Document symbols"))
-    kmap("n", "<leader>po", "<cmd>Telescope project project<cr>", opts("Projects"))
+    kmap("n", "<leader>oo", "<cmd>Telescope find_files<cr>", opts("Find files"))
+    kmap("n", "<leader>og", "<cmd>Telescope live_grep<cr>", opts("Grep"))
+    kmap("n", "<leader>os", "<cmd>Telescope lsp_document_symbols<cr>", opts("Document symbols"))
+    kmap("n", "<leader>op", "<cmd>Telescope project project<cr>", opts("Projects"))
     kmap("n", "<A-tab>", "<cmd>Telescope buffers<cr>", opts("Buffers"))
 
     -- Harpoon
