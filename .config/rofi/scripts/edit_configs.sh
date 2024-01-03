@@ -2,7 +2,6 @@
 
 declare -A config_list
 config_list[qtile]=~/.config/qtile
-config_list[alacritty]=~/.config/alacritty
 config_list[kitty]=~/.config/kitty
 config_list[fish]=~/.config/fish
 config_list[nvim]=~/.config/nvim
@@ -16,7 +15,6 @@ config_list[dunst]=~/.config/dunst/dunstrc
 
 declare -A icons_list
 icons_list[qtile]=desktop
-icons_list[alacritty]=Alacritty
 icons_list[kitty]=kitty
 icons_list[fish]=fish
 icons_list[nvim]=nvim
