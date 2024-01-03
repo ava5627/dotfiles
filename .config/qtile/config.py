@@ -64,7 +64,6 @@ home = os.path.expanduser("~")
 # terminal = "alacritty"
 terminal = "kitty"
 file_manager = "pcmanfm"
-term_file_manager = "ranger"
 browser = "firefox"
 calendar = "morgen"
 
@@ -206,7 +205,6 @@ def prev_window(qtile):
 
 
 my_keys = [
-    # free keys: t,g,v,z
     # Window keys
     ["M-j", next_window, lazy.window.move_to_top(), "Move focus next"],
     ["M-k", prev_window, lazy.window.move_to_top(), "Move focus prev"],
@@ -228,18 +226,12 @@ my_keys = [
     ["M-S-f", lazy.window.toggle_fullscreen(), "toggle fullscreen"],
     # Launch keys
     ["M-e", lazy.spawn(terminal), "Launch Terminal"],
-    ["M-<Return>", lazy.spawn(terminal), "Launch Terminal alt"],
     ["M-b", lazy.spawn(terminal + " -e btop"), "Launch BTOP"],
     ["M-m", lazy.spawn(file_manager), "Launch File manager"],
-    [
-        "M-S-m",
-        lazy.spawn(terminal + " -e " + term_file_manager),
-        "Launch Terminal File manager",
-    ],
     ["M-y", lazy.spawn("steam steam://open/friends"), "Launch Steam Friends"],
     ["M-w", lazy.spawn("firefox"), "Launch Firefox"],
     ["M-S-w", lazy.spawn("firefox -private-window"), "Launch Private Firefox"],
-    ["M-x", lazy.spawn("qalculate-gtk"), "Launch Calculator"],
+    ["M-g", lazy.spawn("qalculate-gtk"), "Launch Calculator"],
     ["M-S-e", lazy.spawn("copyq show"), "Show Copyq"],
     ["M-r", lazy.spawn("rofi -show run -i", shell=True), "Run Launcher"],
     [
@@ -247,7 +239,7 @@ my_keys = [
         lazy.spawn("rofi -show drun -i", shell=True),
         "Application Launcher",
     ],
-    ["M-c", lazy.spawn("edit_configs"), "Config Launcher"],
+    ["M-v", lazy.spawn("edit_configs"), "Config Launcher"],
     ["<Print>", lazy.spawn("flameshot gui"), "Take Screenshot"],
     # Command keys
     ["M-C-r", lazy.reload_config(), "Reload Qtile config"],
@@ -283,7 +275,6 @@ my_keys = [
     ["M-n", lazy.spawn("playerctl --player playerctld next"), "Next"],
     # debug keys
     # ["M-S-g", debug_function, "Debug function"],
-    ["M-S-g", debug_function, "Debug function"],
     # autoclicker
     ["M-S-p", lazy.spawn("xdotool click --repeat 1000 --delay 1 1"), "Autoclick"],
     ["M-C-n", lazy.spawn("dunstctl close"), "Close notification"],
@@ -625,6 +616,7 @@ auto_minimize = False
 def start_once():
     if len(qtile.screens) > 1:
         qtile.groups_map["a"].toscreen(1)
+        qtile.groups_map["z"].toscreen(2)
         qtile.groups_map["1"].toscreen(0)
     subprocess.call([home + "/.config/qtile/scripts/autostart.sh"])
 
@@ -633,7 +625,7 @@ def start_once():
 def set_floating(window):
     if window.window.get_wm_transient_for():
         window.floating = True
-    if "copyq" in window.get_wm_class():
+    if "discord" not in window.get_wm_class():
         group = qtile.current_group
         if window.group != group:
             window.togroup(group.name)

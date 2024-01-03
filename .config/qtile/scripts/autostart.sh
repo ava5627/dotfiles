@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #starting utility applications at boot time
-variety &
+feh --no-fehbg --bg-scale $HOME/Pictures/Saved Pictures/Wallpapers/camp_fire.jpg &
 nm-applet &
 xfce4-power-manager &
 numlockx on &

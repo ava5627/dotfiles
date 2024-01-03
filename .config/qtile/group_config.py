@@ -26,9 +26,9 @@ def group_screen(group):
     screen = 0
     if group.name in "123456":
         screen = 0
-    elif group.name in "asd":
+    elif group.name in "asduio":
         screen = 1
-    elif group.name in "uio7890":
+    elif group.name in "zxc7890":
         screen = 2
     return screen
 
@@ -67,6 +67,9 @@ groups_list = [
     Group("u", matches=[]),
     Group("i", matches=[]),
     Group("o", matches=[]),
+    Group("z", matches=[]),
+    Group("x", matches=[]),
+    Group("c", matches=[]),
 ]
 
 group_keys = []
