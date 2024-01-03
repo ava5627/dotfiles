@@ -43,6 +43,7 @@ export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export WGETRC="$XDG_CONFIG_HOME"/wgetrc
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
+export NODE_REPL_HISTORY_FILE="$XDG_DATA_HOME"/node_repl_history
 
 fish_add_path "$XDG_DATA_HOME/cargo/bin"
 
