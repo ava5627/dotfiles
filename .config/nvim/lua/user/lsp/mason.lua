@@ -18,6 +18,7 @@ local servers = {
 	"texlab",
 	"ltex",
 	"gopls",
+    "tsserver",
 }
 
 local settings = {

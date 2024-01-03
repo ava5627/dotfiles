@@ -40,11 +40,63 @@ lazy.setup({
     {
         "tzachar/cmp-tabnine",
         build = "./install.sh",
+        cond = function()
+            return vim.fn.has("mac") == 0
+        end,
         dependencies = "hrsh7th/nvim-cmp"
     },
     {
-        "github/copilot.vim",
-        config = function() vim.g.copilot_filetypes = { ["dap-repl"] = false } end,
+        "zbirenbaum/copilot.lua",
+        cond = function()
+            return vim.fn.has("mac") == 0
+        end,
+        cmd = "Copilot",
+        event = "InsertEnter",
+        config = function()
+            require('copilot').setup({
+                panel = {
+                    enabled = true,
+                    auto_refresh = false,
+                    keymap = {
+                        jump_prev = "[[",
+                        jump_next = "]]",
+                        accept = "<CR>",
+                        refresh = "gr",
+                        open = "<M-CR>"
+                    },
+                    layout = {
+                        position = "bottom", -- | top | left | right
+                        ratio = 0.4
+                    },
+                },
+                suggestion = {
+                    enabled = true,
+                    auto_trigger = true,
+                    debounce = 75,
+                    keymap = {
+                        accept = "<C-f>",
+                        accept_word = "<A-f>",
+                        accept_line = false,
+                        next = "<A-]>",
+                        prev = "<A-[>",
+                        dismiss = "<C-]>",
+                    },
+                },
+                filetypes = {
+                    ["*"] = true,
+                },
+            })
+            -- local cmp_ok, cmp = pcall(require, "cmp")
+            -- if cmp_ok then
+            --     cmp.event:on("menu_opened", function()
+            --         vim.b.copilot_suggestion_hidden = true
+            --     end)
+            --
+            --     cmp.event:on("menu_closed", function()
+            --         vim.b.copilot_suggestion_hidden = false
+            --     end)
+            -- end
+        end,
     },
     "f3fora/cmp-spell",
 
@@ -93,7 +145,7 @@ lazy.setup({
     "nvim-lualine/lualine.nvim",
     "SmiteshP/nvim-navic",
     -- "akinsho/bufferline.nvim",
-    "moll/vim-bbye",
+    "famiu/bufdelete.nvim",
     "ghillb/cybu.nvim",
     {
         "lukas-reineke/indent-blankline.nvim",

@@ -29,14 +29,6 @@ autocmd("BufWritePre", {
 	command = "%s/\\s\\+$//e",
 })
 
--- disable copilot
-augroup("vim_enter", {})
-autocmd("VimEnter", {
-	group = "vim_enter",
-	pattern = "*",
-	command = "silent! Copilot disable",
-})
-
 -- local function open_nvim_tree(data)
 --     local ok, nvt_api = pcall(require, "nvim-tree.api")
 --     if not ok then

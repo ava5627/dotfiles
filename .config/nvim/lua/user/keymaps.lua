@@ -1,18 +1,22 @@
 local function opts(desc)
-    return {desc = desc, noremap = true, silent = true }
+    return {desc = desc, remap = false}
 end
 
 local kmap = vim.keymap.set
 
-kmap("", "<Space>", "<Nop>", opts("Noop"))
+kmap({"n", "v", "o"}, "<Space>", "<Nop>", opts("Disable space"))
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+
+-- vim.cmd("nmap <BS> <Space>")
+kmap({"n", "v", "o"}, "<BS>", "<Space>", { remap = true, desc = "Secondary leader" })
 
 -- Misc
 kmap("n", "<leader>ww", ":w<cr>", opts("Save"))
 kmap("n", "<leader>wq", ":bdelete<cr>", opts("Save and close buffer"))
 kmap("n", "<leader>q", ":Bdelete<cr>", opts("Close buffer"))
 kmap("n", "<leader>fq", ":Bdelete!<cr>", opts("Force close buffer"))
+kmap("n", "<A-q>", ":bdelete<cr>", opts("Close buffer"))
 
 -- Clear search highlights
 kmap("n", "<A-a>", ":nohl<cr>", opts("Clear search highlights"))
@@ -27,7 +31,6 @@ kmap("n", "<C-j>", "<C-w>j", opts("Window down"))
 kmap("n", "<C-k>", "<C-w>k", opts("Window up"))
 kmap("n", "<C-l>", "<C-w>l", opts("Window right"))
 kmap("n", "<C-q>", "<C-w>q", opts("Close window"))
-kmap("n", "<A-q>", ":bdelete<cr>", opts("Close buffer"))
 
 -- Switch Buffers
 -- kmap("n", "<A-l>", ":BufferLineCycleNext<CR>", opts("Next buffer"))
@@ -51,6 +54,7 @@ kmap("n", "<leader>v", "<C-w>v", opts("Open vertical split"))
 kmap("n", "<leader>s", "<C-w>s", opts("Open horizontal split"))
 
 -- Insert Mode
+kmap("i", "jk", "<esc>", opts("Escape"))
 kmap("i", "<A-h>", "<left>", opts("Move cursor left"))
 kmap("i", "<A-j>", "<down>", opts("Move cursor down"))
 kmap("i", "<A-k>", "<up>", opts("Move cursor up"))
@@ -128,11 +132,11 @@ kmap("n", "<leader>u", ":UndotreeShow<cr>", opts("Undo tree"))
 kmap({ "n", "t" }, "<C-t>p", "<cmd>lua _PYTHON_TOGGLE()<cr>", opts("Toggle python terminal"))
 
 -- Copilot
-kmap("i", "<C-q><C-q>", "<C-o>:Copilot disable<cr>", opts("Disable copilot"))
-kmap("i", "<C-q><C-e>", "<C-o>:Copilot enable<cr>", opts("Enable copilot"))
--- kmap("i", "<Plug>(vimrc:copilot-dummy-map)", "copilot#Accept(\"\\<CR>\")", { noremap = false, silent = true, script = true, expr = true })
-kmap("i", "<C-a>", "copilot#Accept(\"\\<CR>\")", { noremap = false, silent = true, script = true, expr = true, replace_keycodes = false, desc = "Copilot accept"})
-vim.g.copilot_no_tab_map = true
+-- kmap("i", "<C-q><C-q>", "<C-o>:Copilot disable<cr>", opts("Disable copilot"))
+-- kmap("i", "<C-q><C-e>", "<C-o>:Copilot enable<cr>", opts("Enable copilot"))
+-- -- kmap("i", "<Plug>(vimrc:copilot-dummy-map)", "copilot#Accept(\"\\<CR>\")", { noremap = false, silent = true, script = true, expr = true })
+-- kmap("i", "<C-f>", "copilot#Accept(\"\\<CR>\")", { noremap = false, silent = true, script = true, expr = true, replace_keycodes = false, desc = "Copilot accept"})
+-- vim.g.copilot_no_tab_map = true
 
 -- Dial
 local dial_ok, dial = pcall(require, "dial.map")
