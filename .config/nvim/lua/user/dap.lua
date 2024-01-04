@@ -28,19 +28,6 @@ dap_install.config("python", {})
 dap_install.config("go_delve", {})
 dap_install.config("ccppr_lldb", {})
 
-dap.configurations.rust = {
-    {
-        type = "rt_lldb",
-        request = "launch",
-        name = "Debug executable 'main'",
-        program = "${workspaceFolder}/target/debug/${workspaceFolderBasename}",
-        cwd = "${workspaceFolder}",
-        stopOnEntry = false,
-        args = {},
-        runInTerminal = false,
-    },
-}
-
 dapui.setup({
     icons = { expanded = "▾", collapsed = "▸" },
     mappings = {
@@ -103,7 +90,10 @@ vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "Diagnosti
 dap_virt_text.setup({})
 
 dap.listeners.after.event_initialized["dapui_config"] = function()
-    vim.cmd("NvimTreeClose")
+    local tree_ok, tree = pcall(require, "nvim-tree.api")
+    if tree_ok then
+        tree.tree.close()
+    end
     dapui.open({})
 end
 

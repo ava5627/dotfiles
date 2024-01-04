@@ -28,28 +28,3 @@ autocmd("BufWritePre", {
 	pattern = "*",
 	command = "%s/\\s\\+$//e",
 })
-
--- local function open_nvim_tree(data)
---     local ok, nvt_api = pcall(require, "nvim-tree.api")
---     if not ok then
---         vim.notify("Nvim Tree not found")
---         return
---     end
---
--- 	local is_dir = vim.fn.isdirectory(data.file) == 1
---     print(is_dir, data.file)
--- 	if is_dir then
--- 		vim.cmd.cd(data.file)
---         nvt_api.tree.open()
---     else
---         local parent_dir = vim.fn.fnamemodify(data.file, ":h")
---         vim.cmd.cd(parent_dir)
---         -- nvt_api.tree.toggle({ focus = false })
---     end
--- end
-
--- autocmd("VimEnter", {
--- 	group = "vim_enter",
--- 	pattern = "*",
--- 	callback = open_nvim_tree,
--- })

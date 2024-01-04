@@ -113,10 +113,13 @@ lazy.setup({
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
     "ray-x/lsp_signature.nvim",
-    -- "jose-elias-alvarez/null-ls.nvim" -- for formatters and linters,
     {
         'j-hui/fidget.nvim',
         config = function() require('fidget').setup() end,
+    },
+    {
+        "lvimuser/lsp-inlayhints.nvim",
+        config = function() require("lsp-inlayhints").setup() end,
     },
 
     -- Lua
@@ -124,8 +127,8 @@ lazy.setup({
 
     -- Rust
     {
-        "simrat39/rust-tools.nvim",
-        lazy = true
+        'mrcjkb/rustaceanvim',
+        ft = { 'rust' },
     },
 
 

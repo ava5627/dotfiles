@@ -14,7 +14,6 @@ local servers = {
 	"lua_ls",
 	"pylsp",
 	"bashls",
-	"rust_analyzer",
 	"texlab",
 	"ltex",
 	"gopls",
@@ -55,11 +54,6 @@ for _, server in pairs(servers) do
 
 	server = vim.split(server, "@")[1]
 
-	if server == "jsonls" then
-		local jsonls_opts = require("user.lsp.settings.jsonls")
-		opts = vim.tbl_deep_extend("force", jsonls_opts, opts)
-	end
-
 	if server == "lua_ls" then
 		local nd_status_ok, neodev = pcall(require, "neodev")
 		if not nd_status_ok then
@@ -76,17 +70,6 @@ for _, server in pairs(servers) do
 	if server == "pylsp" then
 		local pylsp_opts = require("user.lsp.settings.pylsp")
 		opts = vim.tbl_deep_extend("force", pylsp_opts, opts)
-	end
-
-	if server == "rust_analyzer" then
-		local rust_ok, rust_tools = pcall(require, "rust-tools")
-		if not rust_ok then
-            vim.notify("rust-tools not found", vim.log.levels.ERROR)
-			goto continue
-		end
-        local rust_tools_opts = require("user.lsp.settings.rust")
-		rust_tools.setup(rust_tools_opts)
-		goto continue
 	end
 
 	lspconfig[server].setup(opts)
