@@ -8,7 +8,7 @@ from libqtile.config import Click, Drag, EzKey, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.log_utils import logger
 from Xlib import display as xdisplay
-# from qtile_extras.widget import StatusNotifier
+from qtile_extras.widget import StatusNotifier
 
 from group_config import go_to_group, group_keys, groups_list, group_screen
 from do_not_disturb_widget import DoNotDisturb
@@ -625,6 +625,10 @@ def start_once():
 def set_floating(window):
     if window.window.get_wm_transient_for():
         window.floating = True
+
+
+@hook.subscribe.client_new
+def fix_group(window):
     if "discord" not in window.get_wm_class():
         group = qtile.current_group
         if window.group != group:

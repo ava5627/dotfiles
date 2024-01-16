@@ -57,8 +57,8 @@ cmp.setup({
     },
 
     mapping = {
-        ["<C-k>"] = cmp.mapping.select_prev_item(),
-        ["<C-j>"] = cmp.mapping.select_next_item(),
+        ["<C-k>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
+        ["<C-j>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),
         ["<C-d>"] = cmp.mapping.select_next_item({ count = 5 }),
         ["<C-u>"] = cmp.mapping.select_prev_item({ count = 5 }),
         ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-5), { "i", "c" }),
