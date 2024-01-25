@@ -11,12 +11,15 @@ vim.g.maplocalleader = " "
 -- vim.cmd("nmap <BS> <Space>")
 kmap({"n", "v", "o"}, "<BS>", "<Space>", { remap = true, desc = "Secondary leader" })
 
--- Misc
+-- save and quit
 kmap("n", "<leader>ww", ":w<cr>", opts("Save"))
 kmap("n", "<leader>wq", ":bdelete<cr>", opts("Save and close buffer"))
 kmap("n", "<leader>q", ":Bdelete<cr>", opts("Close buffer"))
 kmap("n", "<leader>fq", ":Bdelete!<cr>", opts("Force close buffer"))
 kmap("n", "<A-q>", ":bdelete<cr>", opts("Close buffer"))
+
+-- navigation
+kmap("n", "<A-e>", "ge", opts("Move to end of previous word"))
 
 -- Clear search highlights
 kmap("n", "<A-a>", ":nohl<cr>", opts("Clear search highlights"))

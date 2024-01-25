@@ -1,11 +1,20 @@
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
+augroup("Filetype", {})
 autocmd("FileType", {
-	pattern = { "qf", "help", "man", "lspinfo", "spectre_panel", "lir", "fugitive", "gitcommit", "git" },
+    group = "Filetype",
+	pattern = { "qf", "help", "man", "lspinfo", "spectre_panel", "lir", "fugitive", "gitcommit", "git", "toggleterm" },
 	callback = function()
 		vim.api.nvim_buf_set_keymap(0, "n", "q", ":close<CR>", { silent = true, noremap = true })
 	end,
+})
+autocmd("Filetype", {
+    group = "Filetype",
+    pattern = { "toggleterm" },
+    callback = function()
+        vim.api.nvim_buf_set_keymap(0, "n", "<C-c>", "a<C-c>", { silent = true, noremap = true })
+    end,
 })
 
 -- Yank
