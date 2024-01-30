@@ -11,8 +11,10 @@ local opts = {
                     eager = true,
                 },
                 rope_autoimport = {
-                    enabled = false,
-                    memory = false,
+                    enabled = true,
+                    completions = {
+                        enabled = false
+                    }
                 },
             }
         }
