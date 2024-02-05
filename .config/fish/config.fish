@@ -60,49 +60,6 @@ function fish_user_key_bindings
     bind \cq kill-whole-line
 end
 
-function line_one
-    # PWD
-    set_color $fish_color_cwd --bold
-    echo -n (prompt_pwd)
-    set_color normal
-    echo -n (fish_git_prompt)
-end
-
-function fish_prompt --description 'Print the prompt'
-
-    echo
-    if test $VIRTUAL_ENV
-        and set -q VIRTUAL_ENV_DISABLE_PROMPT
-        set_color 4B8BBE
-        echo -n \((basename $VIRTUAL_ENV)\)
-        echo -n ' '
-        set_color normal
-    end
-
-    if test (string length -V (line_one)) -ge 10
-        line_one
-        echo
-    end
-    # User
-    set_color $fish_color_user --bold
-    echo -n $USER
-    set_color normal --bold
-
-    echo -n '@'
-
-    # Host
-    set_color $fish_color_host --bold
-    echo -n (prompt_hostname)
-    set_color normal --bold
-    if test (string length -V (line_one)) -lt 10
-        echo -n ': '
-        line_one
-    end
-
-    echo -n ' $ '
-
-end
-
 # Quick aliases
 
 # clear
@@ -129,7 +86,10 @@ alias ls='lsd'
 alias ll='lsd -l'
 alias la='lsd -A'
 alias lla='lsd -lA'
-alias lt='lsd --tree'
+
+alias llb='lb -l'
+alias lab='lb -A'
+alias llab='lb -lA'
 
 alias ip='ip --color=auto'
 
