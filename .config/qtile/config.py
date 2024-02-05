@@ -13,6 +13,8 @@ from qtile_extras.widget import StatusNotifier
 from group_config import go_to_group, group_keys, groups_list, group_screen
 from do_not_disturb_widget import DoNotDisturb
 
+from PIL import Image
+
 # 0 Copyright (c) 2010 Aldo Cortesi
 # Copyright (c) 2010, 2014 dequis
 # Copyright (c) 2012 Randall Ma
@@ -61,7 +63,6 @@ EzKey.modifier_keys = {
 }
 mod = "mod4"
 home = os.path.expanduser("~")
-# terminal = "alacritty"
 terminal = "kitty"
 file_manager = "pcmanfm"
 browser = "firefox"
@@ -204,6 +205,16 @@ def prev_window(qtile):
         group.focus(prev, True)
 
 
+@lazy.function
+def pick_color(qtile):
+    color = subprocess.check_output("xcolor").decode("utf-8").strip()
+    image = Image.new("RGB", (100, 100), color)
+    image.save("/tmp/color.png")
+    qtile.spawn(["dunstify", color, "-i", "/tmp/color.png"])
+    qtile.spawn(f"echo -n \\{color} | xclip -sel clip", shell=True)
+    logger.warning(f"Color: {color}")
+
+
 my_keys = [
     # Window keys
     ["M-j", next_window, lazy.window.move_to_top(), "Move focus next"],
@@ -241,6 +252,7 @@ my_keys = [
     ],
     ["M-v", lazy.spawn("edit_configs"), "Config Launcher"],
     ["<Print>", lazy.spawn("flameshot gui"), "Take Screenshot"],
+    ["<XF86Copy>", pick_color, "Pick color"],
     # Command keys
     ["M-C-r", lazy.reload_config(), "Reload Qtile config"],
     ["M-A-r", lazy.restart(), "Restart Qtile"],
@@ -459,7 +471,7 @@ def make_widgets(screen):
             font="Source Code Pro Bold",
             padding=5,
             format="%A, %B %d - %H:%M ",
-            mouse_callbacks={"Button1": lambda: qtile.spawn('xdotool key "alt+c"')},
+            mouse_callbacks={"Button1": lambda: qtile.spawn(calendar)},
         ),
     ]
 
@@ -474,7 +486,7 @@ def make_widgets(screen):
         ),
     ]
 
-    if screen == 0:
+    if screen == get_num_monitors() - 1:
         pl_list.insert(-1, systray)
     if laptop:
         battery_widget = widget.Battery(
@@ -501,7 +513,7 @@ def make_widgets(screen):
 
 
 def parse_nightscout(data):
-    if datetime.now() - datetime.fromtimestamp(data[0]["date"] / 1000) > timedelta(minutes=6):
+    if datetime.now() - datetime.fromtimestamp(data[0]["date"] / 1000) > timedelta(minutes=10):
         return "-- No data"
     glucose = data[0]["sgv"]
     direction = data[0]["direction"]
