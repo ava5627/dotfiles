@@ -98,7 +98,7 @@ alias q=exit
 alias vim='nvim'
 alias v='nvim .'
 
-alias qlog='watch -n 0.5 tail ~/.local/share/qtile/qtile.log -n 30'
+alias qlog='clear && tail -f ~/.local/share/qtile/qtile.log'
 
 alias ranger='ranger --choosedir=/tmp/ranger_dir; set LASTDIR (cat /tmp/ranger_dir); cd $LASTDIR; rm /tmp/ranger_dir'
 
