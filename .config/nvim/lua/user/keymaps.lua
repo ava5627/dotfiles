@@ -1,15 +1,15 @@
 local function opts(desc)
-    return {desc = desc, remap = false}
+    return { desc = desc, remap = false }
 end
 
 local kmap = vim.keymap.set
 
-kmap({"n", "v", "o"}, "<Space>", "<Nop>", opts("Disable space"))
+kmap({ "n", "v", "o" }, "<Space>", "<Nop>", opts("Disable space"))
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- vim.cmd("nmap <BS> <Space>")
-kmap({"n", "v", "o"}, "<BS>", "<Space>", { remap = true, desc = "Secondary leader" })
+kmap({ "n", "v", "o" }, "<BS>", "<Space>", { remap = true, desc = "Secondary leader" })
 
 -- save and quit
 kmap("n", "<leader>ww", ":w<cr>", opts("Save"))
@@ -67,7 +67,6 @@ kmap("i", "<A-l>", "<right>", opts("Move cursor right"))
 
 -- Delete backwards
 kmap("i", "<A-d>", "<C-o>dw", opts("Delete word"))
-kmap("i", "<C-d>", "<delete>", opts("Delete character"))
 
 -- Paste in insert mode
 kmap("i", "<C-p>", "<left><C-o>p", opts("Paste"))
@@ -104,8 +103,8 @@ if telescope_ok then
     local hp, harpoon = pcall(require, "harpoon.ui")
     if hp then
         kmap("n", "<leader>h", function()
-            telescope.extensions.harpoon.marks(require('telescope.themes').get_dropdown{
-                previewer = false, initial_mode='normal', prompt_title='Harpoon'
+            telescope.extensions.harpoon.marks(require('telescope.themes').get_dropdown {
+                previewer = false, initial_mode = 'normal', prompt_title = 'Harpoon'
             })
         end, opts("Harpoon marks"))
         kmap("n", "mm", require("harpoon.mark").add_file, opts("Add file to harpoon"))
@@ -116,10 +115,34 @@ if telescope_ok then
     end
 end
 
---[[ kmap("n", "<A-l>", require("harpoon.ui").nav_next, opts) ]]
---[[ kmap("n", "<A-h>", require("harpoon.ui").nav_next, opts) ]]
-kmap("n", "<A-h>", "<plug>(CybuPrev)", opts("Previous buffer"))
-kmap("n", "<A-l>", "<plug>(CybuNext)", opts("Next buffer"))
+local cybu_ok, cybu = pcall(require, "cybu")
+if cybu_ok then
+    kmap("n", "<A-h>", function() cybu.cycle("prev") end, opts("Previous buffer"))
+    kmap("n", "<A-l>", function() cybu.cycle("next") end, opts("Next buffer"))
+end
+
+local luasnip_ok, luasnip = pcall(require, "luasnip")
+if luasnip_ok then
+    kmap({ "i", "s" }, "<C-i>", luasnip.expand, opts("Next snippet"))
+    kmap(
+        { "i", "s" }, "<C-l>",
+        function()
+            if luasnip.locally_jumpable(1) then
+                luasnip.jump(1)
+            end
+        end,
+        opts("Next snippet")
+    )
+    kmap(
+        { "i", "s" }, "<C-h>",
+        function()
+            if luasnip.locally_jumpable(-1) then
+                luasnip.jump(-1)
+            end
+        end,
+        opts("Previous snippet")
+    )
+end
 
 -- Git
 kmap("n", "<leader>gs", ":G<cr>", opts("Open git menu"))
@@ -157,8 +180,8 @@ if acr_ok then
     -- kmap("n", "<leader>t", acr.ACRAuto, opts("Run default"))
     -- kmap("n", "<leader>r", acr.ACR, opts("Run Choose"))
     kmap("n", "<F1>", acr.ACRLast, opts("Run Last"))
-    kmap("n", "<F2>",      acr.ACR, opts("Run Choose"))
-    kmap("n", "<F3>",      acr.ACRAuto, opts("Run default"))
+    kmap("n", "<F2>", acr.ACR, opts("Run Choose"))
+    kmap("n", "<F3>", acr.ACRAuto, opts("Run default"))
 end
 
 -- Debugging
@@ -167,7 +190,8 @@ local dui_ok, dapui = pcall(require, "dapui")
 if dap_ok and dui_ok then
     kmap("n", "<leader>db", dap.toggle_breakpoint, opts("Toggle breakpoint"))
     kmap("n", "<F9>", dap.toggle_breakpoint, opts("Toggle breakpoint"))
-    kmap("n", "<leader>dB", function() dap.set_breakpoint(vim.fn.input("Breakpoint Condition: ")) end, opts("Set breakpoint"))
+    kmap("n", "<leader>dB", function() dap.set_breakpoint(vim.fn.input("Breakpoint Condition: ")) end,
+        opts("Set breakpoint"))
     kmap("n", "<leader>dc", dap.continue, opts("Continue"))
     kmap("n", "<F5>", dap.continue, opts("Continue"))
     kmap("n", "<leader>do", dap.step_over, opts("Step over"))
@@ -182,5 +206,6 @@ if dap_ok and dui_ok then
     kmap("n", "<leader>dt", dap.terminate, opts("Terminate"))
     kmap("n", "<F8>", dap.terminate, opts("Terminate"))
     kmap("n", "<leader>de", dapui.eval, opts("Eval"))
-    kmap("n", "<leader>dj", function() require("dap.ext.vscode").load_launchjs(vim.fn.getcwd() .. "/launch.json") end, opts("Load launch.json"))
+    kmap("n", "<leader>dj", function() require("dap.ext.vscode").load_launchjs(vim.fn.getcwd() .. "/launch.json") end,
+        opts("Load launch.json"))
 end
