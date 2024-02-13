@@ -8,10 +8,8 @@ from libqtile.config import Click, Drag, EzKey, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.log_utils import logger
 from Xlib import display as xdisplay
-from qtile_extras.widget import StatusNotifier
 
 from group_config import go_to_group, group_keys, groups_list, group_screen
-from do_not_disturb_widget import DoNotDisturb
 
 from PIL import Image
 
@@ -157,10 +155,7 @@ def remove_column(qtile):
 
 @lazy.function
 def debug_function(qtile):
-    windows = list(qtile.windows_map.values())
-    for w in windows:
-        if w.urgent:
-            w.update_hints()
+    logger.warning(f"Current layout: {qtile.current_layout.name}")
 
 
 @lazy.function
@@ -283,15 +278,19 @@ my_keys = [
         "Toggle Mute",
     ],
     ["<XF86AudioPlay>", lazy.spawn("playerctl --player playerctld play-pause"), "Play/Pause"],
+    ["<XF86AudioPause>", lazy.spawn("playerctl --player playerctld play-pause"), "Play/Pause"],
+    ["<XF86AudioNext>", lazy.spawn("playerctl --player playerctld next"), "Next"],
+    ["<XF86AudioPrev>", lazy.spawn("playerctl --player playerctld previous"), "Next"],
+    # ["<XF86AudioNext>", lazy.spawn("xdotool key ctrl+alt+period"), "Mute discord"],
+    # ["<XF86AudioPrev>", lazy.spawn("xdotool key ctrl+alt+comma"), "Deafen discord"],
     ["M-p", lazy.spawn("playerctl --player playerctld play-pause"), "Play/Pause"],
     ["M-n", lazy.spawn("playerctl --player playerctld next"), "Next"],
     # debug keys
-    # ["M-S-g", debug_function, "Debug function"],
+    ["M-S-g", debug_function, "Debug function"],
     # autoclicker
     ["M-S-p", lazy.spawn("xdotool click --repeat 1000 --delay 1 1"), "Autoclick"],
     ["M-C-n", lazy.spawn("dunstctl close"), "Close notification"],
     ["M-C-m", lazy.spawn("dunstctl history-pop"), "Open last notification"],
-    ["M-C-b", lazy.spawn("dunstctl set-paused toggle"), "Toggle notifications"],
 ]
 
 
@@ -355,8 +354,6 @@ def make_powerline(widgets):
                 padding=0,
             )
         )
-        if i - 1 > 0 and type(widgets[i - 1]) is DoNotDisturb:
-            widgets[i - 1].right_arrow = powerline[-1]
         if type(w) is list:
             for w2 in w:
                 w2.background = bg
@@ -368,10 +365,6 @@ def make_powerline(widgets):
             if type(w) is widget.CheckUpdates:
                 w.colour_have_updates = text_fg
                 w.colour_no_updates = text_fg
-            if type(w) is DoNotDisturb:
-                w.off_background = bg
-                w.off_foreground = text_fg
-                w.left_arrow = powerline[-1]
             powerline.append(w)
     return powerline
 
@@ -441,11 +434,6 @@ def make_widgets(screen):
             update_interval=150,
             json=True
         ),
-        DoNotDisturb(
-            padding=5,
-            update_interval=5,
-        ),
-        # TODO: Set back to pulse volue
         widget.Volume(
             fmt=" {}",
             padding=5,
@@ -593,7 +581,7 @@ dgroups_app_rules = []
 follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
-floats_kept_above = False
+floats_kept_above = True
 floating_layout = layout.Floating(
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
@@ -616,7 +604,7 @@ floating_layout = layout.Floating(
     border_width=2,
 )
 auto_fullscreen = True
-focus_on_window_activation = "urgent"
+focus_on_window_activation = "smart"
 reconfigure_screens = True
 
 # If things like steam games want to auto-minimize themselves when losing
@@ -647,13 +635,14 @@ def fix_group(window):
             window.togroup(group.name)
 
 
-# @hook.subscribe.client_urgent_hint_changed
-# def urgent_hint_changed(window):
-#     logger.warning(f"urgent hint changed for {window.name}")
-#     if qtile.current_window:
-#         logger.warning(f"current window: {qtile.current_window.name}")
-#     # if window.urgent:
-#     #     go_to_group(qtile, window.group.name)
+@hook.subscribe.client_urgent_hint_changed
+def urgent_hint_changed(window):
+    logger.warning(f"urgent hint changed for {window.name}")
+    # if qtile.current_window:
+    #     logger.warning(f"current window: {qtile.current_window.name}")
+    if window.urgent:
+        go_to_group(qtile, window.group.name)
+        window.group.focus(window)
 
 
 @hook.subscribe.client_name_updated
