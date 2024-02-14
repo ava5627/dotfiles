@@ -120,7 +120,7 @@ alias ....='cd ../../..'
 alias cb='cd -'
 
 # Dotfiles
-alias gconfig='git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias gconfig='git --git-dir=$HOME/dotfiles/.git --work-tree=$HOME/dotfiles'
 
 # Startup
 neofetch
