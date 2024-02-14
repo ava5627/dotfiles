@@ -7,7 +7,7 @@ end
 lsp_signature.setup {
     floating_window = false,
     hint_enable = true, -- virtual hint enable
-    hint_prefix = " ",  -- Pencil for parameter
+    hint_prefix = "󰏫 ",  -- Pencil for parameter
     hint_scheme = "String",
     hi_parameter = "LspSignatureActiveParameter", -- how your parameter will be highlight
 }

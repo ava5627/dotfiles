@@ -1,10 +1,10 @@
-local status_ok, telescope = pcall(require, "telescope")
-if not status_ok then
+local telescope_ok, telescope = pcall(require, "telescope")
+if not telescope_ok then
     vim.notify("Telescope Not Found")
     return
 end
-local status_ok, harpoon = pcall(require, "harpoon")
-if not status_ok then
+local harpoon_ok, _ = pcall(require, "harpoon")
+if not harpoon_ok then
     vim.notify("Harpoon Not Found")
     return
 end

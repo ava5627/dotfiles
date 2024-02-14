@@ -97,7 +97,7 @@ if telescope_ok then
     kmap("n", "<leader>og", "<cmd>Telescope live_grep<cr>", opts("Grep"))
     kmap("n", "<leader>os", "<cmd>Telescope lsp_document_symbols<cr>", opts("Document symbols"))
     kmap("n", "<leader>op", "<cmd>Telescope project project<cr>", opts("Projects"))
-    kmap("n", "<A-tab>", "<cmd>Telescope buffers<cr>", opts("Buffers"))
+    kmap("n", "<leader>oi", "<cmd>Telescope buffers<cr>", opts("Buffers"))
 
     -- Harpoon
     local hp, harpoon = pcall(require, "harpoon.ui")

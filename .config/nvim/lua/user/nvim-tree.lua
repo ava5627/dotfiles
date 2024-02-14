@@ -69,7 +69,7 @@ nvim_tree.setup({
                 git = true,
             },
             glyphs = {
-                default = "",
+                default = "󰈔",
                 symlink = "",
                 git = {
                     unstaged = "●",
