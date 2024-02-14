@@ -60,6 +60,9 @@ function fish_user_key_bindings
     bind \cq kill-whole-line
 end
 
+# programs
+zoxide init fish --cmd cd | source
+
 # Quick aliases
 
 # clear
@@ -114,6 +117,7 @@ alias cam='mpv av://v4l2:/dev/video0 --profile=low-latency --untimed'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
+alias cb='cd -'
 
 # Dotfiles
 alias gconfig='git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'

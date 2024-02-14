@@ -637,19 +637,8 @@ def fix_group(window):
 
 @hook.subscribe.client_urgent_hint_changed
 def urgent_hint_changed(window):
-    logger.warning(f"urgent hint changed for {window.name}")
-    # if qtile.current_window:
-    #     logger.warning(f"current window: {qtile.current_window.name}")
     if window.urgent:
         go_to_group(qtile, window.group.name)
-        window.group.focus(window)
-
-
-@hook.subscribe.client_name_updated
-def client_name_updated(window):
-    if window.urgent:
-        name = window.group.name
-        go_to_group(qtile, name)
         window.focus(False)
 
 
@@ -662,6 +651,3 @@ def client_name_updated(window):
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
 wmname = "LG3D"
-# java that happens to be on java's whitelist.
-wmname = "LG3D"
-# java that happens to be on java's whitelist.
