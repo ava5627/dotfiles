@@ -1,10 +1,10 @@
-#!/bin/fish
+#!/usr/bin/env fish
 
 function stow_dotfiles
     set file $argv
     if test -e $file -a $file != "install" -a $file != "README.md" -a $file != ".git"
         echo "Installing $file"
-        if test (uname) = "Darwin" -a $file = "kitty"
+        if test (uname) = "Darwin" -a -e $file-mac
             stow $file-mac
         else
             stow $file
