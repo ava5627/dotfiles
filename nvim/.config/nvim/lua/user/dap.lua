@@ -39,9 +39,6 @@ dapui.setup({
         repl = "r",
         toggle = "t",
     },
-    -- Expand lines larger than the window
-    -- Requires >= 0.7
-    expand_lines = vim.fn.has("nvim-0.7"),
     -- Layouts define sections of the screen to place windows.
     -- The position can be "left", "right", "top" or "bottom".
     -- The size specifies the height/width depending on position. It can be an Int
@@ -63,16 +60,16 @@ dapui.setup({
         },
         {
             elements = {
-                {id = "repl", size = .5},
-                {id = "console", size = .5},
+                { id = "repl",    size = .5 },
+                { id = "console", size = .5 },
             },
             size = 0.25, -- 25% of total lines
             position = "bottom",
         },
     },
     floating = {
-        max_height = nil, -- These can be integers or a float between 0 and 1.
-        max_width = nil, -- Floats will be treated as percentage of your screen.
+        max_height = nil,  -- These can be integers or a float between 0 and 1.
+        max_width = nil,   -- Floats will be treated as percentage of your screen.
         border = "single", -- Border style. Can be "single", "double" or "rounded"
         mappings = {
             close = { "q", "<Esc>" },

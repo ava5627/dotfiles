@@ -9,13 +9,6 @@ autocmd("FileType", {
 		vim.api.nvim_buf_set_keymap(0, "n", "q", ":close<CR>", { silent = true, noremap = true })
 	end,
 })
-autocmd("Filetype", {
-    group = "Filetype",
-    pattern = { "toggleterm" },
-    callback = function()
-        vim.api.nvim_buf_set_keymap(0, "n", "<C-c>", "a<C-c>", { silent = true, noremap = true })
-    end,
-})
 
 -- Yank
 augroup("HighlightYank", {})

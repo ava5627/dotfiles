@@ -33,6 +33,7 @@ kmap("n", "<C-h>", "<C-w>h", opts("Window left"))
 kmap("n", "<C-j>", "<C-w>j", opts("Window down"))
 kmap("n", "<C-k>", "<C-w>k", opts("Window up"))
 kmap("n", "<C-l>", "<C-w>l", opts("Window right"))
+kmap("n", "<C-p>", "<C-w>p", opts("Previous window"))
 kmap("n", "<C-q>", "<C-w>q", opts("Close window"))
 
 -- Switch Buffers

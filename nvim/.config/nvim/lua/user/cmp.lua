@@ -8,14 +8,20 @@ local snip_status_ok, luasnip = pcall(require, "luasnip")
 if not snip_status_ok then
     vim.notify("LuaSnip Not Found")
     return
+else
+    require("luasnip/loaders/from_vscode").lazy_load()
 end
 
-local compare_ok, compare = pcall(require, 'cmp.config.compare')
-if not compare_ok then
-    vim.notify("Compare Not Found")
-    return
+local compare = require("cmp.config.compare")
+
+-- local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+local autopairs_ok, cmp_autopairs = pcall(require, "nvim-autopairs.completion.cmp")
+if not autopairs_ok then
+    vim.notify("nvim-autopairs not found", vim.log.levels.ERROR)
+else
+    cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done { map_char = { tex = "" } })
 end
-require("luasnip/loaders/from_vscode").lazy_load()
+
 
 -- 󰃐 󰆩 󰙅 󰛡   󰅲 some other good icons
 local kind_icons = {

@@ -24,10 +24,7 @@ lazy.setup({
     -- Dependencies
     "nvim-lua/plenary.nvim",
     "nvim-lua/popup.nvim",
-    {
-        "kyazdani42/nvim-web-devicons",
-        config = function() require('nvim-web-devicons').setup() end,
-    },
+    { "kyazdani42/nvim-web-devicons", config = true },
 
     --cmp
     "hrsh7th/nvim-cmp",
@@ -40,87 +37,44 @@ lazy.setup({
     {
         "tzachar/cmp-tabnine",
         build = "./install.sh",
-        cond = function()
-            return vim.fn.has("mac") == 0
-        end,
+        cond = vim.fn.has("mac") == 0,
         dependencies = "hrsh7th/nvim-cmp"
     },
     {
         "zbirenbaum/copilot.lua",
-        cond = function()
-            return vim.fn.has("mac") == 0
-        end,
+        cond = vim.fn.has("mac") == 0,
         cmd = "Copilot",
         event = "InsertEnter",
-        config = function()
-            require('copilot').setup({
-                panel = {
-                    enabled = true,
-                    auto_refresh = false,
-                    keymap = {
-                        jump_prev = "[[",
-                        jump_next = "]]",
-                        accept = "<CR>",
-                        refresh = "gr",
-                        open = "<M-CR>"
-                    },
-                    layout = {
-                        position = "bottom", -- | top | left | right
-                        ratio = 0.4
-                    },
+        opts = {
+            suggestion = {
+                auto_trigger = true,
+                keymap = {
+                    accept = "<C-f>",
+                    accept_word = "<A-f>",
+                    accept_line = false,
+                    next = "<A-]>",
+                    prev = "<A-[>",
+                    dismiss = "<C-]>",
                 },
-                suggestion = {
-                    enabled = true,
-                    auto_trigger = true,
-                    debounce = 75,
-                    keymap = {
-                        accept = "<C-f>",
-                        accept_word = "<A-f>",
-                        accept_line = false,
-                        next = "<A-]>",
-                        prev = "<A-[>",
-                        dismiss = "<C-]>",
-                    },
-                },
-                filetypes = {
-                    ["*"] = true,
-                },
-            })
-            -- local cmp_ok, cmp = pcall(require, "cmp")
-            -- if cmp_ok then
-            --     cmp.event:on("menu_opened", function()
-            --         vim.b.copilot_suggestion_hidden = true
-            --     end)
-            --
-            --     cmp.event:on("menu_closed", function()
-            --         vim.b.copilot_suggestion_hidden = false
-            --     end)
-            -- end
-        end,
+            },
+            filetypes = {
+                ["*"] = true,
+            },
+        },
     },
     "f3fora/cmp-spell",
 
     -- snippets
-    {
-        "L3MON4D3/LuaSnip",
-        build = "make install_jsregexp"
-    },
+    { "L3MON4D3/LuaSnip", build = "make install_jsregexp" },
     "rafamadriz/friendly-snippets",
-
 
     --lsp
     "neovim/nvim-lspconfig",
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
     "ray-x/lsp_signature.nvim",
-    {
-        'j-hui/fidget.nvim',
-        config = function() require('fidget').setup() end,
-    },
-    {
-        "lvimuser/lsp-inlayhints.nvim",
-        config = function() require("lsp-inlayhints").setup() end,
-    },
+    { 'j-hui/fidget.nvim', config = true },
+    { "lvimuser/lsp-inlayhints.nvim", config = true },
 
     -- Lua
     "folke/neodev.nvim",
@@ -136,44 +90,47 @@ lazy.setup({
     "ellisonleao/gruvbox.nvim",
     "lunarvim/darkplus.nvim",
     "sainnhe/sonokai",
-    {
-        "folke/tokyonight.nvim",
-        lazy = false,
-        priority = 1000
-    },
+    { "folke/tokyonight.nvim", lazy = false, priority = 1000 },
 
     -- utility
-    "windwp/nvim-autopairs",
+    {
+        "windwp/nvim-autopairs",
+        opts = {
+            check_ts = true,
+            fast_wrap = {
+                end_key = "g",
+                keys = "asdfjkleiwo",
+            },
+        }
+
+    },
     "mbbill/undotree",
     "nvim-lualine/lualine.nvim",
-    "SmiteshP/nvim-navic",
+    {
+        "SmiteshP/nvim-navic",
+        opts = { highlight = true }
+    },
     -- "akinsho/bufferline.nvim",
     "famiu/bufdelete.nvim",
     "ghillb/cybu.nvim",
     {
         "lukas-reineke/indent-blankline.nvim",
-        config = function()
-            local ibl = require("ibl")
-            ibl.setup({ scope = { enabled = false } })
-        end,
+        main = "ibl",
+        opts = { scope = { enabled = false } },
     },
     --[[ use("tpope/vim-sleuth") ]]
     "ThePrimeagen/harpoon",
     "stevearc/dressing.nvim",
     {
         "rcarriga/nvim-notify",
-        config = function()
+        config = function(_, opts)
             local n = require("notify")
-            n.setup({
-                render = "compact",
-                max_height = 10,
-                max_width = 100,
-                timeout = 500,
-            })
+            n.setup(opts)
             vim.notify = n
         end,
+        opts = { render = "compact", max_height = 10, max_width = 100, timeout = 500 },
     },
-    "folke/which-key.nvim",
+    { "folke/which-key.nvim", config = true },
 
     -- movement
     "tpope/vim-surround",
@@ -182,26 +139,20 @@ lazy.setup({
     "tpope/vim-repeat",
 
     -- highlighting
-    {
-        "norcalli/nvim-colorizer.lua",
-        config = function() require 'colorizer'.setup() end,
-    },
+    { "norcalli/nvim-colorizer.lua", config = true },
 
-    {
-        "lervag/vimtex",
-        config = function() vim.g.vimtex_view_method = "zathura" end,
-    },
+    { "lervag/vimtex", config = function() vim.g.vimtex_view_method = "zathura" end, },
 
     -- Comments
-    "numToStr/Comment.nvim",
-    "folke/todo-comments.nvim",
-
+    { "numToStr/Comment.nvim", config = true },
+    { "folke/todo-comments.nvim", config = true },
 
     -- Code Running/Debugging
     "mfussenegger/nvim-dap",
     "rcarriga/nvim-dap-ui",
     "ravenxrz/DAPInstall.nvim",
     "theHamsta/nvim-dap-virtual-text",
+
     {
         "ava5627/acr.nvim",
         dir = "~/repos/ACR",
@@ -219,10 +170,7 @@ lazy.setup({
     "nvim-telescope/telescope-project.nvim",
 
     --Treesitter
-    {
-        "nvim-treesitter/nvim-treesitter",
-        build = ":TSUpdate",
-    },
+    { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", },
     "JoosepAlviste/nvim-ts-context-commentstring",
     "nvim-treesitter/nvim-treesitter-refactor",
     "nvim-treesitter/playground",

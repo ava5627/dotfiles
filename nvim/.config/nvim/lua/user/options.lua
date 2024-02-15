@@ -8,7 +8,6 @@ local options = {
     showmode = false,
     backup = false,                          -- creates a backup file
     clipboard = "unnamedplus",               -- allows neovim to access the system clipboard
-    -- colorcolumn = '120',                     -- draws a line at column n
     cmdheight = 2,                           -- more space in the neovim command line for displaying messages
     completeopt = { "menuone", "noselect" }, -- mostly just for cmp
     conceallevel = 0,                        -- so that `` is visible in markdown files
@@ -16,7 +15,6 @@ local options = {
     foldmethod = "expr",                     -- Treesitter based folding
     foldexpr = "nvim_treesitter#foldexpr()", -- TreeSitter based folding
     foldlevel = 100000,                      -- Level after which foldings are closed
-    -- hlsearch = true,                         -- highlight all matches on previous search pattern
     ignorecase = true,                       -- ignore case in search patterns
     mouse = "a",                             -- allow the mouse to be used in neovim
     pumheight = 30,                          -- pop up menu height
@@ -44,9 +42,6 @@ local options = {
     wrap = false,                            -- display lines as one long line
     scrolloff = 8,                           -- scroll 8 lines from end of screen
     sidescrolloff = 8,                       -- scroll 8 columns from edge of screen
-    -- spell = true,
-    -- spelllang = {'en_us'}
-    -- guifont = "monospace:h17",               -- the font used in graphical neovim applications
 }
 
 vim.opt.shortmess:append("c")

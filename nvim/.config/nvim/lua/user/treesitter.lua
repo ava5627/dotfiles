@@ -1,9 +1,9 @@
-local status_ok, _ = pcall(require, "nvim-treesitter")
+local status_ok, treesitter_configs = pcall(require, "nvim-treesitter.configs")
 if not status_ok then
     vim.notify("Treesitter Not Found")
     return
 end
-require("nvim-treesitter.configs").setup {
+treesitter_configs.setup {
     ensure_installed = "all",
     sync_install = false,
     ignore_install = { "" }, -- List of parsers to ignore installing

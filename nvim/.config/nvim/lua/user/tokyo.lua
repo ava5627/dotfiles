@@ -1,11 +1,7 @@
 require("tokyonight").setup({
     -- use the night style
     style = "night",
-    -- disable italic for functions
-    styles = {
-        functions = {}
-    },
-    sidebars = { "qf", "vista_kind", "terminal", "packer" },
+    sidebars = { "qf", "vista_kind", "terminal", "packer", "NvimTree" },
     -- Change the "hint" color to the "orange" color, and make the "error" color bright red
     on_colors = function(colors)
         colors.git.add = colors.hint
