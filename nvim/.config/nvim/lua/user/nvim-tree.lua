@@ -22,7 +22,8 @@ local function on_attach(bufnr)
     vim.keymap.set("n", "v", nt_api.node.open.vertical, opts("Open Vertical Split"))
     vim.keymap.set("n", "s", nt_api.node.open.horizontal, opts("Open Horizontal Split"))
     vim.keymap.set("n", "h", nt_api.node.navigate.parent_close, opts("Close"))
-    vim.keymap.set("n", "<BS>", "<leader>", { desc = "Backspace leader", buffer = bufnr, remap = true, silent = true, nowait = true })
+    vim.keymap.set("n", "<BS>", "<leader>",
+        { desc = "Backspace leader", buffer = bufnr, remap = true, silent = true, nowait = true })
     vim.keymap.set("n", "]d", nt_api.node.navigate.diagnostics.next, opts("Next Diagnostic"))
     vim.keymap.set("n", "[d", nt_api.node.navigate.diagnostics.prev, opts("Previous Diagnostic"))
 end
@@ -50,8 +51,11 @@ nvim_tree.setup({
     },
     update_focused_file = {
         enable = true,
-        update_root = false,
-        ignore_list = { "gitcommit", "COMMIT_EDITMSG" },
+        update_root = {
+            enable = false,
+            ignore_list = { "gitcommit", "COMMIT_EDITMSG" },
+        },
+        exclude = { "gitcommit", "COMMIT_EDITMSG" },
     },
     diagnostics = {
         enable = true,
@@ -59,4 +63,4 @@ nvim_tree.setup({
     },
 })
 
-vim.cmd[[hi link NvimTreeExecFile Normal]]
+vim.cmd [[hi link NvimTreeExecFile Normal]]

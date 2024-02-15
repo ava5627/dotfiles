@@ -65,7 +65,7 @@ lazy.setup({
     "f3fora/cmp-spell",
 
     -- snippets
-    { "L3MON4D3/LuaSnip", build = "make install_jsregexp" },
+    { "L3MON4D3/LuaSnip",             build = "make install_jsregexp" },
     "rafamadriz/friendly-snippets",
 
     --lsp
@@ -73,24 +73,23 @@ lazy.setup({
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
     "ray-x/lsp_signature.nvim",
-    { 'j-hui/fidget.nvim', config = true },
+    { 'j-hui/fidget.nvim',            config = true },
     { "lvimuser/lsp-inlayhints.nvim", config = true },
 
     -- Lua
     "folke/neodev.nvim",
 
     -- Rust
-    {
-        'mrcjkb/rustaceanvim',
-        ft = { 'rust' },
-    },
+    { 'mrcjkb/rustaceanvim',  ft = { 'rust' } },
 
 
     -- colorschemes
-    "ellisonleao/gruvbox.nvim",
-    "lunarvim/darkplus.nvim",
-    "sainnhe/sonokai",
-    { "folke/tokyonight.nvim", lazy = false, priority = 1000 },
+    {
+        "folke/tokyonight.nvim",
+        lazy = false,
+        priority = 1000,
+        config = function() require("user.tokyo") end,
+    },
 
     -- utility
     {
@@ -112,7 +111,19 @@ lazy.setup({
     },
     -- "akinsho/bufferline.nvim",
     "famiu/bufdelete.nvim",
-    "ghillb/cybu.nvim",
+    {
+        "ghillb/cybu.nvim",
+        opts = {
+            position = {
+                anchor = "topright",
+                vertical_offset = 5,
+                horizontal_offset = 5,
+            },
+            exclude = {
+                "NvimTree",
+            },
+        }
+    },
     {
         "lukas-reineke/indent-blankline.nvim",
         main = "ibl",
@@ -140,12 +151,11 @@ lazy.setup({
 
     -- highlighting
     { "norcalli/nvim-colorizer.lua", config = true },
-
-    { "lervag/vimtex", config = function() vim.g.vimtex_view_method = "zathura" end, },
+    { "lervag/vimtex",               config = function() vim.g.vimtex_view_method = "zathura" end, },
 
     -- Comments
-    { "numToStr/Comment.nvim", config = true },
-    { "folke/todo-comments.nvim", config = true },
+    { "numToStr/Comment.nvim",       config = true },
+    { "folke/todo-comments.nvim",    config = true },
 
     -- Code Running/Debugging
     "mfussenegger/nvim-dap",
@@ -154,16 +164,26 @@ lazy.setup({
     "theHamsta/nvim-dap-virtual-text",
 
     {
-        "ava5627/acr.nvim",
+        "ava5627/ACR.nvim",
         dir = "~/repos/ACR",
-        dev = vim.loop.fs_stat("~/repos/ACR") ~= nil,
+        dev = vim.loop.fs_stat(vim.fn.expand("~/repos/ACR")) ~= nil,
+        main = "acr",
+        opts = {
+            term_opts = {
+                direction = "horizontal",
+                on_open = function()
+                    require("nvim-tree.api").tree.toggle({ focus = false })
+                    require("nvim-tree.api").tree.toggle({ focus = false })
+                end
+            }
+        }
     },
 
     -- Toggle Term
     "akinsho/toggleterm.nvim",
 
     -- nvim-tree
-    "kyazdani42/nvim-tree.lua",
+    { "kyazdani42/nvim-tree.lua",      dev = true },
 
     --Telescope
     { "nvim-telescope/telescope.nvim", branch = "0.1.x" },
@@ -179,7 +199,8 @@ lazy.setup({
     -- git
     "lewis6991/gitsigns.nvim",
     "tpope/vim-fugitive",
-
-    -- Automatically set up your configuration after cloning packer.nvim
-    -- Put this at the end after all plugins
+}, {
+    dev = {
+        path = "~/repos"
+    }
 })

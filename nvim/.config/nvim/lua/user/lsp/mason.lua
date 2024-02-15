@@ -61,11 +61,9 @@ for _, server in pairs(servers) do
 			goto continue
 		end
 		neodev.setup({
-		    override = function(root_dir, library)
-                if root_dir:match(".config/nvim") ~= nil then
-                    library.enabled = true
-                    library.plugins = true
-                end
+		    override = function(_, library)
+                library.enabled = true
+                library.plugins = true
             end
 		})
         local lua_ls_opts = require("user.lsp.settings.sumneko_lua")

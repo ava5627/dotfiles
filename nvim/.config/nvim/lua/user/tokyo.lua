@@ -1,4 +1,9 @@
-require("tokyonight").setup({
+local tokyo_ok, tokyo = pcall(require, "tokyonight")
+if not tokyo_ok then
+    vim.notify("Missing tokyonight.nvim", vim.log.levels.ERROR)
+    return
+end
+tokyo.setup({
     -- use the night style
     style = "night",
     sidebars = { "qf", "vista_kind", "terminal", "packer", "NvimTree" },
@@ -19,3 +24,4 @@ require("tokyonight").setup({
     end
 
 })
+vim.cmd("colorscheme tokyonight")
