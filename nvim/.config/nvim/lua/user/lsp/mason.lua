@@ -61,7 +61,12 @@ for _, server in pairs(servers) do
 			goto continue
 		end
 		neodev.setup({
-			-- add any options here, or leave empty to use the default settings
+		    override = function(root_dir, library)
+                if root_dir:match(".config/nvim") ~= nil then
+                    library.enabled = true
+                    library.plugins = true
+                end
+            end
 		})
         local lua_ls_opts = require("user.lsp.settings.sumneko_lua")
         opts = vim.tbl_deep_extend("force", lua_ls_opts, opts)
