@@ -51,10 +51,6 @@ nvim_tree.setup({
     },
     update_focused_file = {
         enable = true,
-        update_root = {
-            enable = false,
-            ignore_list = { "gitcommit", "COMMIT_EDITMSG" },
-        },
         exclude = { "gitcommit", "COMMIT_EDITMSG" },
     },
     diagnostics = {

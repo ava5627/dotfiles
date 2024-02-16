@@ -1,4 +1,5 @@
 -- Automatically install lazy.nvim if not found
+local home = vim.fn.expand("~")
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
     vim.notify("Installing lazy.nvim", vim.log.levels.INFO)
@@ -166,7 +167,7 @@ lazy.setup({
     {
         "ava5627/ACR.nvim",
         dir = "~/repos/ACR",
-        dev = vim.loop.fs_stat(vim.fn.expand("~/repos/ACR")) ~= nil,
+        dev = vim.loop.fs_stat(home .. "/repos/ACR") ~= nil,
         main = "acr",
         opts = {
             term_opts = {
@@ -183,7 +184,7 @@ lazy.setup({
     "akinsho/toggleterm.nvim",
 
     -- nvim-tree
-    { "kyazdani42/nvim-tree.lua",      dev = true },
+    { "kyazdani42/nvim-tree.lua",      dev = vim.loop.fs_stat(home .. "/repos/nvim-tree.lua") ~= nil },
 
     --Telescope
     { "nvim-telescope/telescope.nvim", branch = "0.1.x" },
