@@ -85,14 +85,11 @@ alias ys='yay -Sua'
 alias yss='yay -Ss'
 
 # ls
-alias ls='lsd'
-alias ll='lsd -l'
-alias la='lsd -A'
-alias lla='lsd -lA'
+alias ls='lb'
+alias ll='lb -l'
+alias la='lb -A'
+alias lla='lb -lA'
 
-alias llb='lb -l'
-alias lab='lb -A'
-alias llab='lb -lA'
 
 alias ip='ip --color=auto'
 
@@ -121,6 +118,12 @@ alias cb='cd -'
 
 # Dotfiles
 alias gconfig='git --git-dir=$HOME/dotfiles/.git --work-tree=$HOME/dotfiles'
+
+abbr -a gs 'git status'
+abbr -a gsb 'git status -sb'
+abbr -a ga 'git add'
+abbr -a gc 'git commit'
+abbr -a gcm 'git commit -m '
 
 # Startup
 neofetch

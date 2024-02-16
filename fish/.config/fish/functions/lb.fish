@@ -7,7 +7,7 @@ function lb --description "ls if argument is a directory, bat otherwise"
         end
     end
     if [ -z "$args" ] || [ -d "$args" ]
-        ls $argv
+        lsd $argv
     else
       bat $args
     end
