@@ -1,9 +1,18 @@
-# EXPORT
 set fish_greeting                                 # Supresses fish's intro message
 
-fish_add_path "$HOME/.local/bin"
-fish_add_path "$HOME/.config/rofi/bin"
-fish_add_path "/usr/lib/jvm/default/bin/"
+# add to path if not already there
+if not contains $HOME/.local/bin $PATH
+    fish_add_path "$HOME/.local/bin" --append
+end
+if not contains $HOME/.config/rofi/bin $PATH
+    fish_add_path "$HOME/.config/rofi/bin" --append
+end
+if not contains /usr/lib/jvm/default/bin $PATH
+    fish_add_path "/usr/lib/jvm/default/bin" --append
+end
+if not contains $HOME/.local/share/cargo/bin $PATH
+    fish_add_path "$XDG_DATA_HOME/cargo/bin" --append
+end
 
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
@@ -44,8 +53,6 @@ export WGETRC="$XDG_CONFIG_HOME"/wgetrc
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export NODE_REPL_HISTORY_FILE="$XDG_DATA_HOME"/node_repl_history
-
-fish_add_path "$XDG_DATA_HOME/cargo/bin"
 
 # If not running interactively, don't continue
 if not status --is-interactive
@@ -123,7 +130,7 @@ abbr -a gs 'git status'
 abbr -a gsb 'git status -sb'
 abbr -a ga 'git add'
 abbr -a gc 'git commit'
-abbr -a gcm 'git commit -m '
+abbr -a gcm 'git commit -m'
 
 # Startup
 neofetch
