@@ -1,18 +1,10 @@
 set fish_greeting                                 # Supresses fish's intro message
 
 # add to path if not already there
-if not contains $HOME/.local/bin $PATH
-    fish_add_path "$HOME/.local/bin" --append
-end
-if not contains $HOME/.config/rofi/bin $PATH
-    fish_add_path "$HOME/.config/rofi/bin" --append
-end
-if not contains /usr/lib/jvm/default/bin $PATH
-    fish_add_path "/usr/lib/jvm/default/bin" --append
-end
-if not contains $HOME/.local/share/cargo/bin $PATH
-    fish_add_path "$XDG_DATA_HOME/cargo/bin" --append
-end
+fish_add_path "$HOME/.local/bin"
+fish_add_path "$HOME/.config/rofi/bin"
+fish_add_path "/usr/lib/jvm/default/bin"
+fish_add_path "$XDG_DATA_HOME/cargo/bin"
 
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
@@ -53,6 +45,12 @@ export WGETRC="$XDG_CONFIG_HOME"/wgetrc
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export NODE_REPL_HISTORY_FILE="$XDG_DATA_HOME"/node_repl_history
+
+if set -q VIRTUAL_ENV && contains $VIRTUAL_ENV/bin $PATH
+    set index (contains -i $VIRTUAL_ENV/bin $PATH)
+    set -ge PATH[$index]
+    set -gxp PATH $VIRTUAL_ENV/bin
+end
 
 # If not running interactively, don't continue
 if not status --is-interactive
