@@ -28,8 +28,7 @@ local kind_icons = {
     TypeParameter = "󰊄 ",
 }
 
-return
-{
+return {
     "hrsh7th/nvim-cmp",
     opts = function()
         local cmp = require("cmp")

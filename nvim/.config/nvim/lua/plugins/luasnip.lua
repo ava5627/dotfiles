@@ -27,5 +27,8 @@ return {
                 mode = { "i", "s" }
             }
         }
-    end
+    end,
+    dependencies = {
+        "rafamadriz/friendly-snippets",
+    },
 }

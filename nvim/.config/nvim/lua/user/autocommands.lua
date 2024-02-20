@@ -31,16 +31,3 @@ autocmd("BufWritePre", {
     pattern = "*",
     command = "%s/\\s\\+$//e",
 })
-
--- autocmd("TermOpen", {
---     pattern = "term://*",
---     callback = function()
---         local opts = { silent = true, noremap = true, buffer = true }
---         kmap("t", "<esc>", [[<C-\><C-n>]], opts)
---         kmap("t", "<C-h>", [[<C-\><C-n><C-W>h]], opts)
---         kmap("t", "<C-j>", [[<C-\><C-n><C-W>j]], opts)
---         kmap("t", "<C-k>", [[<C-\><C-n><C-W>k]], opts)
---         kmap("t", "<C-l>", [[<C-\><C-n><C-W>l]], opts)
---         kmap("n", "<C-c>", "a<C-c>", opts)
---     end,
--- })

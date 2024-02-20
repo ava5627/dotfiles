@@ -27,7 +27,6 @@ lazy.setup({
     "nvim-lua/popup.nvim",
     { "kyazdani42/nvim-web-devicons", config = true },
     { import = "plugins" },
-
     {
         "zbirenbaum/copilot.lua",
         cond = vim.fn.has("mac") == 0,
@@ -51,36 +50,6 @@ lazy.setup({
         },
     },
     "f3fora/cmp-spell",
-    "rafamadriz/friendly-snippets",
-    {
-        "williamboman/mason.nvim",
-        opts = { ui = { border = "rounded" } }
-    },
-    { "williamboman/mason-lspconfig.nvim", config = true },
-    {
-        "ray-x/lsp_signature.nvim",
-        opts = {
-            floating_window = false,
-            hint_enable = true, -- virtual hint enable
-            hint_prefix = "󰏫 ", -- Pencil for parameter
-            hint_scheme = "String",
-            hi_parameter = "LspSignatureActiveParameter", -- how your parameter will be highlight
-        }
-    },
-    { 'j-hui/fidget.nvim',                 config = true },
-    { "lvimuser/lsp-inlayhints.nvim",      config = true },
-    {
-        "folke/neodev.nvim",
-        ft = "lua",
-        opts = {
-            library = { plugins = { "nvim-dap-ui" }, types = true },
-            override = function(_, library)
-                library.enabled = true
-                library.plugins = true
-            end
-        }
-    },
-    { 'mrcjkb/rustaceanvim', ft = 'rust' },
     {
         "windwp/nvim-autopairs",
         opts = {
@@ -98,7 +67,7 @@ lazy.setup({
         }
     },
     "nvim-lualine/lualine.nvim",
-    { "SmiteshP/nvim-navic", opts = { highlight = true } },
+    { "SmiteshP/nvim-navic",  opts = { highlight = true } },
     {
         "famiu/bufdelete.nvim",
         keys = {
@@ -135,7 +104,7 @@ lazy.setup({
         end,
         opts = { render = "compact", max_height = 10, max_width = 100, timeout = 500 },
     },
-    { "folke/which-key.nvim",        config = true },
+    { "folke/which-key.nvim", config = true },
     "tpope/vim-surround",
     {
         "monaqa/dial.nvim",
@@ -176,8 +145,8 @@ lazy.setup({
         end,
         ft = "tex",
     },
-    { "numToStr/Comment.nvim",    config = true },
-    { "folke/todo-comments.nvim", config = true },
+    { "numToStr/Comment.nvim",       config = true },
+    { "folke/todo-comments.nvim",    config = true },
     {
         "ava5627/ACR.nvim",
         dir = "~/repos/ACR",
@@ -214,7 +183,6 @@ lazy.setup({
     },
     "JoosepAlviste/nvim-ts-context-commentstring",
     "nvim-treesitter/nvim-treesitter-refactor",
-    "nvim-treesitter/playground",
     {
         "lewis6991/gitsigns.nvim",
         opts = {

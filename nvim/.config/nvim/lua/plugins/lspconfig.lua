@@ -1,5 +1,6 @@
 return {
     "neovim/nvim-lspconfig",
+    lazy = false,
     keys = function()
         local telescope = require("telescope.builtin")
         return {
@@ -24,17 +25,17 @@ return {
             },
             {
                 "[d",
-                function() vim.lsp.diagnostic.goto_prev({ border = "rounded" }) end,
+                function() vim.diagnostic.goto_prev({ border = "rounded" }) end,
                 desc = "Go to previous diagnostic"
             },
             {
                 "gl",
-                function() vim.lsp.diagnostic.open_float({ border = "rounded" }) end,
+                function() vim.diagnostic.open_float({ border = "rounded" }) end,
                 desc = "Open diagnostic window"
             },
             {
                 "]d",
-                function() vim.lsp.diagnostic.goto_next({ border = "rounded" }) end,
+                function() vim.diagnostic.goto_next({ border = "rounded" }) end,
                 desc = "Go to next diagnostic"
             },
         }
@@ -113,7 +114,7 @@ return {
                     }
                 }
             },
-        }
+        },
     },
     config = function(_, opts)
         vim.diagnostic.config(opts.diagnostics)
@@ -137,5 +138,26 @@ return {
             lspconfig[server].setup(server_opts)
         end
         vim.g.rustaceanvim = { server = server_opts }
-    end
+    end,
+    dependencies = {
+        { "folke/neodev.nvim",                 config = true },
+        {
+            "williamboman/mason.nvim",
+            opts = { ui = { border = "rounded" } }
+        },
+        { "williamboman/mason-lspconfig.nvim", config = true },
+        {
+            "ray-x/lsp_signature.nvim",
+            opts = {
+                floating_window = false,
+                hint_enable = true, -- virtual hint enable
+                hint_prefix = "󰏫 ", -- Pencil for parameter
+                hint_scheme = "String",
+                hi_parameter = "LspSignatureActiveParameter", -- how your parameter will be highlight
+            }
+        },
+        { 'j-hui/fidget.nvim',            config = true },
+        { "lvimuser/lsp-inlayhints.nvim", config = true },
+        { 'mrcjkb/rustaceanvim',          ft = 'rust' },
+    }
 }
