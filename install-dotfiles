@@ -2,7 +2,7 @@
 
 function stow_dotfiles
     set file $argv
-    if test -e $file -a $file != "install" -a $file != "README.md" -a $file != ".git"
+    if test -d $file -a $file != ".git"
         echo "Installing $file"
         if test (uname) = "Darwin" -a -e $file-mac
             stow $file-mac
