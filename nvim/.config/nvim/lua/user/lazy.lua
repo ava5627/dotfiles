@@ -66,7 +66,6 @@ lazy.setup({
             { "<leader>u", ":UndotreeToggle<CR>", desc = "Undo tree" }
         }
     },
-    "nvim-lualine/lualine.nvim",
     { "SmiteshP/nvim-navic",  opts = { highlight = true } },
     {
         "famiu/bufdelete.nvim",

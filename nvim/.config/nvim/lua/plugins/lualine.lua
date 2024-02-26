@@ -13,7 +13,7 @@ local navic_location = {
 }
 
 return {
-    "hoob3rt/lualine.nvim",
+    "nvim-lualine/lualine.nvim",
     opts = {
         options = {
             disabled_filetypes = {
