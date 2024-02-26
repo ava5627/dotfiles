@@ -16,7 +16,9 @@ end
 
 if test -z $argv
     for file in (ls -A)
-        stow_dotfiles $file
+        if not string match "*-mac" $file > /dev/null
+            stow_dotfiles $file
+        end
     end
 else
     for file in $argv
