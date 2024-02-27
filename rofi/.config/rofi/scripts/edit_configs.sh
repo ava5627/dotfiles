@@ -1,4 +1,4 @@
-#! /usr/bin/env sh
+#!/usr/bin/env bash
 
 declare -A config_list
 config_list[qtile]=~/.config/qtile
