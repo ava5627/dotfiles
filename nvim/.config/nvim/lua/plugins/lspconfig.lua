@@ -74,14 +74,16 @@ return {
             "tsserver",
         },
         on_attach = function(client, bufnr)
-            vim.api.nvim_create_autocmd("CursorHold", {
-                pattern = "<buffer>",
-                callback = vim.lsp.buf.document_highlight,
-            })
-            vim.api.nvim_create_autocmd("CursorMoved", {
-                pattern = "<buffer>",
-                callback = vim.lsp.buf.clear_references,
-            })
+            if client.server_capabilities.documentHighlightProvider then
+                vim.api.nvim_create_autocmd("CursorHold", {
+                    pattern = "<buffer>",
+                    callback = vim.lsp.buf.document_highlight,
+                })
+                vim.api.nvim_create_autocmd("CursorMoved", {
+                    pattern = "<buffer>",
+                    callback = vim.lsp.buf.clear_references,
+                })
+            end
             require("lsp-inlayhints").on_attach(client, bufnr)
             require("nvim-navic").attach(client, bufnr)
         end,
