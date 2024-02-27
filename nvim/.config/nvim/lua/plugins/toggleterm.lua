@@ -22,7 +22,7 @@ return {
     end,
     lazy = false,
     keys = function()
-        local python = require("toggleterm.terminal").Terminal:new({ cmd = "ipython3", hidden = true })
+        local python = require("toggleterm.terminal").Terminal:new({ cmd = "ipython3", hidden = true, direction = "float" })
         return {
             { "<C-t>p", function() python:toggle() end, desc = "Toggle ipython terminal" },
             { "<esc>",  [[<C-\><C-n>]],                 desc = "Close terminal",         mode = "t" },
