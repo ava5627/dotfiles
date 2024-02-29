@@ -56,3 +56,11 @@ double edges */
     visibility: hidden !important;
     font-size: 0% !important;
 }
+
+#nav-bar {
+    box-shadow: none !important;
+}
+
+#TabsToolbar {
+    box-shadow: inset 0 -1px 0 0 var(--lwt-tab-line-color, var(--lwt-tabs-border-color, currentColor)) !important;
+}
