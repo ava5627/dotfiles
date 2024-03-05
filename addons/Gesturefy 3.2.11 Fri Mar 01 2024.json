@@ -1,0 +1,403 @@
+{
+  "Exclusions": [
+    "http://71.56.222.98/game",
+    "https://excalidraw.com/",
+    "*://*roll20.net/*",
+    "*://*:30000/*"
+  ],
+  "Gestures": [
+    {
+      "pattern": [
+        [
+          0,
+          -133
+        ],
+        [
+          -40,
+          -60
+        ],
+        [
+          -87,
+          -34
+        ],
+        [
+          -22,
+          1
+        ],
+        [
+          -23,
+          21
+        ],
+        [
+          -36,
+          102
+        ],
+        [
+          -1,
+          53
+        ]
+      ],
+      "command": {
+        "name": "OpenAddonSettings"
+      }
+    },
+    {
+      "pattern": [
+        [
+          -24,
+          191
+        ]
+      ],
+      "command": {
+        "name": "NewTab",
+        "settings": {
+          "position": "default",
+          "focus": true
+        }
+      }
+    },
+    {
+      "pattern": [
+        [
+          160,
+          3
+        ],
+        [
+          6,
+          170
+        ],
+        [
+          -1,
+          10
+        ],
+        [
+          -182,
+          7
+        ],
+        [
+          -8,
+          -8
+        ],
+        [
+          -3,
+          -87
+        ],
+        [
+          7,
+          -50
+        ]
+      ],
+      "command": {
+        "name": "ReloadTab",
+        "settings": {
+          "cache": false
+        }
+      }
+    },
+    {
+      "pattern": [
+        [
+          5,
+          202
+        ],
+        [
+          238,
+          -16
+        ],
+        [
+          17,
+          3
+        ]
+      ],
+      "command": {
+        "name": "CloseTab",
+        "settings": {
+          "nextFocus": "default",
+          "closePinned": true
+        }
+      }
+    },
+    {
+      "pattern": [
+        [
+          176,
+          -4
+        ]
+      ],
+      "command": {
+        "name": "FocusRightTab",
+        "settings": {
+          "cycling": true,
+          "excludeDiscarded": false
+        }
+      }
+    },
+    {
+      "pattern": [
+        [
+          -161,
+          -9
+        ],
+        [
+          -55,
+          3
+        ]
+      ],
+      "command": {
+        "name": "FocusLeftTab",
+        "settings": {
+          "cycling": true,
+          "excludeDiscarded": false
+        }
+      }
+    },
+    {
+      "pattern": [
+        [
+          3,
+          -180
+        ],
+        [
+          35,
+          -94
+        ],
+        [
+          9,
+          -6
+        ],
+        [
+          112,
+          1
+        ]
+      ],
+      "command": {
+        "name": "MoveTabToNewWindow"
+      }
+    },
+    {
+      "pattern": [
+        [
+          34,
+          239
+        ],
+        [
+          -14,
+          8
+        ],
+        [
+          -147,
+          -16
+        ]
+      ],
+      "command": {
+        "name": "RestoreTab",
+        "settings": {
+          "currentWindowOnly": true
+        }
+      }
+    },
+    {
+      "pattern": [
+        [
+          14,
+          -150
+        ]
+      ],
+      "command": {
+        "name": "ToggleFullscreen"
+      }
+    },
+    {
+      "pattern": [
+        [
+          -10,
+          -310
+        ],
+        [
+          18,
+          -14
+        ],
+        [
+          242,
+          24
+        ],
+        [
+          -5,
+          65
+        ],
+        [
+          -12,
+          31
+        ],
+        [
+          -173,
+          6
+        ]
+      ],
+      "command": {
+        "name": "NewPrivateWindow"
+      }
+    },
+    {
+      "pattern": [
+        [
+          294,
+          27
+        ],
+        [
+          -5,
+          -112
+        ],
+        [
+          15,
+          200
+        ]
+      ],
+      "command": {
+        "name": "OpenImageInNewTab",
+        "settings": {
+          "position": "default",
+          "focus": true
+        }
+      }
+    },
+    {
+      "pattern": [
+        [
+          172,
+          -10
+        ],
+        [
+          32,
+          -11
+        ],
+        [
+          22,
+          -105
+        ]
+      ],
+      "command": {
+        "name": "RunMultiPurposeCommand",
+        "settings": {
+          "commands": [
+            {
+              "name": "OpenLinkInNewTab",
+              "settings": {
+                "position": "default",
+                "focus": true,
+                "emptyTab": false
+              }
+            },
+            {
+              "name": "SearchTextSelectionInNewTab",
+              "settings": {
+                "searchEngineURL": "https://google.com/search?q=%s",
+                "position": "default",
+                "focus": true,
+                "openEmptySearch": false
+              }
+            }
+          ]
+        }
+      },
+      "label": "Search/Follow Link in New Tab"
+    },
+    {
+      "pattern": [
+        [
+          297,
+          12
+        ],
+        [
+          3,
+          11
+        ],
+        [
+          -48,
+          125
+        ]
+      ],
+      "command": {
+        "name": "RunMultiPurposeCommand",
+        "settings": {
+          "commands": [
+            {
+              "name": "OpenLinkInNewPrivateWindow",
+              "settings": {
+                "emptyWindow": false
+              }
+            },
+            {
+              "name": "ExecuteUserScript",
+              "settings": {
+                "userScript": "let selectedText = window.getSelection().toString();\nif (selectedText) {\n    API.windows.create({\n        url: 'https://www.google.com/search?q=' + selectedText,\n        incognito: true\n    });\n}",
+                "targetFrame": "allFrames"
+              }
+            }
+          ]
+        }
+      },
+      "label": "Search/Follow Link in Private Window"
+    },
+    {
+      "pattern": [
+        [
+          21,
+          -208
+        ],
+        [
+          14,
+          147
+        ]
+      ],
+      "command": {
+        "name": "ToggleFullscreen"
+      }
+    },
+    {
+      "pattern": [
+        [
+          3,
+          -203
+        ],
+        [
+          -6,
+          -9
+        ],
+        [
+          -177,
+          21
+        ]
+      ],
+      "command": {
+        "name": "NewWindow"
+      }
+    }
+  ],
+  "Settings": {
+    "Gesture": {
+      "Trace": {
+        "Style": {
+          "lineWidth": 4,
+          "strokeStyle": "#00aaa0ff",
+          "lineGrowth": false
+        }
+      },
+      "Command": {
+        "display": true,
+        "Style": {
+          "fontSize": "12px",
+          "horizontalPosition": 100,
+          "verticalPosition": 100
+        }
+      },
+      "Timeout": {
+        "active": true,
+        "duration": 2
+      }
+    },
+    "General": {
+      "theme": "dark"
+    }
+  }
+}
