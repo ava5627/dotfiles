@@ -1,9 +1,10 @@
 /* colors */
 
 * {
-  al:  #00000000;
-  bg:  #000000ff;
-  se:  #101010ff;
-  fg:  #FFFFFFff;
-  ac:  #EC7875ff;
+  accent:           #7aa2f7;
+  background:       #15161e;
+  background-light: #1a1b26;
+  foreground:       #c0caf5;
+  on:               #5BB462;
+  off:              #DE635E;
 }
