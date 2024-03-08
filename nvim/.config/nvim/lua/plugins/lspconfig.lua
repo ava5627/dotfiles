@@ -13,6 +13,7 @@ return {
             { "gs",         vim.lsp.buf.signature_help,     desc = "Signature help" },
             { "gh",         vim.lsp.buf.hover,              desc = "Hover" },
             { "grn",        vim.lsp.buf.rename,             desc = "Rename" },
+            { "ga",         vim.lsp.buf.code_action,        desc = "Code Action" },
             { "<C-g><C-k>", vim.lsp.buf.signature_help,     desc = "Signature help" },
             { "<A-f>",      vim.lsp.buf.format,             desc = "Format" },
             {

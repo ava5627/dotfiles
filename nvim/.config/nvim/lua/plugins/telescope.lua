@@ -12,10 +12,15 @@ return {
                     path_display = { "smart" },
                     mappings = {
                         i = {
+                            ["<C-esc>"] = actions.close,
                             ["<C-n>"] = actions.cycle_history_next,
                             ["<C-p>"] = actions.cycle_history_prev,
                             ["<C-j>"] = actions.move_selection_next,
                             ["<C-k>"] = actions.move_selection_previous,
+                            ["<C-S-j>"] = function(b) require("telescope.actions.set").shift_selection(b, 10) end,
+                            ["<C-S-K>"] = function(b) require("telescope.actions.set").shift_selection(b, -10) end,
+                            ["<C-A-j>"] = function(b) require("telescope.actions.set").add_selection(b, 10) end,
+                            ["<C-A-K>"] = function(b) require("telescope.actions.set").add_selection(b, -10) end,
                         },
                         n = {
                             ["<C-j>"] = actions.move_selection_next,
