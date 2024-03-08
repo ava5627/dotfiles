@@ -45,6 +45,7 @@ export WGETRC="$XDG_CONFIG_HOME"/wgetrc
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export NODE_REPL_HISTORY_FILE="$XDG_DATA_HOME"/node_repl_history
+export IPYTHONDIR="$XDG_CONFIG_HOME"/ipython
 
 if set -q VIRTUAL_ENV && contains $VIRTUAL_ENV/bin $PATH
     set index (contains -i $VIRTUAL_ENV/bin $PATH)
@@ -57,6 +58,13 @@ if not status --is-interactive
   exit
 end
 
+set __fish_git_prompt_showupstream informative
+set __fish_git_prompt_char_upstream_prefix " "
+set __fish_git_prompt_showcolorhints 1
+set __fish_git_prompt_use_informative_chars 1
+set __fish_git_prompt_color_upstream red
+set __fish_git_prompt_showdirtystate 1
+set __fish_git_prompt_char_dirtystate '*'
 
 function fish_user_key_bindings
     # fish_vi_key_bindings
