@@ -10,7 +10,7 @@ export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_STATE_HOME=$HOME/.local/state
-export XDG_RUNTIME_DIR=/run/user/(id -u)
+# export XDG_RUNTIME_DIR=/run/user/(id -u)
 
 set fish_color_host $fish_color_user
 set fish_color_cwd magenta #$fish_color_param
@@ -75,6 +75,7 @@ end
 
 # programs
 zoxide init fish --cmd cd | source
+direnv hook fish | source
 
 # Quick aliases
 
@@ -132,11 +133,19 @@ alias cb='cd -'
 # Dotfiles
 alias gconfig='git --git-dir=$HOME/dotfiles/.git --work-tree=$HOME/dotfiles'
 
-abbr -a gs 'git status'
-abbr -a gsb 'git status -sb'
-abbr -a ga 'git add'
-abbr -a gc 'git commit'
-abbr -a gcm 'git commit -m'
+abbr --add -- ga 'git add'
+abbr --add -- gc 'git commit'
+abbr --add -- gca 'git commit --amend -a'
+abbr --add -- gcam 'git commit -am'
+abbr --add -- gcm 'git commit -m'
+abbr --add -- gdh 'git diff HEAD^'
+alias gad 'git add .'
+alias gd 'git diff'
+alias gf 'git push --force-with-lease'
+alias gp 'git push'
+alias gl 'git pull'
+alias gs 'git status -s'
+alias gss 'git status'
 
 # Startup
 neofetch
