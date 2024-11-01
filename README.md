@@ -1,5 +1,8 @@
 # My Dotfiles
 
+> [!NOTE]
+> This repository is no longer used. I have my [nixos configuration](https://github.com/ava5627/nixfiles), [nvim configuration](https://github.com/ava5627/nvim), and [qtile configuration](https://github.com/ava5627/qtile-config) in other repos
+
 ## Prerequisites
 
 - [Git](https://git-scm.com/)
